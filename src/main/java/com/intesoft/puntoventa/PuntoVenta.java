@@ -10,6 +10,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.net.URLDecoder;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -29,8 +31,9 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
  */
 public class PuntoVenta {
 
-    public static void main(String[] args) {
-        String jarPath = PuntoVenta.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+    public static void main(String[] args) throws URISyntaxException {
+        URL jarUrl = PuntoVenta.class.getProtectionDomain().getCodeSource().getLocation();
+        String jarPath = jarUrl.toURI().getPath();;
         String configFilePath = jarPath + "config.properties";
         try {       
             configFilePath = URLDecoder.decode(configFilePath, "UTF-8");
