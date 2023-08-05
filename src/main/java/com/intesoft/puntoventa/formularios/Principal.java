@@ -49,6 +49,7 @@ public class Principal extends javax.swing.JFrame {
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
         jMProductos = new javax.swing.JMenu();
+        menuVentas = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -125,6 +126,14 @@ public class Principal extends javax.swing.JFrame {
         });
         menuBar.add(jMProductos);
 
+        menuVentas.setText("Ventas");
+        menuVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuVentasMouseClicked(evt);
+            }
+        });
+        menuBar.add(menuVentas);
+
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -150,6 +159,12 @@ public class Principal extends javax.swing.JFrame {
         this.desktopPane.add(productos);
         productos.setVisible(true);
     }//GEN-LAST:event_jMProductosMenuSelected
+
+    private void menuVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuVentasMouseClicked
+        Ventas venta = new Ventas();
+        this.desktopPane.add(venta);
+        venta.setVisible(true);
+    }//GEN-LAST:event_menuVentasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -199,6 +214,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenu jMProductos;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuVentas;
     private javax.swing.JMenuItem openMenuItem;
     private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
