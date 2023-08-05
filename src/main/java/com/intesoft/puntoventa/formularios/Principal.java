@@ -4,7 +4,7 @@
  */
 package com.intesoft.puntoventa.formularios;
 
-import javax.swing.JFrame;
+import com.intesoft.puntoventa.entity.Usuarios;
 
 /**
  *
@@ -15,9 +15,13 @@ public class Principal extends javax.swing.JFrame {
     /**
      * Creates new form Principal
      */
+    private Usuarios usuarios;
     public Principal() {
         initComponents();
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    }
+    public Principal(Usuarios usuarios){
+        this.usuarios = usuarios;
+        initComponents();
     }
 
     /**
@@ -36,10 +40,15 @@ public class Principal extends javax.swing.JFrame {
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
-        menuVentas = new javax.swing.JMenu();
+        editMenu = new javax.swing.JMenu();
+        cutMenuItem = new javax.swing.JMenuItem();
+        copyMenuItem = new javax.swing.JMenuItem();
+        pasteMenuItem = new javax.swing.JMenuItem();
+        deleteMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         contentMenuItem = new javax.swing.JMenuItem();
         aboutMenuItem = new javax.swing.JMenuItem();
+        jMProductos = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,14 +79,26 @@ public class Principal extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
-        menuVentas.setMnemonic('e');
-        menuVentas.setText("Ventas");
-        menuVentas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuVentasMouseClicked(evt);
-            }
-        });
-        menuBar.add(menuVentas);
+        editMenu.setMnemonic('e');
+        editMenu.setText("Edit");
+
+        cutMenuItem.setMnemonic('t');
+        cutMenuItem.setText("Cut");
+        editMenu.add(cutMenuItem);
+
+        copyMenuItem.setMnemonic('y');
+        copyMenuItem.setText("Copy");
+        editMenu.add(copyMenuItem);
+
+        pasteMenuItem.setMnemonic('p');
+        pasteMenuItem.setText("Paste");
+        editMenu.add(pasteMenuItem);
+
+        deleteMenuItem.setMnemonic('d');
+        deleteMenuItem.setText("Delete");
+        editMenu.add(deleteMenuItem);
+
+        menuBar.add(editMenu);
 
         helpMenu.setMnemonic('h');
         helpMenu.setText("Help");
@@ -92,17 +113,29 @@ public class Principal extends javax.swing.JFrame {
 
         menuBar.add(helpMenu);
 
+        jMProductos.setText("Productos");
+        jMProductos.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+                jMProductosMenuSelected(evt);
+            }
+        });
+        menuBar.add(jMProductos);
+
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 1138, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 571, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 471, Short.MAX_VALUE)
         );
 
         pack();
@@ -112,12 +145,11 @@ public class Principal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
-    private void menuVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuVentasMouseClicked
-        // TODO add your handling code here:
-        Ventas ventas = new Ventas();
-        this.desktopPane.add(ventas);
-        ventas.setVisible(true);
-    }//GEN-LAST:event_menuVentasMouseClicked
+    private void jMProductosMenuSelected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMProductosMenuSelected
+        Productos productos = new Productos();
+        this.desktopPane.add(productos);
+        productos.setVisible(true);
+    }//GEN-LAST:event_jMProductosMenuSelected
 
     /**
      * @param args the command line arguments
@@ -157,13 +189,18 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JMenuItem contentMenuItem;
+    private javax.swing.JMenuItem copyMenuItem;
+    private javax.swing.JMenuItem cutMenuItem;
+    private javax.swing.JMenuItem deleteMenuItem;
     private javax.swing.JDesktopPane desktopPane;
+    private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenu jMProductos;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenu menuVentas;
     private javax.swing.JMenuItem openMenuItem;
+    private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables

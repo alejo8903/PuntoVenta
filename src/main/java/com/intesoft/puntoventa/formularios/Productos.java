@@ -4,6 +4,11 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.MaestroController;
+import com.intesoft.puntoventa.entity.Maestro;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author alejo
@@ -15,6 +20,7 @@ public class Productos extends javax.swing.JInternalFrame {
      */
     public Productos() {
         initComponents();
+        this.listarProductos();
     }
 
     /**
@@ -33,19 +39,23 @@ public class Productos extends javax.swing.JInternalFrame {
         jBAgregarP = new javax.swing.JButton();
         jBEliminar = new javax.swing.JButton();
         jBModificar = new javax.swing.JButton();
-        jBAgregarI = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "CODIGO", "TIPO", "DESCRIPCION", "TALLA", "COLOR", "CANTIDAD", "PRECIO", "IVA", "% GANANCIA", "PRECIO COMPRA", "PRECIO VENTA"
+                "CODIGO", "TIPO", "DESCRIPCION", "TALLA", "COLOR"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, true, true
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -57,12 +67,15 @@ public class Productos extends javax.swing.JInternalFrame {
         jLabel1.setText("Codigo");
 
         jBAgregarP.setText("Agregar Producto");
+        jBAgregarP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBAgregarPActionPerformed(evt);
+            }
+        });
 
         jBEliminar.setText("Eliminar Producto");
 
         jBModificar.setText("Modificar Producto");
-
-        jBAgregarI.setText("Agregar Inventario");
 
         jButton1.setText("Actualizar Tabla");
 
@@ -80,8 +93,6 @@ public class Productos extends javax.swing.JInternalFrame {
                         .addComponent(jBModificar)
                         .addGap(18, 18, 18)
                         .addComponent(jBEliminar)
-                        .addGap(18, 18, 18)
-                        .addComponent(jBAgregarI)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -110,17 +121,35 @@ public class Productos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBModificar)
                     .addComponent(jBAgregarP)
-                    .addComponent(jBEliminar)
-                    .addComponent(jBAgregarI))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(jBEliminar))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jBAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarPActionPerformed
+        IngresoProductos ingresoProductos = new IngresoProductos();
+        ingresoProductos.setModal(true);
+        ingresoProductos.setVisible(true);
+    }//GEN-LAST:event_jBAgregarPActionPerformed
+    
+    private void listarProductos(){
+        MaestroController maestroController = new MaestroController();
+        List<Maestro> listaProductos = maestroController.getAllProductos();
+        DefaultTableModel model =  (DefaultTableModel) jTable1.getModel();
+        for (Maestro producto : listaProductos) {
+            Object[] rowData = {
+                producto.getCodigo(),
+                producto.getDescripcion(),
+                producto.getTalla(),
+                producto.getColor()
+            };
+            model.addRow(rowData);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jBAgregarI;
     private javax.swing.JButton jBAgregarP;
     private javax.swing.JButton jBEliminar;
     private javax.swing.JButton jBModificar;
