@@ -19,7 +19,7 @@ import javax.persistence.Table;
 public class Maestro implements Serializable {
     @Id
     @Column(name = "codigo")
-    private int codigo;
+    private String codigo;
     @Column(name = "descripcion")
     private String descripcion;
     @Column(name = "talla")
@@ -30,18 +30,18 @@ public class Maestro implements Serializable {
     public Maestro() {
     }
 
-    public Maestro(int codigo, String descripcion, String talla, String color) {
+    public Maestro(String codigo, String descripcion, String talla, String color) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.talla = talla;
         this.color = color;
     }
 
-    public int getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 

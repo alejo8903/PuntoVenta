@@ -35,6 +35,8 @@ public class Usuarios implements java.io.Serializable {
     private String nombres;
     @Column(name = "apellidos")
     private String apellidos;
+    @Column(name = "rol")
+    private String rol;
     @Column(name = "p_productos")
     private boolean pProdcuctos;
     @Column(name = "P_ADMIN_USER")
@@ -45,14 +47,18 @@ public class Usuarios implements java.io.Serializable {
     public Usuarios() {
     }
 
-    public Usuarios(String usuario, String contraseña, String nombres, String apellidos, boolean pProdcuctos, boolean pAdminUser) {
+    public Usuarios(int idUsuario, String usuario, String contraseña, String nombres, String apellidos, String rol, boolean pProdcuctos, boolean pAdminUser) {
+        this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.contraseña = contraseña;
         this.nombres = nombres;
         this.apellidos = apellidos;
+        this.rol = rol;
         this.pProdcuctos = pProdcuctos;
         this.pAdminUser = pAdminUser;
     }
+
+    
 
     public int getIdUsuario() {
         return idUsuario;
@@ -92,6 +98,14 @@ public class Usuarios implements java.io.Serializable {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+
+    public String getRol() {
+        return rol;
+    }
+
+    public void setRol(String rol) {
+        this.rol = rol;
     }
 
     public boolean ispProdcuctos() {

@@ -2,52 +2,34 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.intesoft.puntoventa.entity;
-
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+package com.intesoft.puntoventa.dto;
 
 /**
  *
  * @author alejo
  */
-@Entity
-@Table(name = "inventario")
-public class Inventario implements Serializable {
-    
-    @Id
-    @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "codigo")
-    private Maestro codigo;
-    @Column(name = "cantidad")
-    private int cantidad;
-    @Column(name = "valorcompra")
-    private double valorCompra;
-    @Column(name = "iva")
-    private float iva;
-    @Column(name = "totalcompra")
-    private double totalCompra;
-    @Column(name = "porcentajeganancia")
-    private float porcentajeGanancia;
-    @Column(name = "valorventa")
-    private double valorVenta;
+public class InventarioDto {
+    int id;
+    String codigo;
+    String descripcion;
+    String talla;
+    String color;
+    int cantidad;
+    double valorCompra;
+    float iva;
+    double totalCompra;
+    float porcentajeGanancia;
+    double valorVenta;
 
-    public Inventario() {
+    public InventarioDto() {
     }
 
-    public Inventario(Maestro codigo, int cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGanancia, double valorVenta) {
+    public InventarioDto(int id, String codigo, String descripcion, String talla, String color, int cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGanancia, double valorVenta) {
+        this.id = id;
         this.codigo = codigo;
+        this.descripcion = descripcion;
+        this.talla = talla;
+        this.color = color;
         this.cantidad = cantidad;
         this.valorCompra = valorCompra;
         this.iva = iva;
@@ -64,12 +46,36 @@ public class Inventario implements Serializable {
         this.id = id;
     }
 
-    public Maestro getCodigo() {
+    public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(Maestro maestro) {
-        this.codigo = maestro;
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getTalla() {
+        return talla;
+    }
+
+    public void setTalla(String talla) {
+        this.talla = talla;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public int getCantidad() {

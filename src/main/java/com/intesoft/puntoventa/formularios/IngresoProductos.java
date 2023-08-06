@@ -24,9 +24,9 @@ public class IngresoProductos extends javax.swing.JDialog {
         this.maestro = maestro;
         this.proceso = proceso;
         initComponents();
-        int codigo = this.maestro.getCodigo();
-        String codigoSinUltimosDigitos = Integer.toString(codigo).substring(0, Integer.toString(codigo).length() - 2);
-        String codigoString = Integer.toString(this.maestro.getCodigo());
+        String codigo = this.maestro.getCodigo();
+        String codigoSinUltimosDigitos = codigo.substring(0, (codigo).length() - 2);
+        String codigoString = this.maestro.getCodigo();
         int longitud = codigoString.length();
         String ultimosDigitos = codigoString.substring(longitud - 2);
         this.jTextCodigo.setText( codigoSinUltimosDigitos);
@@ -180,10 +180,10 @@ public class IngresoProductos extends javax.swing.JDialog {
 
     private void jBGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenerarActionPerformed
         MaestroController maestroController = new MaestroController();
-        int maxCodigo = maestroController.getMaxCodigo().getCodigo();
+        String maxCodigo = maestroController.getMaxCodigo().getCodigo();
     
         // Obtener la parte del texto sin los últimos dos dígitos
-        String codigoSinUltimosDigitos = Integer.toString(maxCodigo).substring(0, Integer.toString(maxCodigo).length() - 2);
+        String codigoSinUltimosDigitos = (maxCodigo).substring(0, (maxCodigo).length() - 2);
 
         // Convertir la parte restante de la cadena a un número, sumarle 1 y establecerlo en el campo de texto
         int nuevoCodigo = Integer.parseInt(codigoSinUltimosDigitos) + 1;
@@ -206,7 +206,7 @@ public class IngresoProductos extends javax.swing.JDialog {
 
     private void jBEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEjecutarActionPerformed
         Maestro maestro = new Maestro();
-        maestro.setCodigo( Integer.parseInt(jTextCodigo.getText() + jTextTipo.getText()));
+        maestro.setCodigo( (jTextCodigo.getText() + jTextTipo.getText()));
         maestro.setDescripcion(jTextDescripcion.getText());
         maestro.setTalla(jTextTalla.getText());
         maestro.setColor(jTextColor.getText());

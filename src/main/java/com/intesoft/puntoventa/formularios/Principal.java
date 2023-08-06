@@ -161,7 +161,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMProductosMenuSelected
 
     private void menuVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuVentasMouseClicked
-        Ventas venta = new Ventas();
+        Ventas venta = new Ventas(this.usuarios);
         this.desktopPane.add(venta);
         venta.setVisible(true);
     }//GEN-LAST:event_menuVentasMouseClicked

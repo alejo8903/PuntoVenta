@@ -158,7 +158,7 @@ public class Productos extends javax.swing.JInternalFrame {
         int rowIndex = this.jTable1.getSelectedRow();
         if(rowIndex >=0 ){
             Maestro maestro = new Maestro();
-            maestro.setCodigo( Integer.parseInt(jTable1.getValueAt(rowIndex,0).toString()+jTable1.getValueAt(rowIndex,1).toString()));
+            maestro.setCodigo( (jTable1.getValueAt(rowIndex,0).toString()+jTable1.getValueAt(rowIndex,1).toString()));
             maestro.setDescripcion(jTable1.getValueAt(rowIndex,2).toString());
             maestro.setTalla(jTable1.getValueAt(rowIndex,3).toString());
             maestro.setColor(jTable1.getValueAt(rowIndex,4).toString());
@@ -193,9 +193,9 @@ public class Productos extends javax.swing.JInternalFrame {
         DefaultTableModel model =  (DefaultTableModel) jTable1.getModel();
         model.setNumRows(0);
         for (Maestro producto : listaProductos) {
-            int codigo = producto.getCodigo();
-            String codigoSinUltimosDigitos = Integer.toString(codigo).substring(0, Integer.toString(codigo).length() - 2);
-            String codigoString = Integer.toString(producto.getCodigo());
+            String codigo = producto.getCodigo();
+            String codigoSinUltimosDigitos = (codigo).substring(0, (codigo).length() - 2);
+            String codigoString = (producto.getCodigo());
             int longitud = codigoString.length();
             String ultimosDigitos = codigoString.substring(longitud - 2);
             Object[] rowData = {
@@ -208,6 +208,7 @@ public class Productos extends javax.swing.JInternalFrame {
             model.addRow(rowData);
         }
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBActualizar;
