@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,13 +28,13 @@ public class MaestroDao {
         entityManagerFactory.close();
     }
     
-     public Maestro findById(String codigo){
+     public Maestro findById(int codigo){
         EntityManager entityManager = entityManagerFactory.createEntityManager();
        entityManager.getTransaction().begin();
-       Maestro master = entityManager.find(Maestro.class, codigo);
+       Maestro maestro = entityManager.find(Maestro.class, codigo);
        entityManager.getTransaction().commit();
        entityManager.close();
-       return master;
+       return maestro;
     }
 
    public List<Maestro> getAll(){
@@ -59,6 +60,7 @@ public class MaestroDao {
        entityManager.getTransaction().commit();
        
        entityManager.close();
+       JOptionPane.showMessageDialog(null, "Producto actualizado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
        
    }
    
@@ -70,5 +72,38 @@ public class MaestroDao {
        
        entityManager.getTransaction().commit();
        entityManager.close();
+       JOptionPane.showMessageDialog(null, "Producto ingresaso con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
    }
+
+    public Maestro getMaxCodigo() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+       
+       Maestro maestro = entityManager.createQuery
+        ("SELECT m FROM Maestro m WHERE m.codigo = (SELECT MAX(m2.codigo) FROM Maestro m2)",
+                Maestro.class)
+               .getSingleResult();
+       
+       entityManager.getTransaction().commit();
+       entityManager.close();
+       return maestro;
+    }
+
+    public void delete(int codigo) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        Maestro maestro = entityManager.find(Maestro.class, codigo);
+        if (maestro != null) {
+            entityManager.remove(maestro);
+            entityManager.getTransaction().commit();
+        } else {
+            entityManager.getTransaction().rollback();
+        }
+
+        entityManager.close();
+        JOptionPane.showMessageDialog(null, "Producto eliminado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
+   
+    }
 }
+

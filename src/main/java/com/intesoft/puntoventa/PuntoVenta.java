@@ -33,7 +33,7 @@ public class PuntoVenta {
 
     public static void main(String[] args) throws URISyntaxException {
         URL jarUrl = PuntoVenta.class.getProtectionDomain().getCodeSource().getLocation();
-        String jarPath = jarUrl.toURI().getPath();;
+        String jarPath = jarUrl.toURI().getPath();
         String configFilePath = jarPath + "config.properties";
         try {       
             configFilePath = URLDecoder.decode(configFilePath, "UTF-8");

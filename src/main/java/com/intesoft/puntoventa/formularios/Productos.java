@@ -7,6 +7,7 @@ package com.intesoft.puntoventa.formularios;
 import com.intesoft.puntoventa.controller.MaestroController;
 import com.intesoft.puntoventa.entity.Maestro;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -39,7 +40,7 @@ public class Productos extends javax.swing.JInternalFrame {
         jBAgregarP = new javax.swing.JButton();
         jBEliminar = new javax.swing.JButton();
         jBModificar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        jBActualizar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -74,10 +75,25 @@ public class Productos extends javax.swing.JInternalFrame {
         });
 
         jBEliminar.setText("Eliminar Producto");
+        jBEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEliminarActionPerformed(evt);
+            }
+        });
 
         jBModificar.setText("Modificar Producto");
+        jBModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBModificarActionPerformed(evt);
+            }
+        });
 
-        jButton1.setText("Actualizar Tabla");
+        jBActualizar.setText("Actualizar Tabla");
+        jBActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBActualizarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -103,7 +119,7 @@ public class Productos extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(jBActualizar)
                 .addGap(391, 391, 391))
         );
         layout.setVerticalGroup(
@@ -116,7 +132,7 @@ public class Productos extends javax.swing.JInternalFrame {
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
+                .addComponent(jBActualizar)
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBModificar)
@@ -133,14 +149,58 @@ public class Productos extends javax.swing.JInternalFrame {
         ingresoProductos.setModal(true);
         ingresoProductos.setVisible(true);
     }//GEN-LAST:event_jBAgregarPActionPerformed
+
+    private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
+        this.listarProductos();
+    }//GEN-LAST:event_jBActualizarActionPerformed
+
+    private void jBModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBModificarActionPerformed
+        int rowIndex = this.jTable1.getSelectedRow();
+        if(rowIndex >=0 ){
+            Maestro maestro = new Maestro();
+            maestro.setCodigo( Integer.parseInt(jTable1.getValueAt(rowIndex,0).toString()+jTable1.getValueAt(rowIndex,1).toString()));
+            maestro.setDescripcion(jTable1.getValueAt(rowIndex,2).toString());
+            maestro.setTalla(jTable1.getValueAt(rowIndex,3).toString());
+            maestro.setColor(jTable1.getValueAt(rowIndex,4).toString());
+            IngresoProductos ingresoProductos = new IngresoProductos(maestro, "modificar");
+            ingresoProductos.setModal(true);
+            ingresoProductos.setVisible(true);
+            
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "No ha selecionado ningun producto para modificar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_jBModificarActionPerformed
+
+    private void jBEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEliminarActionPerformed
+        int rowIndex = this.jTable1.getSelectedRow();
+        if(rowIndex >=0 ){
+            
+            int codigo = Integer.parseInt(jTable1.getValueAt(rowIndex,0).toString()+jTable1.getValueAt(rowIndex,1).toString());
+            MaestroController maestroController = new MaestroController();
+            maestroController.deleteProducto(codigo);
+            
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "No ha selecionado ningun producto para modificar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jBEliminarActionPerformed
     
     private void listarProductos(){
         MaestroController maestroController = new MaestroController();
         List<Maestro> listaProductos = maestroController.getAllProductos();
         DefaultTableModel model =  (DefaultTableModel) jTable1.getModel();
+        model.setNumRows(0);
         for (Maestro producto : listaProductos) {
+            int codigo = producto.getCodigo();
+            String codigoSinUltimosDigitos = Integer.toString(codigo).substring(0, Integer.toString(codigo).length() - 2);
+            String codigoString = Integer.toString(producto.getCodigo());
+            int longitud = codigoString.length();
+            String ultimosDigitos = codigoString.substring(longitud - 2);
             Object[] rowData = {
-                producto.getCodigo(),
+                codigoSinUltimosDigitos,
+                ultimosDigitos,
                 producto.getDescripcion(),
                 producto.getTalla(),
                 producto.getColor()
@@ -150,10 +210,10 @@ public class Productos extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jBActualizar;
     private javax.swing.JButton jBAgregarP;
     private javax.swing.JButton jBEliminar;
     private javax.swing.JButton jBModificar;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

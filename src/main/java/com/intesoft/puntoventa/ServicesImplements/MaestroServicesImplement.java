@@ -21,6 +21,30 @@ public class MaestroServicesImplement implements MaestroServices {
         maestroDao = new MaestroDao();
         return maestroDao.getAll();
     }
+
+    @Override
+    public Maestro getMaxCodigo() {
+        maestroDao = new MaestroDao();
+        return maestroDao.getMaxCodigo();
+    }
+
+    @Override
+    public void crearProducto(Maestro maestro) {
+        maestroDao = new MaestroDao();
+        maestroDao.create(maestro);
+    }
+
+    @Override
+    public void modificarProducto(Maestro maestro) {
+        maestroDao = new MaestroDao();
+        maestroDao.merge(maestro);
+    }
+
+    @Override
+    public void deleteMaestro(int codigo) {
+        maestroDao = new MaestroDao();
+        maestroDao.delete(codigo);
+    }
             
  
     

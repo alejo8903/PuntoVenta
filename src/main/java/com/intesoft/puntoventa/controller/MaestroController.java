@@ -19,5 +19,25 @@ public class MaestroController {
         MaestroServices maestroServices = new MaestroServicesImplement();
         return maestroServices.listarProductos();
     }
+
+    public Maestro getMaxCodigo() {
+        MaestroServices maestroServices = new MaestroServicesImplement();
+        return maestroServices.getMaxCodigo();
+    }
+
+    public void crearProducto(Maestro maestro) {
+        MaestroServices maestroServices = new MaestroServicesImplement();
+        maestroServices.crearProducto(maestro);
+    }
+
+    public void ModificarProducto(Maestro maestro) {
+        MaestroServices maestroServices = new MaestroServicesImplement();
+        maestroServices.modificarProducto(maestro);
+    }
+
+    public void deleteProducto(int codigo) {
+        MaestroServices maestroServices = new MaestroServicesImplement();
+        maestroServices.deleteMaestro(codigo);
+    }
     
 }

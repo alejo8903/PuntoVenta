@@ -4,6 +4,10 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.MaestroController;
+import com.intesoft.puntoventa.entity.Maestro;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author alejo
@@ -13,6 +17,26 @@ public class IngresoProductos extends javax.swing.JDialog {
     /**
      * Creates new form CreacionProductos
      */
+    private MaestroController maestroController;
+    private Maestro maestro;
+    private String proceso;
+    public IngresoProductos(Maestro maestro, String proceso) {
+        this.maestro = maestro;
+        this.proceso = proceso;
+        initComponents();
+        int codigo = this.maestro.getCodigo();
+        String codigoSinUltimosDigitos = Integer.toString(codigo).substring(0, Integer.toString(codigo).length() - 2);
+        String codigoString = Integer.toString(this.maestro.getCodigo());
+        int longitud = codigoString.length();
+        String ultimosDigitos = codigoString.substring(longitud - 2);
+        this.jTextCodigo.setText( codigoSinUltimosDigitos);
+        this.jTextTipo.setText(ultimosDigitos);
+        this.jTextDescripcion.setText(this.maestro.getDescripcion());
+        this.jTextTalla.setText(this.maestro.getTalla());
+        this.jTextColor.setText(this.maestro.getColor());
+        this.jBEjecutar.setText("Modificar");
+        
+    }
     public IngresoProductos() {
         initComponents();
     }
@@ -34,25 +58,56 @@ public class IngresoProductos extends javax.swing.JDialog {
         jTextDescripcion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jTextTalla = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jBGenerar = new javax.swing.JButton();
+        jBEjecutar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jTextColor = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Codigo");
 
+        jTextCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextCodigoKeyTyped(evt);
+            }
+        });
+
         jLabel2.setText("Tipo");
+
+        jTextTipo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextTipoKeyTyped(evt);
+            }
+        });
 
         jLabel3.setText("Descripcion");
 
         jLabel4.setText("Talla");
 
-        jButton1.setText("Generar");
+        jBGenerar.setText("Generar");
+        jBGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBGenerarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Crear");
+        jBEjecutar.setText("Crear");
+        jBEjecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEjecutarActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Cancelar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Color");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -64,25 +119,30 @@ public class IngresoProductos extends javax.swing.JDialog {
                     .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1)
-                    .addComponent(jLabel4))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jTextTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                            .addComponent(jTextTalla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextCodigo, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addContainerGap(24, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton2)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jBEjecutar)
                         .addGap(18, 18, 18)
                         .addComponent(jButton3)
-                        .addGap(82, 82, 82))))
+                        .addGap(82, 82, 82))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jTextTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
+                                    .addComponent(jTextTalla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextCodigo, javax.swing.GroupLayout.Alignment.LEADING))
+                                .addGap(18, 18, 18)
+                                .addComponent(jBGenerar))
+                            .addComponent(jTextColor, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -91,7 +151,7 @@ public class IngresoProductos extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1))
+                    .addComponent(jBGenerar))
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -104,9 +164,13 @@ public class IngresoProductos extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextTalla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jBEjecutar)
                     .addComponent(jButton3))
                 .addGap(22, 22, 22))
         );
@@ -114,6 +178,64 @@ public class IngresoProductos extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jBGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenerarActionPerformed
+        MaestroController maestroController = new MaestroController();
+        int maxCodigo = maestroController.getMaxCodigo().getCodigo();
+    
+        // Obtener la parte del texto sin los últimos dos dígitos
+        String codigoSinUltimosDigitos = Integer.toString(maxCodigo).substring(0, Integer.toString(maxCodigo).length() - 2);
+
+        // Convertir la parte restante de la cadena a un número, sumarle 1 y establecerlo en el campo de texto
+        int nuevoCodigo = Integer.parseInt(codigoSinUltimosDigitos) + 1;
+        this.jTextCodigo.setText(Integer.toString(nuevoCodigo));  
+        
+    }//GEN-LAST:event_jBGenerarActionPerformed
+
+    private void jTextCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextCodigoKeyTyped
+        this.condicionSoloNumeros(evt);
+        
+    }//GEN-LAST:event_jTextCodigoKeyTyped
+
+    private void jTextTipoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextTipoKeyTyped
+        this.condicionSoloNumeros(evt);
+    }//GEN-LAST:event_jTextTipoKeyTyped
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jBEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEjecutarActionPerformed
+        Maestro maestro = new Maestro();
+        maestro.setCodigo( Integer.parseInt(jTextCodigo.getText() + jTextTipo.getText()));
+        maestro.setDescripcion(jTextDescripcion.getText());
+        maestro.setTalla(jTextTalla.getText());
+        maestro.setColor(jTextColor.getText());
+        maestroController = new MaestroController();
+        
+        if(this.proceso == "modificar"){
+            maestroController.ModificarProducto(maestro);
+        }else{
+            
+            maestroController.crearProducto(maestro);
+                     
+        }
+        this.dispose();
+        
+    }//GEN-LAST:event_jBEjecutarActionPerformed
+    
+    private void condicionSoloNumeros(java.awt.event.KeyEvent evt){
+        char []p={'1','2','3','4','5','6','7','8','9','0'};
+        int b=0;
+        for(int i=0;i<p.length;i++){
+            if (p[i]==evt.getKeyChar()){
+                b=1;
+            }
+
+        }
+        if(b==0){
+            evt.consume(); 
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -151,14 +273,16 @@ public class IngresoProductos extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jBEjecutar;
+    private javax.swing.JButton jBGenerar;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JTextField jTextCodigo;
+    private javax.swing.JTextField jTextColor;
     private javax.swing.JTextField jTextDescripcion;
     private javax.swing.JTextField jTextTalla;
     private javax.swing.JTextField jTextTipo;

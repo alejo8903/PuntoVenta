@@ -13,4 +13,12 @@ import java.util.List;
  */
 public interface MaestroServices {
     public List<Maestro> listarProductos();
+
+    public Maestro getMaxCodigo();
+
+    public void crearProducto(Maestro maestro);
+
+    public void modificarProducto(Maestro maestro);
+
+    public void deleteMaestro(int codigo);
 }

@@ -63,7 +63,7 @@ public class UsuariosDao {
             return usuario; 
        }catch(Exception e){
            e.printStackTrace();
-           JOptionPane.showMessageDialog(null, "Usuario no encontrado" + e, "Advertencia", JOptionPane.WARNING_MESSAGE);
+           JOptionPane.showMessageDialog(null, "Usuario no encontrado \n" + e, "Advertencia", JOptionPane.WARNING_MESSAGE);
            Usuarios usuario = null;
            return usuario;
        }
