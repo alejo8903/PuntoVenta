@@ -81,4 +81,14 @@ public class InventarioDao {
        return inventario;
     
     }
+
+    
+
+    public void update(Inventario inventario) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(inventario);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 }

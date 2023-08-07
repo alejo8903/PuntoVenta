@@ -53,11 +53,21 @@ public class SeleccionProducto extends javax.swing.JDialog {
 
             },
             new String [] {
-                "Id", "Codigo", "Tipo", "Descripcion", "Talla", "Color", "Precio"
+                "Id", "Codigo", "Tipo", "Descripcion", "Talla", "Color", "Cant. Disp", "Precio"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
             jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
@@ -126,6 +136,7 @@ public class SeleccionProducto extends javax.swing.JDialog {
                 inventario.getDescripcion(),
                 inventario.getTalla(),
                 inventario.getColor(),
+                inventario.getCantidad(),
                 inventario.getValorVenta()
                 };
             model.addRow(rowData);

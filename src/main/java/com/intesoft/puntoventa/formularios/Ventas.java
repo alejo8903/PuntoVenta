@@ -5,10 +5,15 @@
 package com.intesoft.puntoventa.formularios;
 
 import com.intesoft.puntoventa.controller.InventarioController;
+import com.intesoft.puntoventa.controller.RegistroVendidoController;
+import com.intesoft.puntoventa.controller.VentasController;
 import com.intesoft.puntoventa.dto.InventarioDto;
 import com.intesoft.puntoventa.entity.Inventario;
+import com.intesoft.puntoventa.entity.RegistroVendido;
 import com.intesoft.puntoventa.entity.Usuarios;
+import com.intesoft.puntoventa.entity.Venta;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.swing.JOptionPane;
@@ -26,6 +31,8 @@ public class Ventas extends javax.swing.JInternalFrame {
     Usuarios usuarios;
     InventarioController inventarioController;
     Inventario inventario;
+    List<RegistroVendido> listRegistroVendidos;
+    double totalVenta;
     int item = 0;
     public Ventas() {
         initComponents();
@@ -35,7 +42,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         initComponents();
         this.jLNombre.setText(this.usuarios.getNombres());
         this.jLRol.setText(this.usuarios.getRol());
-        
+        listRegistroVendidos = new ArrayList<>();
         
         
     }
@@ -73,7 +80,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         jTextFDescuento = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
+        jLTotal = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
@@ -151,7 +158,7 @@ public class Ventas extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLRol, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -191,6 +198,12 @@ public class Ventas extends javax.swing.JInternalFrame {
         jLabel8.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel8.setText("Cantidad:");
 
+        jTextFCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFCantidadKeyTyped(evt);
+            }
+        });
+
         jLabel9.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel9.setText("Precio:");
 
@@ -207,6 +220,12 @@ public class Ventas extends javax.swing.JInternalFrame {
         jLabel20.setText("Ingrese los productos de la venta");
 
         jLabel2.setText("Descuento:");
+
+        jTextFDescuento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFDescuentoKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -249,7 +268,7 @@ public class Ventas extends javax.swing.JInternalFrame {
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel11)))
-                .addContainerGap(110, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -287,8 +306,8 @@ public class Ventas extends javax.swing.JInternalFrame {
         jLabel12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel12.setText("Total a pagar");
 
-        jLabel13.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel13.setText("$. ");
+        jLTotal.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLTotal.setText("$. ");
 
         jLabel15.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel15.setText("Cambio");
@@ -306,6 +325,11 @@ public class Ventas extends javax.swing.JInternalFrame {
         });
 
         jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/pagar.png"))); // NOI18N
+        jLabel18.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel18MouseClicked(evt);
+            }
+        });
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/limpiar mediano.png"))); // NOI18N
 
@@ -316,6 +340,10 @@ public class Ventas extends javax.swing.JInternalFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(63, 63, 63))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
@@ -327,21 +355,17 @@ public class Ventas extends javax.swing.JInternalFrame {
                         .addGap(104, 104, 104)
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(52, 52, 52)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(63, 63, 63))
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,7 +377,7 @@ public class Ventas extends javax.swing.JInternalFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel12)
                         .addGap(14, 14, 14)
-                        .addComponent(jLabel13))
+                        .addComponent(jLTotal))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel15)
                         .addGap(18, 18, 18)
@@ -426,7 +450,8 @@ public class Ventas extends javax.swing.JInternalFrame {
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         String cantidad = this.jTextFCantidad.getText() ;
         String code = this.jTextFCodigo.getText();
-        
+        String descuento =this.jTextFDescuento.getText();
+        RegistroVendido registroVendido = new RegistroVendido();
         if(code.isBlank() || this.inventario == null ){
             JOptionPane.showMessageDialog(null, "Debe ingresar un producto valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -434,8 +459,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         if (!cantidad.isBlank() && Integer.parseInt(cantidad ) > 0) {
         
         DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
-        model.setNumRows(0);
-            Object[] rowData = {
+                Object[] rowData = {
                 this.inventario.getId(),
                 this.item+1,
                 this.inventario.getCodigo().getCodigo(),
@@ -444,9 +468,29 @@ public class Ventas extends javax.swing.JInternalFrame {
                 this.inventario.getCodigo().getColor(),
                 this.jTextFCantidad.getText(),
                 this.jTextFDescuento.getText(),
-                this.jTextFValor.getText()
+                formatMoneda(transfrormMoneda(this.jTextFValor.getText()))
                 };
             model.addRow(rowData);
+            registroVendido.setId(this.inventario.getId());
+            registroVendido.setCodigo(this.inventario.getCodigo().getCodigo());
+            registroVendido.setDescripcion(this.inventario.getCodigo().getDescripcion());
+            registroVendido.setTalla(this.inventario.getCodigo().getTalla());
+            registroVendido.setColor(this.inventario.getCodigo().getColor());
+            registroVendido.setCantidad(Integer.parseInt(this.jTextFCantidad.getText()));
+            registroVendido.setValorCompra(this.inventario.getValorCompra());
+            registroVendido.setIva(this.inventario.getIva());
+            registroVendido.setTotalCompra(this.inventario.getTotalCompra());
+            registroVendido.setPorcentajeGananciaE(this.inventario.getPorcentajeGanancia());
+            registroVendido.setPorcentajeGananciaR((float)((transfrormMoneda(this.jTextFValor.getText())/this.inventario.getTotalCompra())-1));
+            if (descuento.isBlank()) {
+                registroVendido.setDescuento(0);
+            }else{
+            registroVendido.setDescuento(Double.parseDouble(descuento));
+            }
+            registroVendido.setValorVenta(transfrormMoneda(this.jTextFValor.getText()));
+            totalVenta += (transfrormMoneda(this.jTextFValor.getText()));
+            this.jLTotal.setText(formatMoneda(totalVenta));
+            listRegistroVendidos.add(registroVendido);
             this.jTextFCodigo.setText("");
             this.jTextFCantidad.setText("");
             this.jTextFDescuento.setText("");
@@ -458,22 +502,111 @@ public class Ventas extends javax.swing.JInternalFrame {
         
         
     }//GEN-LAST:event_jLabel11MouseClicked
+
+    private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
+        VentasController ventasController = new VentasController();
+        int numeroVenta = ventasController.saveVentas(transfrormMoneda(this.jLTotal.getText()));
+        Venta venta = new Venta();
+        venta = ventasController.getVentaById(numeroVenta);
+        for(RegistroVendido registroVendido : this.listRegistroVendidos){
+            InventarioController inventarioController = new InventarioController();
+            inventarioController.updateInventario(registroVendido.getId(), registroVendido.getCantidad());
+            registroVendido.setId(0);
+            registroVendido.setVenta(venta);
+            
+        }
+        RegistroVendidoController registroVendidoController = new RegistroVendidoController();
+        registroVendidoController.saveProductosVenta(this.listRegistroVendidos);
+        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
+        model.setNumRows(0);
+        this.jTextFCodigo.setText("");
+        this.jTextFCantidad.setText("");
+        this.jTextFDescuento.setText("");
+        this.jTextFDescripcion.setText("");
+        this.jTextFValor.setText("");
+        this.jLTotal.setText("$");
+    }//GEN-LAST:event_jLabel18MouseClicked
+
+    private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
+        String descuento = this.jTextFDescuento.getText();
+        if (descuento.isBlank()) {
+            descuento = "0";
+        }
+        char []p={'1','2','3','4','5','6','7','8','9','0','\b','\0'};
+        int b=0;
+        for(int i=0; i<p.length ;i++){
+            if(evt.getKeyChar() == '\b' || evt.getKeyChar() == '\0'){
+                return;
+            }else if (p[i] == evt.getKeyChar() && Integer.parseInt(this.jTextFCantidad.getText()+String.valueOf(evt.getKeyChar())) <= this.inventario.getCantidad()){
+                b=1;
+            }
+            
+        }
+        if(b==0){
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "La cantidad supera el stock o \n no es un caracter valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        double valor = this.inventario.getValorVenta()* (Double.parseDouble(this.jTextFCantidad.getText()+ String.valueOf(evt.getKeyChar())));
+        this.jTextFValor.setText(formatMoneda(valor - Double.parseDouble(descuento)));
+    }//GEN-LAST:event_jTextFCantidadKeyTyped
+
+    private void jTextFDescuentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFDescuentoKeyTyped
+        String cantidad = jTextFCantidad.getText();
+        String descuento = this.jTextFDescuento.getText();
+        if (descuento.isBlank()) {
+            descuento = "0";
+        }
+        if (cantidad.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Debe ingresar una cantidad valida", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        char []p={'1','2','3','4','5','6','7','8','9','0','\b','\0'};
+        int b=0;
+        for(int i=0; i<p.length ;i++){
+            if (p[i] == evt.getKeyChar()){
+                b=1;
+                
+            }
+
+        }
+        if(b==0){
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "No es un caracter valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+            
+        }
+        double valor = this.inventario.getValorVenta()* Double.parseDouble(jTextFCantidad.getText());
+        this.jTextFValor.setText(formatMoneda(valor - Double.parseDouble(descuento+ String.valueOf(evt.getKeyChar()))));
+    }//GEN-LAST:event_jTextFDescuentoKeyTyped
     public void setProductoVenta(Inventario inventario){
-        NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance();
+        
         this.inventario = inventario;
         jTextFCodigo.setText(inventario.getCodigo().getCodigo());
         jTextFDescripcion.setText(inventario.getCodigo().getDescripcion());
-        jTextFValor.setText(formatoMoneda.format(inventario.getValorVenta()));
+        jTextFValor.setText(formatMoneda(inventario.getValorVenta()));
+    }
+    private String formatMoneda(double valor){
+         NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance();
+         return formatoMoneda.format(valor);
+         
+    }
+    private double transfrormMoneda(String moneda){
+        String numeroLimpio = moneda.replaceAll("[^\\d.]", "").replace(".", ""); // Eliminar todo excepto dígitos y el punto decimal
+        double numero = Double.parseDouble(numeroLimpio)/100;
+        
+        return numero;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLNombre;
     private javax.swing.JLabel jLRol;
+    private javax.swing.JLabel jLTotal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;

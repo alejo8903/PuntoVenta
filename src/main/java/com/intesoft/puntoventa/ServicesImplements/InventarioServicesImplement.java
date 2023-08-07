@@ -31,5 +31,15 @@ public class InventarioServicesImplement implements InventarioServices {
         InventarioDao inventarioDao = new InventarioDao();
         return inventarioDao.productoById(id);
     }
+
+    @Override
+    public void updateInventario(int id, int cantidad) {
+        Inventario inventario = new  Inventario();
+        inventario = getProductoById(id);
+        int actualQuantity = inventario.getCantidad();
+        inventario.setCantidad(actualQuantity - cantidad);
+        InventarioDao inventarioDao = new InventarioDao();
+        inventarioDao.update(inventario);
+    }
     
 }

@@ -4,20 +4,15 @@
  */
 package com.intesoft.puntoventa.Services;
 
-import com.intesoft.puntoventa.dto.InventarioDto;
-import com.intesoft.puntoventa.entity.Inventario;
+import com.intesoft.puntoventa.entity.RegistroVendido;
 import java.util.List;
 
 /**
  *
  * @author alejo
  */
-public interface InventarioServices {
+public interface RegistroVendidoServices {
 
-    public List<InventarioDto> searchProdcto(int codigo);
-
-    public Inventario getProductoById(int codigo);
-
-    public void updateInventario(int id, int cantidad);
+    public void saveProductosVenta(List<RegistroVendido> listRegistroVendidos);
     
 }
