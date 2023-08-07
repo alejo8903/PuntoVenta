@@ -43,8 +43,7 @@ public class Productos extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
-        setMaximizable(true);
-        setResizable(true);
+        setTitle("Productos");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -66,6 +65,7 @@ public class Productos extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Codigo");
 
+        jBAgregarP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregar-producto.png"))); // NOI18N
         jBAgregarP.setText("Agregar Producto");
         jBAgregarP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -73,10 +73,13 @@ public class Productos extends javax.swing.JInternalFrame {
             }
         });
 
+        jBEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/borrar.png"))); // NOI18N
         jBEliminar.setText("Eliminar Producto");
 
+        jBModificar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/dibujo.png"))); // NOI18N
         jBModificar.setText("Modificar Producto");
 
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/actualizar.png"))); // NOI18N
         jButton1.setText("Actualizar Tabla");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -122,7 +125,7 @@ public class Productos extends javax.swing.JInternalFrame {
                     .addComponent(jBModificar)
                     .addComponent(jBAgregarP)
                     .addComponent(jBEliminar))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();

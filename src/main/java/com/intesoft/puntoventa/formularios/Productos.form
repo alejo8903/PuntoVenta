@@ -4,8 +4,7 @@
   <Properties>
     <Property name="closable" type="boolean" value="true"/>
     <Property name="iconifiable" type="boolean" value="true"/>
-    <Property name="maximizable" type="boolean" value="true"/>
-    <Property name="resizable" type="boolean" value="true"/>
+    <Property name="title" type="java.lang.String" value="Productos"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -72,7 +71,7 @@
                   <Component id="jBAgregarP" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jBEliminar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="22" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -141,6 +140,9 @@
     </Component>
     <Component class="javax.swing.JButton" name="jBAgregarP">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/imagenes/agregar-producto.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Agregar Producto"/>
       </Properties>
       <Events>
@@ -149,16 +151,25 @@
     </Component>
     <Component class="javax.swing.JButton" name="jBEliminar">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/imagenes/borrar.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Eliminar Producto"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jBModificar">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/imagenes/dibujo.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Modificar Producto"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>
+        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+          <Image iconType="3" name="/imagenes/actualizar.png"/>
+        </Property>
         <Property name="text" type="java.lang.String" value="Actualizar Tabla"/>
       </Properties>
     </Component>
