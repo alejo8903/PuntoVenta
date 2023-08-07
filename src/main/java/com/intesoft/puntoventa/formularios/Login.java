@@ -7,7 +7,12 @@ package com.intesoft.puntoventa.formularios;
 import com.intesoft.puntoventa.controller.UsuariosController;
 import com.intesoft.puntoventa.entity.Usuarios;
 import java.awt.Color;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
@@ -20,9 +25,14 @@ public class Login extends javax.swing.JFrame {
      */
     private UsuariosController usuariosController; 
     public Login() {
+        
         initComponents();
         jPanel1.setBackground(new Color(0,0,0,30));
         jLabel4.setBackground(new Color(0,0,0,50));
+        
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+ 
+
     }
 
     /**

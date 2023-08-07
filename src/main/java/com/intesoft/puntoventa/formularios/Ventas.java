@@ -178,6 +178,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel5.setText("Codigo:");
 
+        jTextFDescripcion.setEditable(false);
         jTextFDescripcion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFDescripcionActionPerformed(evt);
@@ -206,6 +207,8 @@ public class Ventas extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel9.setText("Precio:");
 
+        jTextFValor.setEditable(false);
+
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/limpiar mediano.png"))); // NOI18N
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregar.png"))); // NOI18N
@@ -220,6 +223,7 @@ public class Ventas extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Descuento:");
 
+        jTextFDescuento.setToolTipText("");
         jTextFDescuento.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextFDescuentoKeyTyped(evt);
@@ -339,19 +343,6 @@ public class Ventas extends javax.swing.JInternalFrame {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(95, 95, 95)
-                        .addComponent(jLabel17)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel18))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addGap(78, 78, 78)
                 .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -567,10 +558,13 @@ public class Ventas extends javax.swing.JInternalFrame {
     private void jTextFDescuentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFDescuentoKeyTyped
         String cantidad = jTextFCantidad.getText();
         String descuento = this.jTextFDescuento.getText();
+        boolean flag = false;
         if (descuento.isBlank()) {
             descuento = "0";
+            flag = true;
         }
         if (cantidad.isBlank()) {
+            evt.consume();
             JOptionPane.showMessageDialog(null, "Debe ingresar una cantidad valida", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -578,8 +572,19 @@ public class Ventas extends javax.swing.JInternalFrame {
         int b=0;
         for(int i=0; i<p.length ;i++){
             if (p[i] == evt.getKeyChar()){
-                b=1;
-                
+                String letra = String.valueOf(evt.getKeyChar());
+                String actual = this.jTextFDescuento.getText();
+                evt.consume();
+                if (flag) {
+                    this.jTextFDescuento.setText(formatMoneda(Double.parseDouble(letra)));
+                }else{
+                    String monedalimpia = String.valueOf(transfrormMoneda(actual));
+                    monedalimpia= monedalimpia.substring(0,monedalimpia.length()-2);
+                    this.jTextFDescuento.setText(formatMoneda(Double.parseDouble(monedalimpia+letra)));
+                }
+                double valor = this.inventario.getValorVenta()* Double.parseDouble(jTextFCantidad.getText());
+                this.jTextFValor.setText(formatMoneda(valor - transfrormMoneda(this.jTextFDescuento.getText())));
+                return;
             }
 
         }
@@ -589,8 +594,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             return;
             
         }
-        double valor = this.inventario.getValorVenta()* Double.parseDouble(jTextFCantidad.getText());
-        this.jTextFValor.setText(formatMoneda(valor - Double.parseDouble(descuento+ String.valueOf(evt.getKeyChar()))));
+        
     }//GEN-LAST:event_jTextFDescuentoKeyTyped
     public void setProductoVenta(Inventario inventario){
         
