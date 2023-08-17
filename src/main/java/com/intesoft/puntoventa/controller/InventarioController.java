@@ -31,6 +31,16 @@ public class InventarioController {
         inventarioServices.updateInventario(id, cantidad);
     }
 
+    public List<Inventario> getInventarioTotal() {
+        InventarioServices inventarioServices = new InventarioServicesImplement();
+        return inventarioServices.getInventarioTotal();
+    }
+
+    public void insertInventario(Inventario inventario) {
+        InventarioServices inventarioServices = new InventarioServicesImplement();
+        inventarioServices.insertInventario(inventario);
+    }
+
     
     
 }

@@ -31,9 +31,14 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
  */
 public class PuntoVenta {
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) {
         URL jarUrl = PuntoVenta.class.getProtectionDomain().getCodeSource().getLocation();
-        String jarPath = jarUrl.toURI().getPath();
+        String jarPath ="";
+        try {
+            jarPath = jarUrl.toURI().getPath();
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(PuntoVenta.class.getName()).log(Level.SEVERE, null, ex);
+        }
         String configFilePath = jarPath + "config.properties";
         try {       
             configFilePath = URLDecoder.decode(configFilePath, "UTF-8");

@@ -20,5 +20,7 @@ public interface MaestroServices {
 
     public void modificarProducto(Maestro maestro);
 
-    public void deleteMaestro(int codigo);
+    public void deleteMaestro(String codigo);
+
+    public Maestro getProducto(String codigo);
 }

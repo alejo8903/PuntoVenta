@@ -4,17 +4,34 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.InventarioController;
+import com.intesoft.puntoventa.entity.Inventario;
+import com.intesoft.puntoventa.entity.Usuarios;
+import com.intesoft.puntoventa.util.MonedaTransform;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
  */
-public class controlInventario extends javax.swing.JInternalFrame {
+public class ControlInventario extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form controlInventario
      */
-    public controlInventario() {
+    InventarioController inventarioController;
+    MonedaTransform monedaTransform;
+    Usuarios usuarios;
+    public ControlInventario() {
         initComponents();
+    }
+    public ControlInventario(Usuarios usuarios) {
+        this.usuarios = usuarios;
+        this.monedaTransform = new MonedaTransform();
+        initComponents();
+        updateTable();
+        
     }
 
     /**
@@ -40,11 +57,11 @@ public class controlInventario extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Codigo", "Descripcion", "Talla", "Color", "Cantidad", "Valor Compra", "Iva", "Total Compra", "Ganancias", "Valor Venta"
+                "Id", "Codigo", "Descripcion", "Talla", "Color", "Cantidad", "Valor Compra", "Iva", "Total Compra", "Ganancias", "Valor Venta"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -53,11 +70,12 @@ public class controlInventario extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(100);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(10);
-            jTable1.getColumnModel().getColumn(1).setMinWidth(400);
+            jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+            jTable1.getColumnModel().getColumn(1).setMinWidth(100);
             jTable1.getColumnModel().getColumn(1).setPreferredWidth(10);
-            jTable1.getColumnModel().getColumn(2).setMinWidth(100);
+            jTable1.getColumnModel().getColumn(2).setMinWidth(400);
             jTable1.getColumnModel().getColumn(2).setPreferredWidth(10);
             jTable1.getColumnModel().getColumn(3).setMinWidth(100);
             jTable1.getColumnModel().getColumn(3).setPreferredWidth(10);
@@ -73,11 +91,13 @@ public class controlInventario extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(8).setPreferredWidth(10);
             jTable1.getColumnModel().getColumn(9).setMinWidth(100);
             jTable1.getColumnModel().getColumn(9).setPreferredWidth(10);
+            jTable1.getColumnModel().getColumn(10).setMinWidth(100);
+            jTable1.getColumnModel().getColumn(10).setPreferredWidth(10);
         }
 
         jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
-        jButton1.setText("Crear Inventario");
+        jButton1.setText("Ingresar Inventario");
         jButton1.setToolTipText("");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -112,10 +132,33 @@ public class controlInventario extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        IngresoInventario ingresoinventario = new IngresoInventario();
+        IngresoInventario ingresoinventario = new IngresoInventario(this);
+        ingresoinventario.setModal(true);
         ingresoinventario.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-
+    
+    public void updateTable(){
+        inventarioController = new InventarioController();
+        List<Inventario> listInventario = inventarioController.getInventarioTotal();
+        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
+        model.setNumRows(0);
+        for(Inventario inventario : listInventario){
+            Object[] rowData = {
+            inventario.getId(),
+            inventario.getCodigo().getCodigo(),
+            inventario.getCodigo().getDescripcion(),
+            inventario.getCodigo().getTalla(),
+            inventario.getCodigo().getColor(),
+            inventario.getCantidad(),
+            monedaTransform.formatMoneda(inventario.getValorCompra()),
+            inventario.getIva(),
+            monedaTransform.formatMoneda(inventario.getTotalCompra()),
+            inventario.getPorcentajeGanancia(),
+            monedaTransform.formatMoneda(inventario.getValorVenta())
+            };
+      model.addRow(rowData);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

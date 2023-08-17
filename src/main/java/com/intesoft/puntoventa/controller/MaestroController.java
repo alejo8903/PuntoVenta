@@ -35,9 +35,14 @@ public class MaestroController {
         maestroServices.modificarProducto(maestro);
     }
 
-    public void deleteProducto(int codigo) {
+    public void deleteProducto(String codigo) {
         MaestroServices maestroServices = new MaestroServicesImplement();
         maestroServices.deleteMaestro(codigo);
+    }
+
+    public Maestro getProducto(String codigo) {
+        MaestroServices maestroServices = new MaestroServicesImplement();
+        return maestroServices.getProducto(codigo);
     }
     
 }

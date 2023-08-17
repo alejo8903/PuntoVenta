@@ -30,14 +30,21 @@ public class IngresoProductos extends javax.swing.JDialog {
         int longitud = codigoString.length();
         String ultimosDigitos = codigoString.substring(longitud - 2);
         this.jTextCodigo.setText( codigoSinUltimosDigitos);
+        this.jTextCodigo.setEditable(false);
         this.jTextTipo.setText(ultimosDigitos);
         this.jTextDescripcion.setText(this.maestro.getDescripcion());
         this.jTextTalla.setText(this.maestro.getTalla());
         this.jTextColor.setText(this.maestro.getColor());
         this.jBEjecutar.setText("Modificar");
+        this.jBGenerar.setVisible(false);
         
     }
     public IngresoProductos() {
+        
+        initComponents();
+    }
+    public IngresoProductos(String proceso) {
+        this.proceso = proceso;
         initComponents();
     }
 
@@ -88,9 +95,19 @@ public class IngresoProductos extends javax.swing.JDialog {
 
         jBGenerar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregar-archivo.png"))); // NOI18N
         jBGenerar.setText("Generar");
+        jBGenerar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBGenerarActionPerformed(evt);
+            }
+        });
 
         jBEjecutar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crear.png"))); // NOI18N
         jBEjecutar.setText("Crear");
+        jBEjecutar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBEjecutarActionPerformed(evt);
+            }
+        });
 
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/archivo.png"))); // NOI18N
         jButton3.setText("Cancelar");
@@ -118,7 +135,7 @@ public class IngresoProductos extends javax.swing.JDialog {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jTextDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 226, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(24, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jBEjecutar)
@@ -158,7 +175,6 @@ public class IngresoProductos extends javax.swing.JDialog {
                     .addComponent(jLabel4)
                     .addComponent(jTextTalla, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jTextColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -173,19 +189,6 @@ public class IngresoProductos extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jBGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenerarActionPerformed
-        MaestroController maestroController = new MaestroController();
-        String maxCodigo = maestroController.getMaxCodigo().getCodigo();
-    
-        // Obtener la parte del texto sin los últimos dos dígitos
-        String codigoSinUltimosDigitos = (maxCodigo).substring(0, (maxCodigo).length() - 2);
-
-        // Convertir la parte restante de la cadena a un número, sumarle 1 y establecerlo en el campo de texto
-        int nuevoCodigo = Integer.parseInt(codigoSinUltimosDigitos) + 1;
-        this.jTextCodigo.setText(Integer.toString(nuevoCodigo));  
-        
-    }//GEN-LAST:event_jBGenerarActionPerformed
-
     private void jTextCodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextCodigoKeyTyped
         this.condicionSoloNumeros(evt);
         
@@ -199,22 +202,40 @@ public class IngresoProductos extends javax.swing.JDialog {
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jBGenerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBGenerarActionPerformed
+        MaestroController maestroController = new MaestroController();
+        String maxCodigo = maestroController.getMaxCodigo().getCodigo();
+    
+        // Obtener la parte del texto sin los últimos dos dígitos
+        String codigoSinUltimosDigitos = (maxCodigo).substring(0, (maxCodigo).length() - 2);
+
+        // Convertir la parte restante de la cadena a un número, sumarle 1 y establecerlo en el campo de texto
+        int nuevoCodigo = Integer.parseInt(codigoSinUltimosDigitos) + 1;
+        this.jTextCodigo.setText(Integer.toString(nuevoCodigo));  
+    }//GEN-LAST:event_jBGenerarActionPerformed
+
     private void jBEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEjecutarActionPerformed
-        Maestro maestro = new Maestro();
-        maestro.setCodigo( (jTextCodigo.getText() + jTextTipo.getText()));
-        maestro.setDescripcion(jTextDescripcion.getText());
-        maestro.setTalla(jTextTalla.getText());
-        maestro.setColor(jTextColor.getText());
-        maestroController = new MaestroController();
-        
-        if(this.proceso == "modificar"){
-            maestroController.ModificarProducto(maestro);
+        String tipo = jTextTipo.getText();
+        if(tipo.length()>=2){
+            Maestro maestro = new Maestro();
+            maestro.setCodigo( (jTextCodigo.getText() + jTextTipo.getText()));
+            maestro.setDescripcion(jTextDescripcion.getText());
+            maestro.setTalla(jTextTalla.getText());
+            maestro.setColor(jTextColor.getText());
+            maestroController = new MaestroController();
+
+            if(this.proceso.contains("modificar")){
+                maestroController.ModificarProducto(maestro);
+            }else{
+
+                maestroController.crearProducto(maestro);
+
+            }
+            this.dispose();
         }else{
-            
-            maestroController.crearProducto(maestro);
-                     
+            JOptionPane.showMessageDialog(null, "El campo tipo debe tener dos digitos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+
         }
-        this.dispose();
         
     }//GEN-LAST:event_jBEjecutarActionPerformed
     

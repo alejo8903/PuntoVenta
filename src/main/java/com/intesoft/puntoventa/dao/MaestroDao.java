@@ -28,7 +28,7 @@ public class MaestroDao {
         entityManagerFactory.close();
     }
     
-     public Maestro findById(int codigo){
+     public Maestro findById(String codigo){
         EntityManager entityManager = entityManagerFactory.createEntityManager();
        entityManager.getTransaction().begin();
        Maestro maestro = entityManager.find(Maestro.class, codigo);
@@ -89,7 +89,7 @@ public class MaestroDao {
        return maestro;
     }
 
-    public void delete(int codigo) {
+    public void delete(String codigo) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 

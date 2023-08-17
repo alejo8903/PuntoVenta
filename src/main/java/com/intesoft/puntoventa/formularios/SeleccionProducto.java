@@ -107,12 +107,9 @@ public class SeleccionProducto extends javax.swing.JDialog {
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         int rowIndex = this.jTable1.getSelectedRow();
         if(rowIndex >=0 ){
-            InventarioController inventarioController = new InventarioController();
-            ventas.setProductoVenta(inventarioController.getProductoById(Integer.parseInt(
-                    jTable1.getValueAt(rowIndex, 0).toString())));
-            
-            
-            
+            ventas.setProductoVenta(Integer.parseInt(
+                    jTable1.getValueAt(rowIndex, 0).toString()));
+
         }else{
             JOptionPane.showMessageDialog(null, "No ha selecionado ningun producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }

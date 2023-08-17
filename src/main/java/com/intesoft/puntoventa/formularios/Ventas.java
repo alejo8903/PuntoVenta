@@ -12,6 +12,7 @@ import com.intesoft.puntoventa.entity.Inventario;
 import com.intesoft.puntoventa.entity.RegistroVendido;
 import com.intesoft.puntoventa.entity.Usuarios;
 import com.intesoft.puntoventa.entity.Venta;
+import com.intesoft.puntoventa.util.MonedaTransform;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,7 @@ public class Ventas extends javax.swing.JInternalFrame {
     List<RegistroVendido> listRegistroVendidos;
     double totalVenta;
     int item = 0;
+    MonedaTransform monedaTransform;
     public Ventas() {
         initComponents();
     }
@@ -43,6 +45,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jLNombre.setText(this.usuarios.getNombres());
         this.jLRol.setText(this.usuarios.getRol());
         listRegistroVendidos = new ArrayList<>();
+        monedaTransform = new MonedaTransform();
         
         
     }
@@ -84,7 +87,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         jLabel15 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jTextFPago = new javax.swing.JTextField();
         jLabel18 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
@@ -108,6 +111,11 @@ public class Ventas extends javax.swing.JInternalFrame {
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
+            }
+        });
+        jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable1MouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(jTable1);
@@ -210,6 +218,11 @@ public class Ventas extends javax.swing.JInternalFrame {
         jTextFValor.setEditable(false);
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/limpiar mediano.png"))); // NOI18N
+        jLabel10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel10MouseClicked(evt);
+            }
+        });
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregar.png"))); // NOI18N
         jLabel11.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -321,9 +334,9 @@ public class Ventas extends javax.swing.JInternalFrame {
         jLabel14.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel14.setText("Paga");
 
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+        jTextFPago.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextFPagoKeyTyped(evt);
             }
         });
 
@@ -335,6 +348,11 @@ public class Ventas extends javax.swing.JInternalFrame {
         });
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/limpiar mediano.png"))); // NOI18N
+        jLabel17.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel17MouseClicked(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel21.setText("Ingrese los datos del pago");
@@ -358,7 +376,7 @@ public class Ventas extends javax.swing.JInternalFrame {
                         .addGap(104, 104, 104)
                         .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jTextFPago, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -388,7 +406,7 @@ public class Ventas extends javax.swing.JInternalFrame {
                 .addGap(27, 27, 27)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING)
@@ -415,7 +433,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 650, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -431,10 +449,6 @@ public class Ventas extends javax.swing.JInternalFrame {
     private void jTextFDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFDescripcionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFDescripcionActionPerformed
-
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         String code = this.jTextFCodigo.getText();
@@ -461,44 +475,32 @@ public class Ventas extends javax.swing.JInternalFrame {
         }
         if (!cantidad.isBlank() && Integer.parseInt(cantidad ) > 0) {
         
-        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
-                Object[] rowData = {
-                this.inventario.getId(),
-                this.item+1,
-                this.inventario.getCodigo().getCodigo(),
-                this.inventario.getCodigo().getDescripcion(),
-                this.inventario.getCodigo().getTalla(),
-                this.inventario.getCodigo().getColor(),
-                this.jTextFCantidad.getText(),
-                this.jTextFDescuento.getText(),
-                formatMoneda(transfrormMoneda(this.jTextFValor.getText()))
-                };
-            model.addRow(rowData);
             registroVendido.setId(this.inventario.getId());
             registroVendido.setCodigo(this.inventario.getCodigo().getCodigo());
             registroVendido.setDescripcion(this.inventario.getCodigo().getDescripcion());
             registroVendido.setTalla(this.inventario.getCodigo().getTalla());
             registroVendido.setColor(this.inventario.getCodigo().getColor());
             registroVendido.setCantidad(Integer.parseInt(this.jTextFCantidad.getText()));
-            registroVendido.setValorCompra(this.inventario.getValorCompra());
+            registroVendido.setValorCompra(this.inventario.getValorCompra() * Integer.parseInt(this.jTextFCantidad.getText()));
             registroVendido.setIva(this.inventario.getIva());
-            registroVendido.setTotalCompra(this.inventario.getTotalCompra());
+            registroVendido.setTotalCompra(this.inventario.getTotalCompra() * Integer.parseInt(this.jTextFCantidad.getText()));
             registroVendido.setPorcentajeGananciaE(this.inventario.getPorcentajeGanancia());
-            registroVendido.setPorcentajeGananciaR((float)((transfrormMoneda(this.jTextFValor.getText())/this.inventario.getTotalCompra())-1));
+            registroVendido.setPorcentajeGananciaR((float)((monedaTransform.transfrormMoneda(this.jTextFValor.getText())/this.inventario.getTotalCompra())-1));
             if (descuento.isBlank()) {
                 registroVendido.setDescuento(0);
             }else{
-            registroVendido.setDescuento(Double.parseDouble(descuento));
+            registroVendido.setDescuento(monedaTransform.transfrormMoneda(descuento));
             }
-            registroVendido.setValorVenta(transfrormMoneda(this.jTextFValor.getText()));
-            totalVenta += (transfrormMoneda(this.jTextFValor.getText()));
-            this.jLTotal.setText(formatMoneda(totalVenta));
+            registroVendido.setValorVenta( monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
+            totalVenta += (monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
+            this.jLTotal.setText(monedaTransform.formatMoneda(totalVenta));
             listRegistroVendidos.add(registroVendido);
             this.jTextFCodigo.setText("");
             this.jTextFCantidad.setText("");
             this.jTextFDescuento.setText("");
             this.jTextFDescripcion.setText("");
             this.jTextFValor.setText("");
+            updateTable();
         }else{
             JOptionPane.showMessageDialog(null, "Lacantida debe ser diferente de cero", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
@@ -508,7 +510,7 @@ public class Ventas extends javax.swing.JInternalFrame {
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         VentasController ventasController = new VentasController();
-        int numeroVenta = ventasController.saveVentas(transfrormMoneda(this.jLTotal.getText()));
+        int numeroVenta = ventasController.saveVentas(monedaTransform.transfrormMoneda(this.jLTotal.getText()));
         Venta venta = new Venta();
         venta = ventasController.getVentaById(numeroVenta);
         for(RegistroVendido registroVendido : this.listRegistroVendidos){
@@ -528,6 +530,8 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jTextFDescripcion.setText("");
         this.jTextFValor.setText("");
         this.jLTotal.setText("$");
+        this.jLabel16.setText("$");
+        this.jTextFPago.setText("");
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
@@ -552,7 +556,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         }
         
         double valor = this.inventario.getValorVenta()* (Double.parseDouble(this.jTextFCantidad.getText()+ String.valueOf(evt.getKeyChar())));
-        this.jTextFValor.setText(formatMoneda(valor - Double.parseDouble(descuento)));
+        this.jTextFValor.setText(monedaTransform.formatMoneda(valor - Double.parseDouble(descuento)));
     }//GEN-LAST:event_jTextFCantidadKeyTyped
 
     private void jTextFDescuentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFDescuentoKeyTyped
@@ -576,43 +580,142 @@ public class Ventas extends javax.swing.JInternalFrame {
                 String actual = this.jTextFDescuento.getText();
                 evt.consume();
                 if (flag) {
-                    this.jTextFDescuento.setText(formatMoneda(Double.parseDouble(letra)));
+                    this.jTextFDescuento.setText(monedaTransform.formatMoneda(Double.parseDouble(letra)));
                 }else{
-                    String monedalimpia = String.valueOf(transfrormMoneda(actual));
+                    String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(actual));
                     monedalimpia= monedalimpia.substring(0,monedalimpia.length()-2);
-                    this.jTextFDescuento.setText(formatMoneda(Double.parseDouble(monedalimpia+letra)));
+                    this.jTextFDescuento.setText(monedaTransform.formatMoneda(Double.parseDouble(monedalimpia+letra)));
                 }
                 double valor = this.inventario.getValorVenta()* Double.parseDouble(jTextFCantidad.getText());
-                this.jTextFValor.setText(formatMoneda(valor - transfrormMoneda(this.jTextFDescuento.getText())));
+                this.jTextFValor.setText(monedaTransform.formatMoneda(valor - monedaTransform.transfrormMoneda(this.jTextFDescuento.getText())));
                 return;
             }
 
         }
-        if(b==0){
+       
             evt.consume();
             JOptionPane.showMessageDialog(null, "No es un caracter valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-            
-        }
+          
         
     }//GEN-LAST:event_jTextFDescuentoKeyTyped
-    public void setProductoVenta(Inventario inventario){
+
+    private void jTextFPagoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFPagoKeyTyped
+        String total = String.valueOf(monedaTransform.transfrormMoneda(jLTotal.getText()));
+        String pago = jTextFPago.getText();
+        boolean flag = false;
+        if (pago.isBlank()) {
+            pago = "0";
+            flag = true;
+        }
+        if (total.isBlank()) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Debe tener productos sepsrado para vender", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        char []p={'1','2','3','4','5','6','7','8','9','0','\b','\0'};
+        int b=0;
+        for(int i=0; i<p.length ;i++){
+            if (p[i] == evt.getKeyChar()){
+                String letra = String.valueOf(evt.getKeyChar());
+                String actual = this.jTextFPago.getText();
+                evt.consume();
+                if (flag) {
+                    this.jTextFPago.setText(monedaTransform.formatMoneda(Double.parseDouble(letra)));
+                }else{
+                    String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(actual));
+                    monedalimpia= monedalimpia.substring(0,monedalimpia.length()-2);
+                    this.jTextFPago.setText(monedaTransform.formatMoneda(Double.parseDouble(monedalimpia+letra)));
+                    this.jLabel16.setText(monedaTransform.formatMoneda(
+                            monedaTransform.transfrormMoneda(jTextFPago.getText())-monedaTransform.transfrormMoneda(jLTotal.getText())));
+                }
+                return;
+            }
+
+        }
         
-        this.inventario = inventario;
+        evt.consume();
+        JOptionPane.showMessageDialog(null, "No es un caracter valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        
+            
+        
+    }//GEN-LAST:event_jTextFPagoKeyTyped
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        if (evt.getClickCount() == 2) {
+             int rowIndex = this.jTable1.getSelectedRow();
+        if(rowIndex >=0 ){
+            int id = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 0).toString());
+            int cantidad = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 6).toString());
+            double descuento = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 7).toString());
+            double valor = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString());
+            setProductoVenta(id, cantidad, descuento, valor);
+            this.listRegistroVendidos.remove(rowIndex);
+            updateTable();
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "No ha selecionado ningun usuario para modificar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+            
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jLabel10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel10MouseClicked
+        this.jTextFCodigo.setText("");
+        this.jTextFCantidad.setText("");
+        this.jTextFDescuento.setText("");
+        this.jTextFDescripcion.setText("");
+        this.jTextFValor.setText("");
+    }//GEN-LAST:event_jLabel10MouseClicked
+
+    private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
+        this.jTextFCodigo.setText("");
+        this.jTextFCantidad.setText("");
+        this.jTextFDescuento.setText("");
+        this.jTextFDescripcion.setText("");
+        this.jTextFValor.setText("");
+        this.jLTotal.setText("$");
+        this.jLabel16.setText("$");
+        this.jTextFPago.setText("");
+        this.listRegistroVendidos.clear();
+        updateTable();
+    }//GEN-LAST:event_jLabel17MouseClicked
+    public void setProductoVenta(int id){
+        InventarioController inventarioController = new InventarioController();
+        this.inventario = inventarioController.getProductoById(id);
         jTextFCodigo.setText(inventario.getCodigo().getCodigo());
         jTextFDescripcion.setText(inventario.getCodigo().getDescripcion());
-        jTextFValor.setText(formatMoneda(inventario.getValorVenta()));
+        jTextFValor.setText(monedaTransform.formatMoneda(inventario.getValorVenta()));
     }
-    private String formatMoneda(double valor){
-         NumberFormat formatoMoneda = NumberFormat.getCurrencyInstance();
-         return formatoMoneda.format(valor);
-         
+     public void setProductoVenta(int id, int cantidad, double descuento, double valor){
+        InventarioController inventarioController = new InventarioController();
+        this.inventario = null;
+        this.inventario = inventarioController.getProductoById(id);
+        jTextFCodigo.setText(inventario.getCodigo().getCodigo());
+        jTextFDescripcion.setText(inventario.getCodigo().getDescripcion());
+        jTextFValor.setText(monedaTransform.formatMoneda(valor));
+        jTextFDescuento.setText(monedaTransform.formatMoneda(descuento));
+        jTextFCantidad.setText(String.valueOf(cantidad));
     }
-    private double transfrormMoneda(String moneda){
-        String numeroLimpio = moneda.replaceAll("[^\\d.]", "").replace(".", ""); // Eliminar todo excepto dígitos y el punto decimal
-        double numero = Double.parseDouble(numeroLimpio)/100;
-        
-        return numero;
+    
+    private void updateTable(){
+        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
+        model.setNumRows(0);
+        int item = 0;
+        for(RegistroVendido registroVendido : this.listRegistroVendidos){
+            item += 1;
+            Object[] rowData = {
+            registroVendido.getId(),
+            item,
+            registroVendido.getCodigo(),
+            registroVendido.getDescripcion(),
+            registroVendido.getTalla(),
+            registroVendido.getColor(),
+            registroVendido.getCantidad(),
+            monedaTransform.formatMoneda(registroVendido.getDescuento()),
+            monedaTransform.formatMoneda(registroVendido.getValorVenta())
+            };
+      model.addRow(rowData);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -646,7 +749,7 @@ public class Ventas extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTextFCodigo;
     private javax.swing.JTextField jTextFDescripcion;
     private javax.swing.JTextField jTextFDescuento;
+    private javax.swing.JTextField jTextFPago;
     private javax.swing.JTextField jTextFValor;
-    private javax.swing.JTextField jTextField5;
     // End of variables declaration//GEN-END:variables
 }

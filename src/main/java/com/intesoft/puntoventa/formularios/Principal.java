@@ -49,9 +49,9 @@ public class Principal extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
-        menuVentas = new javax.swing.JMenu();
         menuProductos = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
+        menuVentas = new javax.swing.JMenu();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
 
@@ -93,16 +93,6 @@ public class Principal extends javax.swing.JFrame {
 
         menuBar.add(fileMenu);
 
-        menuVentas.setBorder(null);
-        menuVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bolsa-de-la-compra.png"))); // NOI18N
-        menuVentas.setText("Ventas");
-        menuVentas.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuVentasMouseClicked(evt);
-            }
-        });
-        menuBar.add(menuVentas);
-
         menuProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregar-producto.png"))); // NOI18N
         menuProductos.setText("Productos");
         menuProductos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -121,6 +111,16 @@ public class Principal extends javax.swing.JFrame {
             }
         });
         menuBar.add(editMenu);
+
+        menuVentas.setBorder(null);
+        menuVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bolsa-de-la-compra.png"))); // NOI18N
+        menuVentas.setText("Ventas");
+        menuVentas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuVentasMouseClicked(evt);
+            }
+        });
+        menuBar.add(menuVentas);
 
         helpMenu.setBorder(null);
         helpMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mesa-de-ayuda.png"))); // NOI18N
@@ -159,7 +159,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuVentasMouseClicked
 
     private void editMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMenuMouseClicked
-        controlInventario inventario = new controlInventario();
+        ControlInventario inventario = new ControlInventario(this.usuarios);
         this.desktopPane.add(inventario);
         inventario.setVisible(true);
     }//GEN-LAST:event_editMenuMouseClicked

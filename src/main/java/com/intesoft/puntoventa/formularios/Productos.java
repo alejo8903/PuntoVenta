@@ -147,7 +147,7 @@ public class Productos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarPActionPerformed
-        IngresoProductos ingresoProductos = new IngresoProductos();
+        IngresoProductos ingresoProductos = new IngresoProductos("ingresar");
         ingresoProductos.setModal(true);
         ingresoProductos.setVisible(true);
     }//GEN-LAST:event_jBAgregarPActionPerformed
@@ -179,7 +179,7 @@ public class Productos extends javax.swing.JInternalFrame {
         int rowIndex = this.jTable1.getSelectedRow();
         if(rowIndex >=0 ){
             
-            int codigo = Integer.parseInt(jTable1.getValueAt(rowIndex,0).toString()+jTable1.getValueAt(rowIndex,1).toString());
+            String codigo = (jTable1.getValueAt(rowIndex,0).toString()+jTable1.getValueAt(rowIndex,1).toString());
             MaestroController maestroController = new MaestroController();
             maestroController.deleteProducto(codigo);
             

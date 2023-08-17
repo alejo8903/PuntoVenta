@@ -41,9 +41,15 @@ public class MaestroServicesImplement implements MaestroServices {
     }
 
     @Override
-    public void deleteMaestro(int codigo) {
+    public void deleteMaestro(String codigo) {
         maestroDao = new MaestroDao();
         maestroDao.delete(codigo);
+    }
+
+    @Override
+    public Maestro getProducto(String codigo) {
+        maestroDao = new MaestroDao();
+        return maestroDao.findById(codigo);
     }
             
  

@@ -41,5 +41,17 @@ public class InventarioServicesImplement implements InventarioServices {
         InventarioDao inventarioDao = new InventarioDao();
         inventarioDao.update(inventario);
     }
+
+    @Override
+    public List<Inventario> getInventarioTotal() {
+        InventarioDao inventarioDao = new InventarioDao();
+        return inventarioDao.getAll();
+    }
+
+    @Override
+    public void insertInventario(Inventario inventario) {
+        InventarioDao inventarioDao = new InventarioDao();
+        inventarioDao.create(inventario);
+    }
     
 }

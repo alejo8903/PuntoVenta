@@ -32,13 +32,14 @@ public class InventarioDao {
     public List<Inventario> getAll(){
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        List<Inventario> usuariosList = entityManager
-                .createQuery("SELECT i FROM Inventario i",Inventario.class)
+        List<Inventario> listInventarios = entityManager
+                .createQuery("SELECT i FROM Inventario i "+ 
+                        "WHERE i.cantidad <> 0 ",Inventario.class)
                 .getResultList();
         
         entityManager.getTransaction().commit();
         entityManager.close();
-        return usuariosList;  
+        return listInventarios;  
     }
 
     public List<InventarioDto> searchByCodigo(int codigo) {
@@ -88,6 +89,14 @@ public class InventarioDao {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.merge(inventario);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
+
+    public void create(Inventario inventario) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(inventario);
         entityManager.getTransaction().commit();
         entityManager.close();
     }

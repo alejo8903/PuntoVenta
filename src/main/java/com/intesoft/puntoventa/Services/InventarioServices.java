@@ -19,5 +19,9 @@ public interface InventarioServices {
     public Inventario getProductoById(int codigo);
 
     public void updateInventario(int id, int cantidad);
+
+    public List<Inventario> getInventarioTotal();
+
+    public void insertInventario(Inventario inventario);
     
 }
