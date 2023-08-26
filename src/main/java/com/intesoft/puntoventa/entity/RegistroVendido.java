@@ -27,7 +27,7 @@ public class RegistroVendido {
     int id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idventa")
-    private Venta ventas;
+    private Operacion ventas;
     @Column(name = "codigo")
     String codigo;
     @Column(name = "descripcion")
@@ -56,7 +56,7 @@ public class RegistroVendido {
     public RegistroVendido() {
     }
 
-    public RegistroVendido(int id, Venta ventas, String codigo, String descripcion, String talla, String color, int Cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGananciaE, float porcentajeGananciaR, double descuento, double valorVenta) {
+    public RegistroVendido(int id, Operacion ventas, String codigo, String descripcion, String talla, String color, int Cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGananciaE, float porcentajeGananciaR, double descuento, double valorVenta) {
         this.id = id;
         this.ventas = ventas;
         this.codigo = codigo;
@@ -81,11 +81,11 @@ public class RegistroVendido {
         this.id = id;
     }
 
-    public Venta getVenta() {
+    public Operacion getVenta() {
         return ventas;
     }
 
-    public void setVenta(Venta ventas) {
+    public void setVenta(Operacion ventas) {
         this.ventas = ventas;
     }
 

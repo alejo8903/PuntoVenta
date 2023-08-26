@@ -6,7 +6,7 @@ package com.intesoft.puntoventa.ServicesImplements;
 
 import com.intesoft.puntoventa.Services.VentasServices;
 import com.intesoft.puntoventa.dao.VentasDao;
-import com.intesoft.puntoventa.entity.Venta;
+import com.intesoft.puntoventa.entity.Operacion;
 import java.util.Date;
 
 /**
@@ -16,17 +16,19 @@ import java.util.Date;
 public class VentasServicesImplement implements VentasServices {
 
     @Override
-    public int saveVentas(double venta) {
-        Venta ventas = new Venta();
+    public int saveVentas(double venta, String nombre, String operacion) {
+        Operacion ventas = new Operacion();
         ventas.setFecha(new Date());
         ventas.setValor(venta);
+        ventas.setUsuario(nombre);
+        ventas.setOperacion(operacion);
         VentasDao ventasDao = new VentasDao();
         int idVenta = ventasDao.crearVenta(ventas);
         return idVenta;
     }
 
     @Override
-    public Venta getVentaById(int numeroVenta) {
+    public Operacion getVentaById(int numeroVenta) {
         VentasDao ventasDao = new VentasDao();
         return ventasDao.getById(numeroVenta);
     }

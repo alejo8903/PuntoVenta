@@ -17,32 +17,40 @@ import javax.persistence.Table;
  * @author alejo
  */
 @Entity
-@Table(name = "venta")
-public class Venta {
+@Table(name = "operacion")
+public class Operacion {
     @Id
-    @Column(name = "idventa")
+    @Column(name = "idoperacion")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int idVenta;
+    int idOperacion;
     @Column(name = "fecha")
     Date fecha;
     @Column(name = "valor")
     double valor;
+    @Column(name = "usuario")
+    String usuario;
+    @Column(name = "operacion")
+    String operacion;
 
-    public Venta() {
+    public Operacion() {
     }
 
-    public Venta(int idVenta, Date fecha, double valor) {
-        this.idVenta = idVenta;
+    public Operacion(int idVenta, Date fecha, double valor, String usuario, String operacion) {
+        this.idOperacion = idVenta;
         this.fecha = fecha;
         this.valor = valor;
+        this.usuario = usuario;
+        this.operacion = operacion;
     }
 
-    public int getIdVenta() {
-        return idVenta;
+   
+
+    public int getIdOperacion() {
+        return idOperacion;
     }
 
-    public void setIdVenta(int idVenta) {
-        this.idVenta = idVenta;
+    public void setIdOperacion(int idOperacion) {
+        this.idOperacion = idOperacion;
     }
 
     public Date getFecha() {
@@ -59,6 +67,22 @@ public class Venta {
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getOperacion() {
+        return operacion;
+    }
+
+    public void setOperacion(String operacion) {
+        this.operacion = operacion;
     }
     
     

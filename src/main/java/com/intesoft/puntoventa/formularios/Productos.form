@@ -132,10 +132,13 @@
       </SubComponents>
     </Container>
     <Component class="javax.swing.JTextField" name="jTextCodigo">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextCodigoKeyReleased"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Codigo"/>
+        <Property name="text" type="java.lang.String" value="Busqueda"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="jBAgregarP">

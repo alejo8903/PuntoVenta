@@ -6,7 +6,7 @@ package com.intesoft.puntoventa.controller;
 
 import com.intesoft.puntoventa.Services.VentasServices;
 import com.intesoft.puntoventa.ServicesImplements.VentasServicesImplement;
-import com.intesoft.puntoventa.entity.Venta;
+import com.intesoft.puntoventa.entity.Operacion;
 
 
 /**
@@ -15,14 +15,14 @@ import com.intesoft.puntoventa.entity.Venta;
  */
 public class VentasController {
 
-    public int saveVentas(double venta) {
+    public int saveVentas(double venta, String nombre, String operacion) {
         VentasServices ventasServices = new VentasServicesImplement();
-        int idVenta = ventasServices.saveVentas(venta);
+        int idVenta = ventasServices.saveVentas(venta, nombre, operacion);
         return idVenta;
                 
     }
 
-    public Venta getVentaById(int numeroVenta) {
+    public Operacion getVentaById(int numeroVenta) {
         VentasServices ventasServices = new VentasServicesImplement();
         return ventasServices.getVentaById(numeroVenta);
     }

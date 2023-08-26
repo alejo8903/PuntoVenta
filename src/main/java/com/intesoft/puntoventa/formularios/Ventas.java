@@ -11,8 +11,9 @@ import com.intesoft.puntoventa.dto.InventarioDto;
 import com.intesoft.puntoventa.entity.Inventario;
 import com.intesoft.puntoventa.entity.RegistroVendido;
 import com.intesoft.puntoventa.entity.Usuarios;
-import com.intesoft.puntoventa.entity.Venta;
+import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.util.MonedaTransform;
+import com.intesoft.puntoventa.util.Operaciones;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -510,8 +511,8 @@ public class Ventas extends javax.swing.JInternalFrame {
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         VentasController ventasController = new VentasController();
-        int numeroVenta = ventasController.saveVentas(monedaTransform.transfrormMoneda(this.jLTotal.getText()));
-        Venta venta = new Venta();
+        int numeroVenta = ventasController.saveVentas(monedaTransform.transfrormMoneda(this.jLTotal.getText()),jLNombre.getText(),Operaciones.VENTA.toString());
+        Operacion venta = new Operacion();
         venta = ventasController.getVentaById(numeroVenta);
         for(RegistroVendido registroVendido : this.listRegistroVendidos){
             InventarioController inventarioController = new InventarioController();

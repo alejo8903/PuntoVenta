@@ -8,7 +8,9 @@ import com.intesoft.puntoventa.controller.MaestroController;
 import com.intesoft.puntoventa.entity.Maestro;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -19,8 +21,16 @@ public class Productos extends javax.swing.JInternalFrame {
     /**
      * Creates new form IngresoProductos
      */
+    TableRowSorter<DefaultTableModel> sorter;
+    DefaultTableModel model;
     public Productos() {
         initComponents();
+        
+        this.model =  (DefaultTableModel) jTable1.getModel();
+        this.jTable1.setModel(model);
+        this.jTable1.setAutoCreateRowSorter(true);
+        sorter = new TableRowSorter<>(model);
+        this.jTable1.setRowSorter(sorter);
         this.listarProductos();
     }
 
@@ -64,7 +74,13 @@ public class Productos extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jLabel1.setText("Codigo");
+        jTextCodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextCodigoKeyReleased(evt);
+            }
+        });
+
+        jLabel1.setText("Busqueda");
 
         jBAgregarP.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregar-producto.png"))); // NOI18N
         jBAgregarP.setText("Agregar Producto");
@@ -90,6 +106,7 @@ public class Productos extends javax.swing.JInternalFrame {
             }
         });
 
+        jBActualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/actualizar.png"))); // NOI18N
         jBActualizar.setText("Actualizar Tabla");
         jBActualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -188,12 +205,22 @@ public class Productos extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "No ha selecionado ningun producto para modificar", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_jBEliminarActionPerformed
-    
+
+    private void jTextCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextCodigoKeyReleased
+        filter();
+    }//GEN-LAST:event_jTextCodigoKeyReleased
+    private void filter(){
+        try {
+            sorter.setRowFilter(RowFilter.regexFilter(this.jTextCodigo.getText()));
+            
+        }catch(Exception e){
+            
+        }
+    }
     private void listarProductos(){
         MaestroController maestroController = new MaestroController();
         List<Maestro> listaProductos = maestroController.getAllProductos();
-        DefaultTableModel model =  (DefaultTableModel) jTable1.getModel();
-        model.setNumRows(0);
+        this.model.setNumRows(0);
         for (Maestro producto : listaProductos) {
             String codigo = producto.getCodigo();
             String codigoSinUltimosDigitos = (codigo).substring(0, (codigo).length() - 2);
@@ -207,7 +234,7 @@ public class Productos extends javax.swing.JInternalFrame {
                 producto.getTalla(),
                 producto.getColor()
             };
-            model.addRow(rowData);
+            this.model.addRow(rowData);
         }
     }
     

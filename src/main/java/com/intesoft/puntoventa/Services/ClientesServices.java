@@ -4,16 +4,19 @@
  */
 package com.intesoft.puntoventa.Services;
 
-import com.intesoft.puntoventa.entity.Operacion;
+import com.intesoft.puntoventa.entity.Clientes;
+import java.util.List;
 
 /**
  *
  * @author alejo
  */
-public interface VentasServices {
+public interface ClientesServices {
 
-    public int saveVentas(double venta, String nombre, String operacion);
+    public List<Clientes> getAllClientes();
 
-    public Operacion getVentaById(int numeroVenta);
+    public void guardarCliente(Clientes cliente);
+
+    public void actualizarCliente(Clientes cliente);
     
 }

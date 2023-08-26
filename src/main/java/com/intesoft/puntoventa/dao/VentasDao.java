@@ -4,7 +4,7 @@
  */
 package com.intesoft.puntoventa.dao;
 
-import com.intesoft.puntoventa.entity.Venta;
+import com.intesoft.puntoventa.entity.Operacion;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -23,21 +23,21 @@ public class VentasDao {
     public void  close(){
         entityManagerFactory.close();
     }
-    public int crearVenta(Venta ventas) {
+    public int crearVenta(Operacion ventas) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(ventas);
         entityManager.flush();
-        int idVenta = ventas.getIdVenta();
+        int idVenta = ventas.getIdOperacion();
         entityManager.getTransaction().commit();
         entityManager.close();
         return idVenta;
     }
 
-    public Venta getById(int id) {
+    public Operacion getById(int id) {
        EntityManager entityManager = entityManagerFactory.createEntityManager();
        entityManager.getTransaction().begin();
-       Venta venta = entityManager.find(Venta.class, id);
+       Operacion venta = entityManager.find(Operacion.class, id);
        entityManager.getTransaction().commit();
        entityManager.close();
        return venta;
