@@ -5,6 +5,7 @@
 package com.intesoft.puntoventa.formularios;
 
 import com.intesoft.puntoventa.entity.Usuarios;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -23,6 +24,7 @@ public class Principal extends javax.swing.JFrame {
     public Principal(Usuarios usuarios){
         this.usuarios = usuarios;
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/imagenes/tienda.png")).getImage());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
@@ -52,9 +54,12 @@ public class Principal extends javax.swing.JFrame {
         menuProductos = new javax.swing.JMenu();
         editMenu = new javax.swing.JMenu();
         menuVentas = new javax.swing.JMenu();
+        jMenu7 = new javax.swing.JMenu();
+        jMenu8 = new javax.swing.JMenu();
+        jMenu9 = new javax.swing.JMenu();
+        jMenu10 = new javax.swing.JMenu();
         helpMenu = new javax.swing.JMenu();
         aboutMenuItem = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
 
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
@@ -123,6 +128,42 @@ public class Principal extends javax.swing.JFrame {
         });
         menuBar.add(menuVentas);
 
+        jMenu7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/clasificacion.png"))); // NOI18N
+        jMenu7.setText("Clientes");
+        jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu7MouseClicked(evt);
+            }
+        });
+        menuBar.add(jMenu7);
+
+        jMenu8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/tarjeta-de-debito.png"))); // NOI18N
+        jMenu8.setText("Creditos & Separados");
+        jMenu8.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu8MouseClicked(evt);
+            }
+        });
+        menuBar.add(jMenu8);
+
+        jMenu9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/gastos.png"))); // NOI18N
+        jMenu9.setText("Egresos ");
+        jMenu9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu9MouseClicked(evt);
+            }
+        });
+        menuBar.add(jMenu9);
+
+        jMenu10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crecimiento-del-dinero.png"))); // NOI18N
+        jMenu10.setText("Ingresos");
+        jMenu10.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenu10MouseClicked(evt);
+            }
+        });
+        menuBar.add(jMenu10);
+
         helpMenu.setBorder(null);
         helpMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/mesa-de-ayuda.png"))); // NOI18N
         helpMenu.setText("Ayuda");
@@ -133,25 +174,17 @@ public class Principal extends javax.swing.JFrame {
 
         menuBar.add(helpMenu);
 
-        jMenu7.setText("Clientes");
-        jMenu7.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenu7MouseClicked(evt);
-            }
-        });
-        menuBar.add(jMenu7);
-
         setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 843, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 950, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+            .addComponent(desktopPane, javax.swing.GroupLayout.DEFAULT_SIZE, 467, Short.MAX_VALUE)
         );
 
         pack();
@@ -184,6 +217,24 @@ public class Principal extends javax.swing.JFrame {
         this.desktopPane.add(clientes);
         clientes.setVisible(true);
     }//GEN-LAST:event_jMenu7MouseClicked
+
+    private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
+        Separados_Creditos creditos_separados = new Separados_Creditos();
+        this.desktopPane.add(creditos_separados);
+        creditos_separados.setVisible(true);
+    }//GEN-LAST:event_jMenu8MouseClicked
+
+    private void jMenu9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu9MouseClicked
+        Egresos egresos = new Egresos();
+        this.desktopPane.add(egresos);
+        egresos.setVisible(true);
+    }//GEN-LAST:event_jMenu9MouseClicked
+
+    private void jMenu10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu10MouseClicked
+        Ingresos ingresos = new Ingresos();
+        this.desktopPane.add(ingresos);
+        ingresos.setVisible(true);
+    }//GEN-LAST:event_jMenu10MouseClicked
 
     /**
      * @param args the command line arguments
@@ -228,12 +279,15 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuBar jMenuBar3;

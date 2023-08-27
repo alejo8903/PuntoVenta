@@ -57,6 +57,8 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
         setClosable(true);
         setMaximizable(true);
         setResizable(true);
+        setTitle("Creacion Clientes");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/clasificacion.png"))); // NOI18N
         setName(""); // NOI18N
 
         jLabel1.setText("Nombre");
@@ -124,7 +126,7 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
                         .addComponent(jTextDireccion)
                         .addComponent(jTextLimCredito, javax.swing.GroupLayout.DEFAULT_SIZE, 105, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 581, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

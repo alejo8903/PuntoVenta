@@ -50,6 +50,7 @@ public class ControlInventario extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Control Inventario");
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lista.png"))); // NOI18N
         setPreferredSize(new java.awt.Dimension(1353, 659));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
