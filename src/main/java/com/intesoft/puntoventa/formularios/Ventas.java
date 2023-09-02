@@ -592,7 +592,8 @@ public class Ventas extends javax.swing.JInternalFrame {
             registroVendido.setIva(this.inventario.getIva());
             registroVendido.setTotalCompra(this.inventario.getTotalCompra() * Integer.parseInt(this.jTextFCantidad.getText()));
             registroVendido.setPorcentajeGananciaE(this.inventario.getPorcentajeGanancia());
-            registroVendido.setPorcentajeGananciaR((float)((monedaTransform.transfrormMoneda(this.jTextFValor.getText())/this.inventario.getTotalCompra())-1));
+            registroVendido.setPorcentajeGananciaR((float)(((monedaTransform.transfrormMoneda(this.jTextFValor.getText()) * 
+                    Double.parseDouble(jTextFCantidad.getText()))/this.inventario.getTotalCompra() * Double.parseDouble(jTextFCantidad.getText()))-1));
             if (descuento.isBlank()) {
                 registroVendido.setDescuento(0);
             }else{
