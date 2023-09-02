@@ -609,6 +609,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             this.jTextFValor.setText("");
             updateTable();
             this.credito.setTotalAbonado(monedaTransform.transfrormMoneda(abono)+credito.getTotalAbonado());
+            this.credito.setTotalCredito(monedaTransform.transfrormMoneda(jTextFValor.getText())+credito.getTotalCredito());
             
         }else{
             JOptionPane.showMessageDialog(null, "Lacantida debe ser diferente de cero", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -671,6 +672,11 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jTextFPago.setText("");
         this.operacion = null;
         this.cliente = null;
+        jRadioVenta.setEnabled(true);
+        jRadioSeparar.setEnabled(true);
+        jRadioCredito.setEnabled(true);
+        jBCliente.setEnabled(true);
+        jBCliente.setSelected(true);
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
