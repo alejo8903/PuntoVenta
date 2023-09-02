@@ -5,6 +5,7 @@
 package com.intesoft.puntoventa.Services;
 
 import com.intesoft.puntoventa.entity.Operacion;
+import java.util.List;
 
 /**
  *
@@ -15,5 +16,7 @@ public interface OperacionServices {
     public int saveOperacion(Operacion operacion);
 
     public Operacion getOperacionById(int numeroVenta);
+
+    public List<Operacion> getAllEgresos();
     
 }

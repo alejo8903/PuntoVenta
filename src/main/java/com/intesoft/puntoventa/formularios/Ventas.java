@@ -670,9 +670,9 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jLTotal.setText("$");
         this.jLabel16.setText("$");
         this.jTextFPago.setText("");
-        this.operacion = null;
-        this.cliente = null;
-        this.listRegistroVendidos = null;
+        this.operacion = new Operacion();
+        this.cliente = new Clientes();
+        this.listRegistroVendidos = new ArrayList<>();
         jRadioVenta.setEnabled(true);
         jRadioSeparar.setEnabled(true);
         jRadioCredito.setEnabled(true);

@@ -4,6 +4,7 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.OperacionController;
 import com.intesoft.puntoventa.entity.Usuarios;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -225,9 +226,10 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu8MouseClicked
 
     private void jMenu9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu9MouseClicked
-        Egresos egresos = new Egresos();
+        Egresos egresos = new Egresos(this.usuarios);
         this.desktopPane.add(egresos);
         egresos.setVisible(true);
+        
     }//GEN-LAST:event_jMenu9MouseClicked
 
     private void jMenu10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu10MouseClicked
