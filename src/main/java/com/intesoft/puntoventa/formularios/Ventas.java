@@ -791,6 +791,8 @@ public class Ventas extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 2) {
              int rowIndex = this.jTable1.getSelectedRow();
         if(rowIndex >=0 ){
+            this.jLTotal.setText( String.valueOf(monedaTransform.transfrormMoneda(jLTotal.getText()) - 
+                    monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString())));
             int id = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 0).toString());
             int cantidad = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 6).toString());
             double descuento = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 7).toString());
@@ -798,6 +800,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             setProductoVenta(id, cantidad, descuento, valor);
             this.listRegistroVendidos.remove(rowIndex);
             updateTable();
+            
             
         }else{
             JOptionPane.showMessageDialog(null, "No ha selecionado ningun producto para modificar", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -812,6 +815,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jTextFDescuento.setText("");
         this.jTextFDescripcion.setText("");
         this.jTextFValor.setText("");
+        this.inventario = new Inventario();
     }//GEN-LAST:event_jLabel10MouseClicked
 
     private void jLabel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel17MouseClicked
