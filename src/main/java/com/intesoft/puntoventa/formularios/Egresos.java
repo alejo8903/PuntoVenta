@@ -4,6 +4,15 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.OperacionController;
+import com.intesoft.puntoventa.entity.Operacion;
+import com.intesoft.puntoventa.entity.Usuarios;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+
 /**
  *
  * @author Usuario
@@ -13,9 +22,26 @@ public class Egresos extends javax.swing.JInternalFrame {
     /**
      * Creates new form Egresos
      */
+    TableRowSorter<DefaultTableModel> sorter;
+    DefaultTableModel model;
+    private List<Operacion> listOperacion;
+    private Usuarios usuarios;
     public Egresos() {
         initComponents();
         
+    }
+    public Egresos(Usuarios usuarios) {
+        initComponents();
+        this.usuarios = usuarios;
+        this.listOperacion = new  ArrayList<>();
+        
+        this.model =  (DefaultTableModel) jTable1.getModel();
+        this.jTable1.setModel(model);
+        this.jTable1.setAutoCreateRowSorter(true);
+        sorter = new TableRowSorter<>(model);
+        this.jTable1.setRowSorter(sorter);
+        
+        updateTable();
     }
 
     /**
@@ -33,9 +59,9 @@ public class Egresos extends javax.swing.JInternalFrame {
         Jt_Gastos = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        Jt_nombreGastos = new javax.swing.JTextField();
         Jf_TotalGastod = new javax.swing.JFormattedTextField();
         jLabel3 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -47,11 +73,11 @@ public class Egresos extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Gasto", "Costo"
+                "Id", "Descripcion", "Fecha", "Reporta", "Valor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, true, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -64,10 +90,17 @@ public class Egresos extends javax.swing.JInternalFrame {
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/contabilidad.png"))); // NOI18N
         jButton1.setText("Ingresar Gastos");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Nombre Gasto:");
+        jLabel2.setText("Tipo Gasto:");
 
         jLabel3.setText("Total Gastos:");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "SERVICIOS", "ALIMENTACION", "NOMINA", "MANTENIMIENTO" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,15 +113,15 @@ public class Egresos extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(Jt_nombreGastos, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)
                         .addComponent(Jt_Gastos, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
-                        .addGap(0, 374, Short.MAX_VALUE))
+                        .addGap(0, 360, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -105,7 +138,7 @@ public class Egresos extends javax.swing.JInternalFrame {
                     .addComponent(Jt_Gastos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
                     .addComponent(jLabel2)
-                    .addComponent(Jt_nombreGastos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -118,12 +151,37 @@ public class Egresos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        String gasto = Jf_TotalGastod.getText();
+        if (!gasto.isEmpty()) {
+            
+        }else{
+            JOptionPane.showMessageDialog(null, "Debe ingresar el tipo de gasto y el valor del mismo", "Advertencia",JOptionPane.WARNING_MESSAGE);
+        }
+ 
+    }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void updateTable(){
+        OperacionController operacionController = new OperacionController();
+        listOperacion = operacionController.getAllEgresos();
+        this.model.setNumRows(0);
+        for (Operacion operacion : listOperacion) {
+            Object [] rowData = {
+                operacion.getIdOperacion(),
+                operacion.getOperacion(),
+                operacion.getFecha(),
+                operacion.getUsuario(),
+                operacion.getValor()
+            };
+            this.model.addRow(rowData);
+            
+        }
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField Jf_TotalGastod;
     private javax.swing.JTextField Jt_Gastos;
-    private javax.swing.JTextField Jt_nombreGastos;
     private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

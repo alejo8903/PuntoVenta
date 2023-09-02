@@ -7,6 +7,7 @@ package com.intesoft.puntoventa.controller;
 import com.intesoft.puntoventa.ServicesImplements.OperacionServicesImplement;
 import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.Services.OperacionServices;
+import java.util.List;
 
 
 /**
@@ -16,15 +17,20 @@ import com.intesoft.puntoventa.Services.OperacionServices;
 public class OperacionController {
 
     public int saveOperacion(Operacion operacion) {
-        OperacionServices ventasServices = new OperacionServicesImplement();
-        int idVenta = ventasServices.saveOperacion(operacion);
+        OperacionServices operacionServices = new OperacionServicesImplement();
+        int idVenta = operacionServices.saveOperacion(operacion);
         return idVenta;
                 
     }
 
     public Operacion getOperacionById(int numeroOperacion) {
-        OperacionServices ventasServices = new OperacionServicesImplement();
-        return ventasServices.getOperacionById(numeroOperacion);
+        OperacionServices operacionServices = new OperacionServicesImplement();
+        return operacionServices.getOperacionById(numeroOperacion);
+    }
+
+    public List<Operacion> getAllEgresos() {
+        OperacionServices operacionServices = new OperacionServicesImplement();
+        return operacionServices.getAllEgresos();
     }
     
 }

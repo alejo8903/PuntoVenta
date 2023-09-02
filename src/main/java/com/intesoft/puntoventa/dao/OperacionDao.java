@@ -5,6 +5,7 @@
 package com.intesoft.puntoventa.dao;
 
 import com.intesoft.puntoventa.entity.Operacion;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -41,6 +42,19 @@ public class OperacionDao {
        entityManager.getTransaction().commit();
        entityManager.close();
        return venta;
+    }
+
+    public List<Operacion> getAllEgresos() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+       
+       List<Operacion> listOpeacion = entityManager.createQuery
+        ("SELECT o FROM Operacion o WHERE o.valor<0", Operacion.class)
+               .getResultList();
+       
+       entityManager.getTransaction().commit();
+       entityManager.close();
+       return listOpeacion;
     }
     
 }

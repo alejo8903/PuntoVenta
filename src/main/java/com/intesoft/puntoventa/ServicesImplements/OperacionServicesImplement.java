@@ -8,6 +8,7 @@ import com.intesoft.puntoventa.dao.OperacionDao;
 import com.intesoft.puntoventa.entity.Operacion;
 import java.util.Date;
 import com.intesoft.puntoventa.Services.OperacionServices;
+import java.util.List;
 
 /**
  *
@@ -17,15 +18,21 @@ public class OperacionServicesImplement implements OperacionServices {
 
     @Override
     public int saveOperacion(Operacion operacion) {
-        OperacionDao ventasDao = new OperacionDao();
-        int idVenta = ventasDao.crearVenta(operacion);
+        OperacionDao operacionDao = new OperacionDao();
+        int idVenta = operacionDao.crearVenta(operacion);
         return idVenta;
     }
 
     @Override
     public Operacion getOperacionById(int numeroVenta) {
-        OperacionDao ventasDao = new OperacionDao();
-        return ventasDao.getById(numeroVenta);
+        OperacionDao operacionDao = new OperacionDao();
+        return operacionDao.getById(numeroVenta);
+    }
+
+    @Override
+    public List<Operacion> getAllEgresos() {
+        OperacionDao operacionDao = new OperacionDao();
+        return operacionDao.getAllEgresos();
     }
     
 }
