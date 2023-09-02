@@ -571,7 +571,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         RegistroVendido registroVendido = new RegistroVendido();
         String abono = this.jTextAbono.getText();
         int rows = jTable1.getRowCount();
-        if((abono.isBlank() || this.cliente == null) && (this.jRadioSeparar.isSelected() || this.jRadioCredito.isSelected())){
+        if((abono.isBlank() || this.cliente.getIdCliente() == 0) && (this.jRadioSeparar.isSelected() || this.jRadioCredito.isSelected())){
             JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente e introducir un abono \n"
                     + " para poder separar o entregar a credito", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
@@ -672,6 +672,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jTextFPago.setText("");
         this.operacion = null;
         this.cliente = null;
+        this.listRegistroVendidos = null;
         jRadioVenta.setEnabled(true);
         jRadioSeparar.setEnabled(true);
         jRadioCredito.setEnabled(true);
