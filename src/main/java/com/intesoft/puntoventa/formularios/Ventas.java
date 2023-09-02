@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.math.*;
 
 /**
  *
@@ -61,6 +62,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.credito = new Credito();
         this.operacion = new Operacion();
         this.cliente = new Clientes();
+        
         
         
     }
@@ -596,14 +598,14 @@ public class Ventas extends javax.swing.JInternalFrame {
             registroVendido.setIva(this.inventario.getIva());
             registroVendido.setTotalCompra(this.inventario.getTotalCompra() * Integer.parseInt(this.jTextFCantidad.getText()));
             registroVendido.setPorcentajeGananciaE(this.inventario.getPorcentajeGanancia());
-            registroVendido.setPorcentajeGananciaR((float)(((monedaTransform.transfrormMoneda(this.jTextFValor.getText()) * 
-                    Double.parseDouble(jTextFCantidad.getText()))/this.inventario.getTotalCompra() * Double.parseDouble(jTextFCantidad.getText()))-1));
             if (descuento.isBlank()) {
                 registroVendido.setDescuento(0);
             }else{
             registroVendido.setDescuento(monedaTransform.transfrormMoneda(descuento));
             }
+            
             registroVendido.setValorVenta( monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
+            registroVendido.setPorcentajeGananciaR((float)(registroVendido.getValorVenta()/registroVendido.getTotalCompra())-1);
             totalVenta += (monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
             this.jLTotal.setText(monedaTransform.formatMoneda(totalVenta));
             listRegistroVendidos.add(registroVendido);
