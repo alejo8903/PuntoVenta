@@ -10,10 +10,10 @@ import com.intesoft.puntoventa.entity.Operacion;
  *
  * @author alejo
  */
-public interface VentasServices {
+public interface OperacionServices {
 
-    public int saveVentas(double venta, String nombre, String operacion);
+    public int saveOperacion(Operacion operacion);
 
-    public Operacion getVentaById(int numeroVenta);
+    public Operacion getOperacionById(int numeroVenta);
     
 }

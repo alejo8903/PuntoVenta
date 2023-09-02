@@ -26,8 +26,8 @@ public class RegistroVendido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "idventa")
-    private Operacion ventas;
+    @JoinColumn(name = "idoperacion")
+    private Operacion operacion;
     @Column(name = "codigo")
     String codigo;
     @Column(name = "descripcion")
@@ -46,7 +46,7 @@ public class RegistroVendido {
     double totalCompra;
     @Column(name = "porcentajegananciae")
     float porcentajeGananciaE;
-    @Column(name = "porcentajegananciaR")
+    @Column(name = "porcentajegananciar")
     float porcentajeGananciaR;
     @Column(name = "descuento")
     double descuento;
@@ -56,9 +56,9 @@ public class RegistroVendido {
     public RegistroVendido() {
     }
 
-    public RegistroVendido(int id, Operacion ventas, String codigo, String descripcion, String talla, String color, int Cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGananciaE, float porcentajeGananciaR, double descuento, double valorVenta) {
+    public RegistroVendido(int id, Operacion operacion, String codigo, String descripcion, String talla, String color, int Cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGananciaE, float porcentajeGananciaR, double descuento, double valorVenta) {
         this.id = id;
-        this.ventas = ventas;
+        this.operacion = operacion;
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.talla = talla;
@@ -82,11 +82,11 @@ public class RegistroVendido {
     }
 
     public Operacion getVenta() {
-        return ventas;
+        return operacion;
     }
 
     public void setVenta(Operacion ventas) {
-        this.ventas = ventas;
+        this.operacion = ventas;
     }
 
     public String getCodigo() {

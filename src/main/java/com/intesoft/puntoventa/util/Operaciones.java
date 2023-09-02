@@ -9,5 +9,5 @@ package com.intesoft.puntoventa.util;
  * @author alejo
  */
 public enum Operaciones {
-    COMPRA,VENTA,VENTACREDITO,ABONOCREDITO
+    COMPRA,VENTA,VENTACREDITO,ABONOCREDITO,SEPARADO
 }
