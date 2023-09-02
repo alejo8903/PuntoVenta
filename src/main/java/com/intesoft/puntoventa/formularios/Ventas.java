@@ -673,7 +673,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jTextFPago.setText("");
         this.operacion = new Operacion();
         this.cliente = new Clientes();
-        this.listRegistroVendidos = new ArrayList<>();
+        this.listRegistroVendidos.clear();;
         jRadioVenta.setEnabled(true);
         jRadioSeparar.setEnabled(true);
         jRadioCredito.setEnabled(true);
@@ -791,7 +791,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 2) {
              int rowIndex = this.jTable1.getSelectedRow();
         if(rowIndex >=0 ){
-            this.jLTotal.setText( String.valueOf(monedaTransform.transfrormMoneda(jLTotal.getText()) - 
+            this.jLTotal.setText( monedaTransform.formatMoneda(monedaTransform.transfrormMoneda(jLTotal.getText()) - 
                     monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString())));
             int id = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 0).toString());
             int cantidad = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 6).toString());
@@ -829,6 +829,8 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jTextFPago.setText("");
         this.listRegistroVendidos.clear();
         updateTable();
+        this.inventario = new Inventario();
+        this.cliente = new Clientes();
     }//GEN-LAST:event_jLabel17MouseClicked
 
     private void jRadioSepararStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioSepararStateChanged
