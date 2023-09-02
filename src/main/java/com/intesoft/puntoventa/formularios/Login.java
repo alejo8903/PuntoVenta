@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
 
@@ -27,6 +28,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         
         initComponents();
+        setIconImage(new ImageIcon(getClass().getResource("/imagenes/tienda.png")).getImage());
         jPanel1.setBackground(new Color(0,0,0,30));
         jLabel4.setBackground(new Color(0,0,0,50));
         
