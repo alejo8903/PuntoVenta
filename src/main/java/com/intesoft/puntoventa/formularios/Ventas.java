@@ -127,11 +127,11 @@ public class Ventas extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Item", "Codigo", "Descripcion", "Talla", "Color", "Cantidad", "Descuento", "Precio"
+                "Id", "Item", "Codigo", "Descripcion", "Talla", "Color", "Cantidad", "Descuento", "Precio", "Abono"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -159,8 +159,12 @@ public class Ventas extends javax.swing.JInternalFrame {
             jTable1.getColumnModel().getColumn(5).setMaxWidth(150);
             jTable1.getColumnModel().getColumn(6).setMinWidth(10);
             jTable1.getColumnModel().getColumn(6).setPreferredWidth(10);
+            jTable1.getColumnModel().getColumn(7).setResizable(false);
             jTable1.getColumnModel().getColumn(7).setPreferredWidth(1);
             jTable1.getColumnModel().getColumn(8).setPreferredWidth(3);
+            jTable1.getColumnModel().getColumn(9).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(9).setPreferredWidth(0);
+            jTable1.getColumnModel().getColumn(9).setMaxWidth(0);
         }
 
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -791,6 +795,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         if (evt.getClickCount() == 2) {
              int rowIndex = this.jTable1.getSelectedRow();
         if(rowIndex >=0 ){
+            this.credito.setTotalAbonado(this.credito.getTotalAbonado() - Double.parseDouble(this.jTable1.getValueAt(rowIndex, 9).toString()));
             this.jLTotal.setText( monedaTransform.formatMoneda(monedaTransform.transfrormMoneda(jLTotal.getText()) - 
                     monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString())));
             int id = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 0).toString());
@@ -936,7 +941,8 @@ public class Ventas extends javax.swing.JInternalFrame {
             registroVendido.getColor(),
             registroVendido.getCantidad(),
             monedaTransform.formatMoneda(registroVendido.getDescuento()),
-            monedaTransform.formatMoneda(registroVendido.getValorVenta())
+            monedaTransform.formatMoneda(registroVendido.getValorVenta()),
+            this.jTextAbono
             };
       model.addRow(rowData);
         }
