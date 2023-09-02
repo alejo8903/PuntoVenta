@@ -6,9 +6,12 @@ package com.intesoft.puntoventa.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
@@ -22,13 +25,84 @@ public class Credito {
     @Column(name = "id_credito")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCredito;
-    @Column(name = "toatal_credito")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idoperacion")
+    Operacion Operacion;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_cliente")
+    Clientes clientes;
+    @Column(name = "total_credito")
     private double totalCredito;
     @Column(name = "total_abonado")
     private double totalAbonado;
-    @Column(name = "tipo_credito")
-    private String tipoCredito;
     @Column(name = "pagado")
     private boolean pagado;
+    
+
+    public Credito() {
+    }
+
+    public Credito(int idCredito, Operacion Operacion, Clientes clientes, double totalCredito, double totalAbonado, boolean pagado) {
+        this.idCredito = idCredito;
+        this.Operacion = Operacion;
+        this.clientes = clientes;
+        this.totalCredito = totalCredito;
+        this.totalAbonado = totalAbonado;
+        this.pagado = pagado;
+    }
+
+    public int getIdCredito() {
+        return idCredito;
+    }
+
+    public void setIdCredito(int idCredito) {
+        this.idCredito = idCredito;
+    }
+
+    public Operacion getOperacion() {
+        return Operacion;
+    }
+
+    public void setOperacion(Operacion Operacion) {
+        this.Operacion = Operacion;
+    }
+
+    public Clientes getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(Clientes clientes) {
+        this.clientes = clientes;
+    }
+
+    public double getTotalCredito() {
+        return totalCredito;
+    }
+
+    public void setTotalCredito(double totalCredito) {
+        this.totalCredito = totalCredito;
+    }
+
+    public double getTotalAbonado() {
+        return totalAbonado;
+    }
+
+    public void setTotalAbonado(double totalAbonado) {
+        this.totalAbonado = totalAbonado;
+    }
+    
+    public boolean isPagado() {
+        return pagado;
+    }
+
+    public void setPagado(boolean pagado) {
+        this.pagado = pagado;
+    }
+
+    
+
+    
+    
+    
 }
 

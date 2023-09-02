@@ -29,6 +29,11 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
         
         
     }
+    public ClientesWindow(String Search) {
+        initComponents();
+        updateTable();
+              
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -159,7 +164,7 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(37, 37, 37)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 475, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -238,6 +243,11 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
             };
             model.addRow(rowData);
         }
+    }
+    public Clientes asignarCliente(){
+        
+        return this.cliente;
+        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
