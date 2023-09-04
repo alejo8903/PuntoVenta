@@ -15,10 +15,12 @@ import com.intesoft.puntoventa.entity.Usuarios;
 public class UsuariosServicesImplement  implements UsuariosServices{
     
     private UsuariosDao usuariosDao;
+    public UsuariosServicesImplement(){
+        usuariosDao = new UsuariosDao();
+    }
     @Override
     public Usuarios getUserByUsuario(String Usuario) {
-        usuariosDao = new UsuariosDao();
-     Usuarios usuarios = usuariosDao.getByUser(Usuario);
+        Usuarios usuarios = usuariosDao.getByUser(Usuario);
      
      return usuarios;
     }

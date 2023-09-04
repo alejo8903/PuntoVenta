@@ -15,23 +15,24 @@ import java.util.List;
  * @author alejo
  */
 public class OperacionServicesImplement implements OperacionServices {
-
+    OperacionDao operacionDao;
+    public OperacionServicesImplement(){
+        operacionDao = new OperacionDao();
+    }
+    
     @Override
     public int saveOperacion(Operacion operacion) {
-        OperacionDao operacionDao = new OperacionDao();
         int idVenta = operacionDao.crearVenta(operacion);
         return idVenta;
     }
 
     @Override
     public Operacion getOperacionById(int numeroVenta) {
-        OperacionDao operacionDao = new OperacionDao();
         return operacionDao.getById(numeroVenta);
     }
 
     @Override
     public List<Operacion> getAllEgresos() {
-        OperacionDao operacionDao = new OperacionDao();
         return operacionDao.getAllEgresos();
     }
     

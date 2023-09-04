@@ -15,22 +15,23 @@ import java.util.List;
  */
 public class ClientesServicesImplement implements ClientesServices {
     private ClientesDao clientesDao;
+    
+    public ClientesServicesImplement() {
+        this.clientesDao = new ClientesDao();
+    }
+
     @Override
     public List<Clientes> getAllClientes() {
-        clientesDao = new ClientesDao();
         return clientesDao.getAll();
     }
 
     @Override
     public void guardarCliente(Clientes cliente) {
-        clientesDao = new ClientesDao();
         clientesDao.create(cliente);
     }
 
     @Override
     public void actualizarCliente(Clientes cliente) {
-        clientesDao = new ClientesDao();
         clientesDao.merge(cliente);
     }
-    
 }

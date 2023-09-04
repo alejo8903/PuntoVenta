@@ -16,9 +16,12 @@ import java.util.List;
 public class RegistroVendidoServicesImplement implements RegistroVendidoServices {
 
     RegistroVendidoDao registroVendidoDao;
+    
+    public  RegistroVendidoServicesImplement(){
+        registroVendidoDao = new RegistroVendidoDao();
+    }
     @Override
     public void saveProductosVenta(List<RegistroVendido> listRegistroVendidos) {
-        registroVendidoDao = new RegistroVendidoDao();
         registroVendidoDao.batchCreateRgistrosVenta(listRegistroVendidos);
     }
     

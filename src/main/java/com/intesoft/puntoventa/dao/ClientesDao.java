@@ -5,6 +5,7 @@
 package com.intesoft.puntoventa.dao;
 
 import com.intesoft.puntoventa.entity.Clientes;
+import java.sql.Connection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -18,8 +19,9 @@ public class ClientesDao {
 
     private final EntityManagerFactory entityManagerFactory;
 
+  
     public ClientesDao() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+        this.entityManagerFactory = Persistence.createEntityManagerFactory("testPersistenceUnit");
     }
     
     public List<Clientes> getAll() {

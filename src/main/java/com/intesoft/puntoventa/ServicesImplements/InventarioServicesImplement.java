@@ -17,10 +17,13 @@ import java.util.List;
  * @author alejo
  */
 public class InventarioServicesImplement implements InventarioServices {
-
+    
+    private InventarioDao inventarioDao;
+    public InventarioServicesImplement(){
+        this.inventarioDao = new InventarioDao();
+    }
     @Override
     public List<InventarioDto> searchProdcto(int codigo) {
-        InventarioDao inventarioDao = new InventarioDao();
         List<InventarioDto> listInventarioDto = inventarioDao.searchByCodigo(codigo);
         return listInventarioDto;
         
@@ -28,7 +31,6 @@ public class InventarioServicesImplement implements InventarioServices {
 
     @Override
     public Inventario getProductoById(int id) {
-        InventarioDao inventarioDao = new InventarioDao();
         return inventarioDao.productoById(id);
     }
 
@@ -38,19 +40,16 @@ public class InventarioServicesImplement implements InventarioServices {
         inventario = getProductoById(id);
         int actualQuantity = inventario.getCantidad();
         inventario.setCantidad(actualQuantity - cantidad);
-        InventarioDao inventarioDao = new InventarioDao();
         inventarioDao.update(inventario);
     }
 
     @Override
     public List<Inventario> getInventarioTotal() {
-        InventarioDao inventarioDao = new InventarioDao();
         return inventarioDao.getAll();
     }
 
     @Override
     public void insertInventario(Inventario inventario) {
-        InventarioDao inventarioDao = new InventarioDao();
         inventarioDao.create(inventario);
     }
     

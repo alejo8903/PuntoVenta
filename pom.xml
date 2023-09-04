@@ -11,76 +11,94 @@
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.release>17</maven.compiler.release>
         <exec.mainClass>com.intesoft.puntoventa.PuntoVenta</exec.mainClass>
+        <jacoco.version>0.8.10</jacoco.version>
     </properties>
     <dependencies>
-           <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-core</artifactId>
-                <version>5.4.10.Final</version>
-                <type>jar</type>
-           </dependency>
-           <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-entitymanager</artifactId>
-                <version>5.4.10.Final</version>
-           </dependency>
-           <dependency>
-                <groupId>javax.persistence</groupId>
-                <artifactId>javax.persistence-api</artifactId>
-                <version>2.2</version>
-           </dependency>
-           <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.26</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>1.2.3</version>
-            </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.4.10.Final</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>5.4.10.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
+            <version>2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.26</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
         <dependency>
             <groupId>org.netbeans.external</groupId>
             <artifactId>AbsoluteLayout</artifactId>
             <version>RELEASE160</version>
         </dependency>
         <dependency>
-                <groupId>javax</groupId>
-                <artifactId>javaee-api</artifactId>
-                <version>8.0</version>
-                <scope>provided</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi</artifactId>
-                <version>5.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.poi</groupId>
-                <artifactId>poi-ooxml</artifactId>
-                <version>5.0.0</version>
-            </dependency>
-            <dependency>
-                <groupId>com.jtattoo</groupId>
-                <artifactId>JTattoo</artifactId>
-                <version>1.6.13</version>
-            </dependency>
-            <dependency>
-                <groupId>org.jboss</groupId>
-                <artifactId>jandex</artifactId>
-                <version>3.1.2</version>
-                <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>com.toedter</groupId>
-                <artifactId>jcalendar</artifactId>
-                <version>1.4</version>
-            </dependency>
-
+            <groupId>javax</groupId>
+            <artifactId>javaee-api</artifactId>
+            <version>8.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jtattoo</groupId>
+            <artifactId>JTattoo</artifactId>
+            <version>1.6.13</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jandex</artifactId>
+            <version>3.1.2</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version> <!-- Puedes utilizar una versión más reciente si lo deseas -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.12.4</version> <!-- Puedes utilizar una versión más reciente si lo deseas -->
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.200</version> <!-- Utiliza la versión más reciente -->
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
-    <plugins>
-             <!-- Configuración del maven-jar-plugin -->
+        <plugins>
+            <!-- Configuración del maven-jar-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -96,7 +114,33 @@
                     </archive>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.10</version> <!-- Asegúrate de usar la versión correcta -->
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <id>report</id>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>post-unit-test</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <!-- Configuración del maven-dependency-plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -116,7 +160,8 @@
                     </execution>
                 </executions>
             </plugin>
-    </plugins>
+            
+        </plugins>
     
-</build>
+    </build>
 </project>

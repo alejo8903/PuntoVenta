@@ -14,10 +14,14 @@ import com.intesoft.puntoventa.entity.Credito;
  */
 public class CreditoServicesImplements implements CreditoServices{
 
-    CreditoDao creditoDao;
+    public CreditoDao creditoDao;
+    
+     public CreditoServicesImplements (){
+        this.creditoDao = new CreditoDao();
+    }
     @Override
     public int saveCredito(Credito credito) {
-        creditoDao = new CreditoDao();
+        
         return creditoDao.create(credito);
     }
     

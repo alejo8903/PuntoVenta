@@ -15,40 +15,37 @@ import java.util.List;
  */
 public class MaestroServicesImplement implements MaestroServices {
     private MaestroDao maestroDao;
-
+    
+    public MaestroServicesImplement(){
+        maestroDao = new MaestroDao();
+    }
     @Override
     public List<Maestro> listarProductos() {
-        maestroDao = new MaestroDao();
         return maestroDao.getAll();
     }
 
     @Override
     public Maestro getMaxCodigo() {
-        maestroDao = new MaestroDao();
         return maestroDao.getMaxCodigo();
     }
 
     @Override
     public void crearProducto(Maestro maestro) {
-        maestroDao = new MaestroDao();
         maestroDao.create(maestro);
     }
 
     @Override
     public void modificarProducto(Maestro maestro) {
-        maestroDao = new MaestroDao();
         maestroDao.merge(maestro);
     }
 
     @Override
     public void deleteMaestro(String codigo) {
-        maestroDao = new MaestroDao();
         maestroDao.delete(codigo);
     }
 
     @Override
     public Maestro getProducto(String codigo) {
-        maestroDao = new MaestroDao();
         return maestroDao.findById(codigo);
     }
             
