@@ -8,6 +8,7 @@ import com.intesoft.puntoventa.controller.OperacionController;
 import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.entity.Usuarios;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -26,21 +27,25 @@ public class Egresos extends javax.swing.JInternalFrame {
     DefaultTableModel model;
     private List<Operacion> listOperacion;
     private Usuarios usuarios;
+    private OperacionController operacionController;
+
     public Egresos() {
         initComponents();
-        
+
     }
+
     public Egresos(Usuarios usuarios) {
         initComponents();
         this.usuarios = usuarios;
-        this.listOperacion = new  ArrayList<>();
-        
-        this.model =  (DefaultTableModel) jTable1.getModel();
+        this.listOperacion = new ArrayList<>();
+
+        this.model = (DefaultTableModel) jTable1.getModel();
         this.jTable1.setModel(model);
         this.jTable1.setAutoCreateRowSorter(true);
         sorter = new TableRowSorter<>(model);
         this.jTable1.setRowSorter(sorter);
-        
+        operacionController = new OperacionController();
+
         updateTable();
     }
 
@@ -152,21 +157,39 @@ public class Egresos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String gasto = Jf_TotalGastod.getText();
-        if (!gasto.isEmpty()) {
+        String gasto = Jt_Gastos.getText();
+        int tipoGasto = jComboBox1.getSelectedIndex();
+        if (!gasto.isEmpty() && tipoGasto != 0) {
+            int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres guardar este gasto? \n"
+                    + jComboBox1.getSelectedItem().toString() + " por valor de " + gasto, "Confirmación", JOptionPane.YES_NO_OPTION);
+            if (respuesta == JOptionPane.YES_OPTION) {
+                double gastoNum = Double.parseDouble(gasto);
+            gastoNum = gastoNum * -1;
+            Operacion operacion = new Operacion();
+            operacion.setFecha(new Date());
+            operacion.setOperacion(jComboBox1.getSelectedItem().toString());
+            operacion.setUsuario(this.usuarios.getNombres() + " " + this.usuarios.getApellidos());
+            operacion.setValor(gastoNum);
+            int id = operacionController.saveOperacion(operacion);
+            updateTable();
+            JOptionPane.showMessageDialog(null, "El egreso " + id + " ha sido registrado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } else {
+                // El usuario seleccionó "No" o cerró el cuadro de diálogo, puedes manejarlo aquí si es necesario
+                System.out.println("No se realizó la acción.");
+            }
             
-        }else{
-            JOptionPane.showMessageDialog(null, "Debe ingresar el tipo de gasto y el valor del mismo", "Advertencia",JOptionPane.WARNING_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe ingresar el tipo de gasto y el valor del mismo", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
- 
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void updateTable(){
+    private void updateTable() {
         OperacionController operacionController = new OperacionController();
         listOperacion = operacionController.getAllEgresos();
         this.model.setNumRows(0);
         for (Operacion operacion : listOperacion) {
-            Object [] rowData = {
+            Object[] rowData = {
                 operacion.getIdOperacion(),
                 operacion.getOperacion(),
                 operacion.getFecha(),
@@ -174,7 +197,7 @@ public class Egresos extends javax.swing.JInternalFrame {
                 operacion.getValor()
             };
             this.model.addRow(rowData);
-            
+
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables

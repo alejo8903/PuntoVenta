@@ -20,7 +20,7 @@ public class InventarioServicesImplement implements InventarioServices {
     
     private InventarioDao inventarioDao;
     public InventarioServicesImplement(){
-        this.inventarioDao = new InventarioDao();
+        this.inventarioDao = new InventarioDao("myPersistenceUnit");
     }
     @Override
     public List<InventarioDto> searchProdcto(int codigo) {

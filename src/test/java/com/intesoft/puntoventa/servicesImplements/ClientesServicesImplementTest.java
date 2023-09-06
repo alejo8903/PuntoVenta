@@ -4,9 +4,7 @@
  */
 package com.intesoft.puntoventa.servicesImplements;
 import com.intesoft.puntoventa.ServicesImplements.ClientesServicesImplement;
-import com.intesoft.puntoventa.ServicesImplements.InventarioServicesImplement;
 import com.intesoft.puntoventa.dao.ClientesDao;
-import com.intesoft.puntoventa.dao.InventarioDao;
 import com.intesoft.puntoventa.entity.Clientes;
 import java.util.ArrayList;
 import java.util.List;

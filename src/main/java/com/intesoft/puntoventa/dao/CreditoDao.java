@@ -16,12 +16,13 @@ import javax.persistence.Persistence;
 public class CreditoDao {
 
     private final EntityManagerFactory entityManagerFactory;
+    private EntityManager entityManager;
     
-    public CreditoDao() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+    public CreditoDao(String persitencia) {
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(persitencia);
     }
     public int create(Credito credito) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(credito);
         int idVenta = credito.getIdCredito();
@@ -29,5 +30,13 @@ public class CreditoDao {
         entityManager.close();
         return idVenta;
     }
+
+    public Credito findById(int idCredito) {
+        entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        return  entityManager.find(Credito.class, idCredito);
+       
+        
+        }
     
 }

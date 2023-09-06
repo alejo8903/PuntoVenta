@@ -17,7 +17,7 @@ public class CreditoServicesImplements implements CreditoServices{
     public CreditoDao creditoDao;
     
      public CreditoServicesImplements (){
-        this.creditoDao = new CreditoDao();
+        this.creditoDao = new CreditoDao("myPersistenceUnit");
     }
     @Override
     public int saveCredito(Credito credito) {

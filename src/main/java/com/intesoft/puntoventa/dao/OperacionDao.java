@@ -17,8 +17,8 @@ import javax.persistence.Persistence;
 public class OperacionDao {
     private final  EntityManagerFactory entityManagerFactory;
     
-    public OperacionDao() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+    public OperacionDao(String persistence) {
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
     }
     
     public void  close(){

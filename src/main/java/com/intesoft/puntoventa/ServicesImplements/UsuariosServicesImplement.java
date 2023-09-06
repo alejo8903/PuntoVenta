@@ -16,7 +16,7 @@ public class UsuariosServicesImplement  implements UsuariosServices{
     
     private UsuariosDao usuariosDao;
     public UsuariosServicesImplement(){
-        usuariosDao = new UsuariosDao();
+        usuariosDao = new UsuariosDao("myPersistenceUnit");
     }
     @Override
     public Usuarios getUserByUsuario(String Usuario) {

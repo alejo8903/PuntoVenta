@@ -17,7 +17,7 @@ import java.util.List;
 public class OperacionServicesImplement implements OperacionServices {
     OperacionDao operacionDao;
     public OperacionServicesImplement(){
-        operacionDao = new OperacionDao();
+        operacionDao = new OperacionDao("myPersistenceUnit");
     }
     
     @Override

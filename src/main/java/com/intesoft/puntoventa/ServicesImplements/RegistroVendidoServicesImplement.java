@@ -18,7 +18,7 @@ public class RegistroVendidoServicesImplement implements RegistroVendidoServices
     RegistroVendidoDao registroVendidoDao;
     
     public  RegistroVendidoServicesImplement(){
-        registroVendidoDao = new RegistroVendidoDao();
+        registroVendidoDao = new RegistroVendidoDao("myPersistenceUnit");
     }
     @Override
     public void saveProductosVenta(List<RegistroVendido> listRegistroVendidos) {

@@ -10,6 +10,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -17,15 +18,16 @@ import javax.persistence.Persistence;
  */
 public class ClientesDao {
 
+    
     private final EntityManagerFactory entityManagerFactory;
-
+    private EntityManager entityManager;
   
-    public ClientesDao() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("testPersistenceUnit");
+    public ClientesDao(String persistencia) {
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(persistencia);
     }
     
     public List<Clientes> getAll() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         List<Clientes> listClientes = entityManager
                 .createQuery("SELECT c FROM Clientes c", Clientes.class ).getResultList();
@@ -33,9 +35,10 @@ public class ClientesDao {
         entityManager.close();
         return listClientes;
     }
+    
 
     public void create(Clientes cliente) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(cliente);
         entityManager.getTransaction().commit();
@@ -43,12 +46,20 @@ public class ClientesDao {
     }
 
     public void merge(Clientes cliente) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.merge(cliente);
         entityManager.getTransaction().commit();
         entityManager.close();
         
     }
+
+    public Clientes findById(int idCliente) {
+        entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        return  entityManager.find(Clientes.class, idCliente);
+       
+        
+        }
     
 }

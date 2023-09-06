@@ -20,9 +20,9 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class InventarioDao {
     private final EntityManagerFactory entityManagerFactory;
-
-    public InventarioDao() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+    EntityManager entityManager;
+    public InventarioDao(String pesristence) {
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(pesristence);
     }
     
     public void  close(){
@@ -30,7 +30,7 @@ public class InventarioDao {
     }
     
     public List<Inventario> getAll(){
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         List<Inventario> listInventarios = entityManager
                 .createQuery("SELECT i FROM Inventario i "+ 
@@ -43,7 +43,7 @@ public class InventarioDao {
     }
 
     public List<InventarioDto> searchByCodigo(int codigo) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         
         String queryString = "SELECT NEW com.intesoft.puntoventa.dto.InventarioDto(i.id, m.codigo, m.descripcion, m.talla, m.color, i.cantidad,"+
@@ -73,8 +73,7 @@ public class InventarioDao {
     }
 
     public Inventario productoById(int id) {
-        
-       EntityManager entityManager = entityManagerFactory.createEntityManager();
+       entityManager = entityManagerFactory.createEntityManager();
        entityManager.getTransaction().begin();
        Inventario inventario = entityManager.find(Inventario.class, id);
        entityManager.getTransaction().commit();
@@ -83,10 +82,8 @@ public class InventarioDao {
     
     }
 
-    
-
     public void update(Inventario inventario) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.merge(inventario);
         entityManager.getTransaction().commit();
@@ -94,7 +91,7 @@ public class InventarioDao {
     }
 
     public void create(Inventario inventario) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(inventario);
         entityManager.getTransaction().commit();

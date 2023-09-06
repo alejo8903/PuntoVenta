@@ -20,8 +20,8 @@ import javax.swing.JOptionPane;
 public class MaestroDao {
     private final EntityManagerFactory entityManagerFactory;
 
-    public MaestroDao() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+    public MaestroDao(String persistence) {
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
     }
     
     public void  close(){

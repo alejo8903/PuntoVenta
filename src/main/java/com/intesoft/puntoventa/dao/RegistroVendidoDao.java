@@ -18,8 +18,8 @@ import javax.persistence.Persistence;
 public class RegistroVendidoDao {
     private final EntityManagerFactory entityManagerFactory;
     
-    public RegistroVendidoDao() {
-        this.entityManagerFactory = Persistence.createEntityManagerFactory("myPersistenceUnit");
+    public RegistroVendidoDao(String persistence) {
+        this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
     }
     
     public void  close(){

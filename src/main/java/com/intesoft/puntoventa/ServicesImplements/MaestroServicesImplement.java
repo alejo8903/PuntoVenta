@@ -17,7 +17,7 @@ public class MaestroServicesImplement implements MaestroServices {
     private MaestroDao maestroDao;
     
     public MaestroServicesImplement(){
-        maestroDao = new MaestroDao();
+        maestroDao = new MaestroDao("myPersistenceUnit");
     }
     @Override
     public List<Maestro> listarProductos() {

@@ -17,7 +17,7 @@ public class ClientesServicesImplement implements ClientesServices {
     private ClientesDao clientesDao;
     
     public ClientesServicesImplement() {
-        this.clientesDao = new ClientesDao();
+        this.clientesDao = new ClientesDao("myPersistenceUnit");
     }
 
     @Override
