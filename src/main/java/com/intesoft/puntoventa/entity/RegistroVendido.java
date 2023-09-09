@@ -37,7 +37,7 @@ public class RegistroVendido {
     @Column(name = "color")
     String color;
     @Column(name = "cantidad")
-    int Cantidad;
+    int cantidad;
     @Column(name = "valorCompra")
     double valorCompra;
     @Column(name = "iva")
@@ -56,14 +56,14 @@ public class RegistroVendido {
     public RegistroVendido() {
     }
 
-    public RegistroVendido(int id, Operacion operacion, String codigo, String descripcion, String talla, String color, int Cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGananciaE, float porcentajeGananciaR, double descuento, double valorVenta) {
+    public RegistroVendido(int id, Operacion operacion, String codigo, String descripcion, String talla, String color, int cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGananciaE, float porcentajeGananciaR, double descuento, double valorVenta) {
         this.id = id;
         this.operacion = operacion;
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.talla = talla;
         this.color = color;
-        this.Cantidad = Cantidad;
+        this.cantidad = cantidad;
         this.valorCompra = valorCompra;
         this.iva = iva;
         this.totalCompra = totalCompra;
@@ -122,11 +122,11 @@ public class RegistroVendido {
     }
 
     public int getCantidad() {
-        return Cantidad;
+        return cantidad;
     }
 
-    public void setCantidad(int Cantidad) {
-        this.Cantidad = Cantidad;
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 
     public double getValorCompra() {

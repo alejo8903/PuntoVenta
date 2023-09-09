@@ -4,6 +4,14 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.RegistroVendidoController;
+import com.intesoft.puntoventa.dto.IngresosDto;
+import com.intesoft.puntoventa.util.MonedaTransform;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -13,8 +21,13 @@ public class Ingresos extends javax.swing.JInternalFrame {
     /**
      * Creates new form Ingresos
      */
+    private List<IngresosDto> listIngresosDto;
+    private RegistroVendidoController registroVendidoController;
+    private MonedaTransform monedaTransform;
     public Ingresos() {
         initComponents();
+        monedaTransform = new MonedaTransform();
+        
     }
 
     /**
@@ -32,11 +45,15 @@ public class Ingresos extends javax.swing.JInternalFrame {
         Jf_totalVentas = new javax.swing.JFormattedTextField();
         jLabel2 = new javax.swing.JLabel();
         Jf_totalGanancias = new javax.swing.JFormattedTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        startJDateChooser = new com.toedter.calendar.JDateChooser();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        endJDateChooser = new com.toedter.calendar.JDateChooser();
+        jButton1 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
         setTitle("Ingresos");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/crecimiento-del-dinero.png"))); // NOI18N
 
@@ -45,11 +62,11 @@ public class Ingresos extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Ventas Realizadas (Dia)", "Valor Ventas"
+                "Id", "Id Operacion", "Codigo", "Descripcion", "Talla", "Color", "Tipo Operacion", "Fecha", "Usuario", "Cantidad", "Valor Compra", "Valor Venta", "Ganancia"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -62,7 +79,16 @@ public class Ingresos extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Total Ganancias");
 
-        jLabel3.setText("Buscar Ventas:");
+        jLabel4.setText("Fecha Inicial");
+
+        jLabel5.setText("Fecha Final");
+
+        jButton1.setText("Filtrar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -73,7 +99,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 436, Short.MAX_VALUE)
+                        .addGap(0, 516, Short.MAX_VALUE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(Jf_totalGanancias, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -83,20 +109,28 @@ public class Ingresos extends javax.swing.JInternalFrame {
                         .addComponent(Jf_totalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(8, 8, 8))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(startJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(47, 47, 47)
+                        .addComponent(jLabel5)
+                        .addGap(18, 18, 18)
+                        .addComponent(endJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(22, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(startJDateChooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(endJDateChooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -105,21 +139,60 @@ public class Ingresos extends javax.swing.JInternalFrame {
                     .addComponent(Jf_totalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Jf_totalGanancias, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addContainerGap())
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        registroVendidoController = new RegistroVendidoController();
+        Date startDate = startJDateChooser.getDate();
+        Date endDate = endJDateChooser.getDate();
+        listIngresosDto = registroVendidoController.getIngresosByDateRange(startDate, endDate );
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setNumRows(0);
+        double ganacia = 0;
+        double totalGanacia = 0;
+        double totalVenta = 0;
+        for (IngresosDto ingresosDto : listIngresosDto) {
+            ganacia = (ingresosDto.getValorVenta()- ingresosDto.getValorCompra());
+            totalVenta += ingresosDto.getValorVenta();
+            totalGanacia += ganacia;
+            Object[] rowData = {
+                ingresosDto.getId(),
+                ingresosDto.getIdOperacion(),
+                ingresosDto.getCodigo(),
+                ingresosDto.getDescripcion(),
+                ingresosDto.getTalla(),
+                ingresosDto.getColor(),
+                ingresosDto.getTipoOperacion(),
+                ingresosDto.getFecha(),
+                ingresosDto.getUsuario(),
+                ingresosDto.getCantidad(),
+                monedaTransform.formatMoneda(ingresosDto.getValorCompra()),
+                monedaTransform.formatMoneda(ingresosDto.getValorVenta()),
+                monedaTransform.formatMoneda(ganacia)
+            };
+            model.addRow(rowData);
+            
+        }
+        Jf_totalVentas.setText(monedaTransform.formatMoneda(totalVenta));
+        Jf_totalGanancias.setText(monedaTransform.formatMoneda(totalGanacia));
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField Jf_totalGanancias;
     private javax.swing.JFormattedTextField Jf_totalVentas;
+    private com.toedter.calendar.JDateChooser endJDateChooser;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private com.toedter.calendar.JDateChooser startJDateChooser;
     // End of variables declaration//GEN-END:variables
 }

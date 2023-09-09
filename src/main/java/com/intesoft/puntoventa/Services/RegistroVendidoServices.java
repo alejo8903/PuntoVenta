@@ -4,7 +4,9 @@
  */
 package com.intesoft.puntoventa.Services;
 
+import com.intesoft.puntoventa.dto.IngresosDto;
 import com.intesoft.puntoventa.entity.RegistroVendido;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,5 +16,7 @@ import java.util.List;
 public interface RegistroVendidoServices {
 
     public void saveProductosVenta(List<RegistroVendido> listRegistroVendidos);
+
+    public List<IngresosDto> getIngresosByDateRange(Date startDate, Date endDate);
     
 }

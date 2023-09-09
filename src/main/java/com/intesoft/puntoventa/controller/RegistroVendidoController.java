@@ -6,7 +6,9 @@ package com.intesoft.puntoventa.controller;
 
 import com.intesoft.puntoventa.Services.RegistroVendidoServices;
 import com.intesoft.puntoventa.ServicesImplements.RegistroVendidoServicesImplement;
+import com.intesoft.puntoventa.dto.IngresosDto;
 import com.intesoft.puntoventa.entity.RegistroVendido;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -15,11 +17,20 @@ import java.util.List;
  */
 public class RegistroVendidoController {
 
-    RegistroVendidoServices registroVendidoServices;
+    private RegistroVendidoServices registroVendidoServices;
+    private List<IngresosDto> listIngresosDto;
     
     public void saveProductosVenta(List<RegistroVendido> listRegistroVendidos) {
         registroVendidoServices = new RegistroVendidoServicesImplement();
         registroVendidoServices.saveProductosVenta(listRegistroVendidos);
     }
+
+    public List<IngresosDto> getIngresosByDateRange(Date  startDate, Date  endDate) {
+        registroVendidoServices = new RegistroVendidoServicesImplement();
+        listIngresosDto = registroVendidoServices.getIngresosByDateRange(startDate, endDate);
+        return listIngresosDto;
+    }
+
+    
     
 }

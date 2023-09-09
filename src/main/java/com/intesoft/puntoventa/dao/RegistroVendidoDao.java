@@ -4,27 +4,33 @@
  */
 package com.intesoft.puntoventa.dao;
 
+import com.intesoft.puntoventa.dto.IngresosDto;
 import com.intesoft.puntoventa.entity.RegistroVendido;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 /**
  *
  * @author alejo
  */
 public class RegistroVendidoDao {
+
     private final EntityManagerFactory entityManagerFactory;
-    
+
     public RegistroVendidoDao(String persistence) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
     }
-    
-    public void  close(){
+
+    public void close() {
         entityManagerFactory.close();
     }
+
     public void batchCreateRgistrosVenta(List<RegistroVendido> listRegistroVendidos) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
@@ -43,9 +49,9 @@ public class RegistroVendidoDao {
                     entityManager.flush();
                     entityManager.clear();
                     transaction.commit();
-                    
+
                 }
-                
+
             }
 
             transaction.commit();
@@ -58,5 +64,30 @@ public class RegistroVendidoDao {
             entityManager.close();
         }
     }
-    
+
+    public List<IngresosDto> getIngresosEntreFechas(Date fechaInicio, Date fechaFin) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<IngresosDto> listIngresosDto = new ArrayList<>();
+        try {
+            // Escribe una consulta JPQL para recuperar los datos
+            String jpql = "SELECT NEW com.intesoft.puntoventa.dto.IngresosDto("
+                    + "rv.id, rv.operacion.idOperacion, rv.codigo, rv.descripcion, rv.talla, rv.color, "
+                    + "o.operacion, o.fecha, o.usuario, rv.cantidad, rv.valorCompra, "
+                    + "rv.valorVenta) "
+                    + "FROM RegistroVendido rv "
+                    + "JOIN rv.operacion o "
+                    + "WHERE o.fecha BETWEEN :fechaInicio AND :fechaFin "
+                    + "AND NOT EXISTS (SELECT c FROM Credito c WHERE c.Operacion.idOperacion = rv.operacion.idOperacion AND c.pagado = false)";
+
+            TypedQuery<IngresosDto> query = entityManager.createQuery(jpql, IngresosDto.class);
+            query.setParameter("fechaInicio", fechaInicio);
+            query.setParameter("fechaFin", fechaFin);
+            
+            listIngresosDto = query.getResultList();
+            return listIngresosDto;
+        } finally {
+            entityManager.close();
+        }
+
+    }
 }

@@ -18,75 +18,72 @@ import javax.swing.JOptionPane;
  */
 @Stateless
 public class MaestroDao {
+
     private final EntityManagerFactory entityManagerFactory;
 
     public MaestroDao(String persistence) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
     }
-    
-    public void  close(){
+
+    public void close() {
         entityManagerFactory.close();
     }
-    
-     public Maestro findById(String codigo){
+
+    public Maestro findById(String codigo) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-       entityManager.getTransaction().begin();
-       Maestro maestro = entityManager.find(Maestro.class, codigo);
-       entityManager.getTransaction().commit();
-       entityManager.close();
-       return maestro;
+        entityManager.getTransaction().begin();
+        Maestro maestro = entityManager.find(Maestro.class, codigo);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return maestro;
     }
 
-   public List<Maestro> getAll(){
-       EntityManager entityManager = entityManagerFactory.createEntityManager();
-       entityManager.getTransaction().begin();
-       
-       List<Maestro> master = entityManager.createQuery
-        ("SELECT m FROM Maestro m", Maestro.class)
-               .getResultList();
-       
-       entityManager.getTransaction().commit();
-       entityManager.close();
-       return master;
-   }
-   
-   public void merge(Maestro maestro){
-       EntityManager entityManager = entityManagerFactory.createEntityManager();
-       
-       entityManager.getTransaction().begin();
-       
-       entityManager.merge(maestro);
-       
-       entityManager.getTransaction().commit();
-       
-       entityManager.close();
-       JOptionPane.showMessageDialog(null, "Producto actualizado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
-       
-   }
-   
-   public void create(Maestro maestro){
-       EntityManager entityManager = entityManagerFactory.createEntityManager();
-       entityManager.getTransaction().begin();
-       
-       entityManager.persist(maestro);
-       
-       entityManager.getTransaction().commit();
-       entityManager.close();
-       JOptionPane.showMessageDialog(null, "Producto ingresaso con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
-   }
+    public List<Maestro> getAll() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        List<Maestro> master = entityManager.createQuery("SELECT m FROM Maestro m", Maestro.class)
+                .getResultList();
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return master;
+    }
+
+    public void merge(Maestro maestro) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        entityManager.getTransaction().begin();
+
+        entityManager.merge(maestro);
+
+        entityManager.getTransaction().commit();
+
+        entityManager.close();
+
+    }
+
+    public void create(Maestro maestro) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        entityManager.persist(maestro);
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 
     public Maestro getMaxCodigo() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-       
-       Maestro maestro = entityManager.createQuery
-        ("SELECT m FROM Maestro m WHERE m.codigo = (SELECT MAX(m2.codigo) FROM Maestro m2)",
+
+        Maestro maestro = entityManager.createQuery("SELECT m FROM Maestro m WHERE m.codigo = (SELECT MAX(m2.codigo) FROM Maestro m2)",
                 Maestro.class)
-               .getSingleResult();
-       
-       entityManager.getTransaction().commit();
-       entityManager.close();
-       return maestro;
+                .getSingleResult();
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return maestro;
     }
 
     public void delete(String codigo) {
@@ -102,8 +99,5 @@ public class MaestroDao {
         }
 
         entityManager.close();
-        JOptionPane.showMessageDialog(null, "Producto eliminado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
-   
     }
 }
-
