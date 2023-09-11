@@ -4,6 +4,17 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.CreditoController;
+import com.intesoft.puntoventa.dto.CreditoDto;
+import com.intesoft.puntoventa.entity.Credito;
+import com.intesoft.puntoventa.util.ModelarTabla;
+import com.intesoft.puntoventa.util.MonedaTransform;
+import com.intesoft.puntoventa.util.Operaciones;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Usuario
@@ -13,8 +24,28 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     /**
      * Creates new form Separados_Creditos
      */
+    private ModelarTabla modelarTablaCredito;
+    private ModelarTabla modelarTablaSeparado;
+    private DefaultTableModel modelCredito;
+    private DefaultTableModel modelSeparado;
+    private List<CreditoDto> listCreditoDtoCredito;
+    private List<CreditoDto> listCreditoDtoSeparado;
+    private CreditoController creditoController;
+    private MonedaTransform monedaTransform;
+
     public Separados_Creditos() {
         initComponents();
+        modelarTablaCredito = new ModelarTabla(jTable1);
+        modelarTablaSeparado = new ModelarTabla(jTable2);
+        modelCredito = modelarTablaCredito.getModel();
+        modelSeparado = modelarTablaSeparado.getModel();
+        listCreditoDtoCredito = new ArrayList<>();
+        listCreditoDtoSeparado = new ArrayList<>();
+        creditoController = new CreditoController();
+        monedaTransform = new MonedaTransform();
+        updateTableCreditos();
+        updateTableSeparados();
+
     }
 
     /**
@@ -55,11 +86,11 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Nombres", "Total Credito", "Saldo Pendiente", "Abonos", "Total Abonos", "Fecha Pago", "Plazos Meses"
+                "Id", "Nombres", "Apellido", "Total Credito", "Total Abonos", "Saldo Pendiente"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, false, true, true
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -68,13 +99,13 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTable1);
         if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(300);
-            jTable1.getColumnModel().getColumn(1).setMinWidth(5);
-            jTable1.getColumnModel().getColumn(1).setPreferredWidth(20);
-            jTable1.getColumnModel().getColumn(2).setMinWidth(5);
-            jTable1.getColumnModel().getColumn(2).setPreferredWidth(20);
+            jTable1.getColumnModel().getColumn(0).setMinWidth(5);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(20);
+            jTable1.getColumnModel().getColumn(1).setPreferredWidth(300);
             jTable1.getColumnModel().getColumn(3).setMinWidth(5);
             jTable1.getColumnModel().getColumn(3).setPreferredWidth(20);
+            jTable1.getColumnModel().getColumn(5).setMinWidth(5);
+            jTable1.getColumnModel().getColumn(5).setPreferredWidth(20);
         }
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -87,7 +118,12 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         });
 
         Jb_creditos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregar-archivo.png"))); // NOI18N
-        Jb_creditos.setText("Crear Credito");
+        Jb_creditos.setText("Abonar");
+        Jb_creditos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Jb_creditosActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("Abonos:");
 
@@ -110,7 +146,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                 .addComponent(Tj_abonos, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Jb_creditos)
-                .addContainerGap(572, Short.MAX_VALUE))
+                .addContainerGap(619, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,7 +166,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         jTabbedPane1.addTab("Creditos", jPanel1);
 
         Jb_Separados.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/agregar-archivo.png"))); // NOI18N
-        Jb_Separados.setText("Crear Separado");
+        Jb_Separados.setText("Abonar");
         Jb_Separados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 Jb_SeparadosActionPerformed(evt);
@@ -142,11 +178,11 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Nombres", "Total Separado", "Saldo Pendiente", "Abono", "Total Abonos", "Plazos Meses"
+                "Id", "Nombres", "Apellido", "Total Separado", "Total Abonos", "Saldo Pendiente"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, true, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -155,13 +191,11 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(jTable2);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setPreferredWidth(300);
-            jTable2.getColumnModel().getColumn(1).setMinWidth(5);
-            jTable2.getColumnModel().getColumn(1).setPreferredWidth(20);
-            jTable2.getColumnModel().getColumn(2).setMinWidth(5);
-            jTable2.getColumnModel().getColumn(2).setPreferredWidth(20);
+            jTable2.getColumnModel().getColumn(1).setPreferredWidth(300);
             jTable2.getColumnModel().getColumn(3).setMinWidth(5);
             jTable2.getColumnModel().getColumn(3).setPreferredWidth(20);
+            jTable2.getColumnModel().getColumn(5).setMinWidth(5);
+            jTable2.getColumnModel().getColumn(5).setPreferredWidth(20);
         }
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -244,9 +278,123 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_Tf_Cedula1ActionPerformed
 
     private void Jb_SeparadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jb_SeparadosActionPerformed
-        // TODO add your handling code here:
+        int rowIndex = jTable2.getSelectedRow();
+        String abonoText = Jt_abonoSeparado.getText();
+        if (rowIndex >= 0 && !abonoText.isEmpty()) {
+            int respuesta = JOptionPane.showConfirmDialog(null, "Esta seguro que desea saldar el separado: \n"
+                    + "Credito numero: " + jTable2.getValueAt(rowIndex, 0).toString() + " \n"
+                    + "Nombre: " + jTable2.getValueAt(rowIndex, 1).toString() + " " + jTable2.getValueAt(rowIndex, 2).toString() + " \n"
+                    + "Valor: " + jTable2.getValueAt(rowIndex, 3).toString() + " \n"
+                    + "Abono: " + Jt_abonoSeparado.getText() + " \n",
+                    "Advertencia", JOptionPane.YES_NO_OPTION);
+
+            if (respuesta == JOptionPane.YES_OPTION ) {
+
+                double totalAbonado = monedaTransform.transfrormMoneda(jTable1.getValueAt(rowIndex, 4).toString());
+                double abono = Double.parseDouble(Jt_abonoSeparado.getText());
+                double deuda = monedaTransform.transfrormMoneda(jTable2.getValueAt(rowIndex, 5).toString());
+                Credito credito = creditoController.getCreditById(Integer.parseInt(jTable2.getValueAt(rowIndex, 0).toString()));
+
+                if ((deuda - abono) < 0) {
+                    JOptionPane.showMessageDialog(null, "Favor veifique el monto del abono, no puede ser mayor a la deuda",
+                            "Advertenvia", JOptionPane.WARNING_MESSAGE);
+ 
+                } else if((deuda - abono) == 0){
+                    credito.setTotalAbonado(totalAbonado + abono);
+                    credito.setPagado(true);
+                    creditoController.updateCredito(credito);
+                    updateTableSeparados();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Los separados deben saldarse para entregarse\n"
+                            + "verifique que el abono corresponde al saldo pendiente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        
+                    
+                }
+
+            }else{
+                
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe Seleccionar un credito de la lista"
+                    + "\n y debe introcir un abono valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_Jb_SeparadosActionPerformed
 
+    private void Jb_creditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jb_creditosActionPerformed
+        int rowIndex = jTable1.getSelectedRow();
+        String abonoText = Tj_abonos.getText();
+        if (rowIndex >= 0 && !abonoText.isEmpty()) {
+            int respuesta = JOptionPane.showConfirmDialog(null, "Esta seguro que desea abonar o saldar el credito: \n"
+                    + "Credito numero: " + jTable1.getValueAt(rowIndex, 0).toString() + " \n"
+                    + "Nombre: " + jTable1.getValueAt(rowIndex, 1).toString() + " " + jTable1.getValueAt(rowIndex, 2).toString() + " \n"
+                    + "Valor: " + jTable1.getValueAt(rowIndex, 3).toString() + " \n"
+                    + "Abono: " + Tj_abonos.getText() + " \n",
+                    "Advertencia", JOptionPane.YES_NO_OPTION);
+
+            if (respuesta == JOptionPane.YES_OPTION ) {
+
+                double totalAbonado = monedaTransform.transfrormMoneda(jTable1.getValueAt(rowIndex, 4).toString());
+                double abono = Double.parseDouble(Tj_abonos.getText());
+                double deuda = monedaTransform.transfrormMoneda(jTable1.getValueAt(rowIndex, 5).toString());
+                Credito credito = creditoController.getCreditById(Integer.parseInt(jTable1.getValueAt(rowIndex, 0).toString()));
+
+                if ((deuda - abono) < 0) {
+                    JOptionPane.showMessageDialog(null, "Favor veifique el monto del abono, no puede ser mayor a la deuda",
+                            "Advertenvia", JOptionPane.WARNING_MESSAGE);
+ 
+                } else {
+                    credito.setTotalAbonado(totalAbonado + abono);
+                    if((deuda - abono) == 0){
+                        credito.setPagado(true);
+                    }
+                    creditoController.updateCredito(credito);
+                    updateTableCreditos();
+                }
+
+            }else{
+                
+            }
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe Seleccionar un credito de la lista"
+                    + "\n y debe introcir un abono valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_Jb_creditosActionPerformed
+
+    private void updateTableCreditos() {
+        listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.VENTACREDITO.toString());
+        modelCredito.setRowCount(0);
+        for (CreditoDto creditoDto : listCreditoDtoCredito) {
+            Object[] dataRow = {
+                creditoDto.getId(),
+                creditoDto.getNombre(),
+                creditoDto.getApellido(),
+                monedaTransform.formatMoneda(creditoDto.getTotalCredito()),
+                monedaTransform.formatMoneda(creditoDto.getTotalAbonos()),
+                monedaTransform.formatMoneda(creditoDto.getTotalCredito() - creditoDto.getTotalAbonos())
+            };
+            modelCredito.addRow(dataRow);
+        }
+
+    }
+
+    private void updateTableSeparados() {
+        listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.SEPARADO.toString());
+        modelSeparado.setRowCount(0);
+        for (CreditoDto creditoDto : listCreditoDtoCredito) {
+            Object[] dataRow = {
+                creditoDto.getId(),
+                creditoDto.getNombre(),
+                creditoDto.getApellido(),
+                monedaTransform.formatMoneda(creditoDto.getTotalCredito()),
+                monedaTransform.formatMoneda(creditoDto.getTotalAbonos()),
+                monedaTransform.formatMoneda(creditoDto.getTotalCredito() - creditoDto.getTotalAbonos())
+            };
+            modelSeparado.addRow(dataRow);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Jb_Separados;

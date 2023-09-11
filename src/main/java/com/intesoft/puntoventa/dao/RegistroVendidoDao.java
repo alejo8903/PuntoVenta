@@ -22,6 +22,7 @@ import javax.persistence.TypedQuery;
 public class RegistroVendidoDao {
 
     private final EntityManagerFactory entityManagerFactory;
+    private EntityManager entityManager;
 
     public RegistroVendidoDao(String persistence) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
@@ -32,7 +33,7 @@ public class RegistroVendidoDao {
     }
 
     public void batchCreateRgistrosVenta(List<RegistroVendido> listRegistroVendidos) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
 
         try {
@@ -66,7 +67,7 @@ public class RegistroVendidoDao {
     }
 
     public List<IngresosDto> getIngresosEntreFechas(Date fechaInicio, Date fechaFin) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         List<IngresosDto> listIngresosDto = new ArrayList<>();
         try {
             // Escribe una consulta JPQL para recuperar los datos

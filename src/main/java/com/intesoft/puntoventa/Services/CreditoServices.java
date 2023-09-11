@@ -4,7 +4,9 @@
  */
 package com.intesoft.puntoventa.Services;
 
+import com.intesoft.puntoventa.dto.CreditoDto;
 import com.intesoft.puntoventa.entity.Credito;
+import java.util.List;
 
 /**
  *
@@ -13,5 +15,11 @@ import com.intesoft.puntoventa.entity.Credito;
 public interface CreditoServices {
 
     public int saveCredito(Credito credito);
+
+    public List<CreditoDto> getListaCreditos(String tipoCredito);
+
+    public Credito getCreditById(int id);
+
+    public void updateCredit(Credito credito);
     
 }

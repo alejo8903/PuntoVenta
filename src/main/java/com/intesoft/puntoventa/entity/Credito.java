@@ -27,7 +27,7 @@ public class Credito {
     private int idCredito;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idoperacion")
-    Operacion Operacion;
+    Operacion operacion;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_cliente")
     Clientes clientes;
@@ -42,9 +42,9 @@ public class Credito {
     public Credito() {
     }
 
-    public Credito(int idCredito, Operacion Operacion, Clientes clientes, double totalCredito, double totalAbonado, boolean pagado) {
+    public Credito(int idCredito, Operacion operacion, Clientes clientes, double totalCredito, double totalAbonado, boolean pagado) {
         this.idCredito = idCredito;
-        this.Operacion = Operacion;
+        this.operacion = operacion;
         this.clientes = clientes;
         this.totalCredito = totalCredito;
         this.totalAbonado = totalAbonado;
@@ -60,11 +60,11 @@ public class Credito {
     }
 
     public Operacion getOperacion() {
-        return Operacion;
+        return operacion;
     }
 
     public void setOperacion(Operacion Operacion) {
-        this.Operacion = Operacion;
+        this.operacion = Operacion;
     }
 
     public Clientes getClientes() {

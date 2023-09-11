@@ -4,10 +4,14 @@
  */
 package com.intesoft.puntoventa.dao;
 
+import com.intesoft.puntoventa.dto.CreditoDto;
 import com.intesoft.puntoventa.entity.Credito;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -38,5 +42,38 @@ public class CreditoDao {
        
         
         }
-    
+
+    public List<CreditoDto> getListaCreditos(String tipoCredito) {
+        entityManager = entityManagerFactory.createEntityManager();
+        List<CreditoDto> listCreditoDto = new ArrayList<>();
+        try {
+            // Escribe una consulta JPQL para recuperar los datos
+            String jpql = "SELECT NEW com.intesoft.puntoventa.dto.CreditoDto("
+                + "c.id, c.clientes.nombre, c.clientes.apellido, c.operacion.valor, c.totalAbonado) "
+                + "FROM Credito c "
+                + "WHERE c.pagado = false "  // Cambiado de "FAlSE" a "false"
+                + "AND EXISTS (SELECT o FROM Operacion o WHERE o.idOperacion = c.operacion.idOperacion AND o.operacion = :tipoCredito)";
+
+
+            TypedQuery<CreditoDto> query = entityManager.createQuery(jpql, CreditoDto.class);
+            query.setParameter("tipoCredito", tipoCredito);
+            
+            
+            listCreditoDto = query.getResultList();
+            return listCreditoDto;
+        } finally {
+            entityManager.close();
+        }
+
+    }
+
+    public void merge(Credito credito) {
+        entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(credito);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
 }
+    
+

@@ -609,14 +609,15 @@ public class Ventas extends javax.swing.JInternalFrame {
             totalVenta += (monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
             this.jLTotal.setText(monedaTransform.formatMoneda(totalVenta));
             listRegistroVendidos.add(registroVendido);
+            this.credito.setTotalAbonado(monedaTransform.transfrormMoneda(abono)+credito.getTotalAbonado());
+            this.credito.setTotalCredito(monedaTransform.transfrormMoneda(jTextFValor.getText())+credito.getTotalCredito());
             this.jTextFCodigo.setText("");
             this.jTextFCantidad.setText("");
             this.jTextFDescuento.setText("");
             this.jTextFDescripcion.setText("");
             this.jTextFValor.setText("");
             updateTable();
-            this.credito.setTotalAbonado(monedaTransform.transfrormMoneda(abono)+credito.getTotalAbonado());
-            this.credito.setTotalCredito(monedaTransform.transfrormMoneda(jTextFValor.getText())+credito.getTotalCredito());
+            
             
         }else{
             JOptionPane.showMessageDialog(null, "Lacantida debe ser diferente de cero", "Advertencia", JOptionPane.WARNING_MESSAGE);

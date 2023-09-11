@@ -7,6 +7,7 @@ package com.intesoft.puntoventa.formularios;
 import com.intesoft.puntoventa.controller.RegistroVendidoController;
 import com.intesoft.puntoventa.dto.IngresosDto;
 import com.intesoft.puntoventa.util.MonedaTransform;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -27,6 +28,18 @@ public class Ingresos extends javax.swing.JInternalFrame {
     public Ingresos() {
         initComponents();
         monedaTransform = new MonedaTransform();
+        // Obtén la fecha actual
+        Calendar calendar = Calendar.getInstance();
+        
+        // Resta 7 días a la fecha actual
+        calendar.add(Calendar.DAY_OF_YEAR, -7);
+        
+        // Convierte el resultado de nuevo a un objeto Date
+        Date nuevaFecha = calendar.getTime();
+        
+        startJDateChooser.setDate(nuevaFecha);
+        endJDateChooser.setDate(new Date());
+        jButton1ActionPerformed(null);
         
     }
 
