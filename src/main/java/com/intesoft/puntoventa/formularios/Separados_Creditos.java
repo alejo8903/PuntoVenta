@@ -62,7 +62,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
-        Tf_Cedula = new javax.swing.JTextField();
+        searchJTextrField = new javax.swing.JTextField();
         Jb_creditos = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         Tj_abonos = new javax.swing.JTextField();
@@ -71,7 +71,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        Tf_Cedula1 = new javax.swing.JTextField();
+        search1JTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         Jt_abonoSeparado = new javax.swing.JTextField();
@@ -109,11 +109,16 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         }
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel1.setText("Cliente:");
+        jLabel1.setText("Busqueda");
 
-        Tf_Cedula.addActionListener(new java.awt.event.ActionListener() {
+        searchJTextrField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Tf_CedulaActionPerformed(evt);
+                searchJTextrFieldActionPerformed(evt);
+            }
+        });
+        searchJTextrField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchJTextrFieldKeyReleased(evt);
             }
         });
 
@@ -133,20 +138,20 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1146, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(Tf_Cedula, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(searchJTextrField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(72, 72, 72)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Tj_abonos, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Jb_creditos)
-                .addContainerGap(619, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -154,7 +159,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(Tf_Cedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchJTextrField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Jb_creditos)
                     .addComponent(jLabel4)
                     .addComponent(Tj_abonos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -199,11 +204,16 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         }
 
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel2.setText("Cliente:");
+        jLabel2.setText("Busqueda");
 
-        Tf_Cedula1.addActionListener(new java.awt.event.ActionListener() {
+        search1JTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Tf_Cedula1ActionPerformed(evt);
+                search1JTextFieldActionPerformed(evt);
+            }
+        });
+        search1JTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                search1JTextFieldKeyReleased(evt);
             }
         });
 
@@ -219,10 +229,10 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                 .addContainerGap())
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(Tf_Cedula1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(search1JTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
                 .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(Jt_abonoSeparado, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -238,7 +248,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(Tf_Cedula1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(search1JTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(jLabel5)
                     .addComponent(Jb_Separados)
@@ -269,13 +279,13 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void Tf_CedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Tf_CedulaActionPerformed
+    private void searchJTextrFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchJTextrFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_Tf_CedulaActionPerformed
+    }//GEN-LAST:event_searchJTextrFieldActionPerformed
 
-    private void Tf_Cedula1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Tf_Cedula1ActionPerformed
+    private void search1JTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search1JTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_Tf_Cedula1ActionPerformed
+    }//GEN-LAST:event_search1JTextFieldActionPerformed
 
     private void Jb_SeparadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jb_SeparadosActionPerformed
         int rowIndex = jTable2.getSelectedRow();
@@ -363,6 +373,16 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_Jb_creditosActionPerformed
 
+    private void searchJTextrFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchJTextrFieldKeyReleased
+        String search = searchJTextrField.getText();
+        modelarTablaCredito.filter(search, null);
+    }//GEN-LAST:event_searchJTextrFieldKeyReleased
+
+    private void search1JTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_search1JTextFieldKeyReleased
+        String search = search1JTextField.getText();
+        modelarTablaSeparado.filter(search, null);
+    }//GEN-LAST:event_search1JTextFieldKeyReleased
+
     private void updateTableCreditos() {
         listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.VENTACREDITO.toString());
         modelCredito.setRowCount(0);
@@ -400,8 +420,6 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     private javax.swing.JButton Jb_Separados;
     private javax.swing.JButton Jb_creditos;
     private javax.swing.JTextField Jt_abonoSeparado;
-    private javax.swing.JTextField Tf_Cedula;
-    private javax.swing.JTextField Tf_Cedula1;
     private javax.swing.JTextField Tj_abonos;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -415,5 +433,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
+    private javax.swing.JTextField search1JTextField;
+    private javax.swing.JTextField searchJTextrField;
     // End of variables declaration//GEN-END:variables
 }

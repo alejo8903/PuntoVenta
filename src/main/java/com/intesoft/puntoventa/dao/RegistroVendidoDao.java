@@ -78,7 +78,7 @@ public class RegistroVendidoDao {
                     + "FROM RegistroVendido rv "
                     + "JOIN rv.operacion o "
                     + "WHERE o.fecha BETWEEN :fechaInicio AND :fechaFin "
-                    + "AND NOT EXISTS (SELECT c FROM Credito c WHERE c.Operacion.idOperacion = rv.operacion.idOperacion AND c.pagado = false)";
+                    + "AND NOT EXISTS (SELECT c FROM Credito c WHERE c.operacion.idOperacion = rv.operacion.idOperacion AND c.pagado = false)";
 
             TypedQuery<IngresosDto> query = entityManager.createQuery(jpql, IngresosDto.class);
             query.setParameter("fechaInicio", fechaInicio);

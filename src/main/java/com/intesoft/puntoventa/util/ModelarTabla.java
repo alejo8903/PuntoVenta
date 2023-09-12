@@ -29,11 +29,13 @@ public class ModelarTabla {
     public void filter(String filtro, Integer column) {
         if (column != null) {
             try {
-                sorter.setRowFilter(RowFilter.regexFilter(filtro));
+                sorter.setRowFilter(RowFilter.regexFilter(filtro, column));
 
             } catch (Exception e) {
 
             }
+        }else{
+            sorter.setRowFilter(RowFilter.regexFilter(filtro));
         }
 
     }

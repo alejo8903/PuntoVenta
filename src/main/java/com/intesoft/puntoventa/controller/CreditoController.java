@@ -32,5 +32,9 @@ public class CreditoController {
     public void updateCredito(Credito credito) {
         creditoServices.updateCredit(credito);
     }
+
+    public double getTotalCajaCredito() {
+        return creditoServices.getTotalCajaCredito();
+    }
     
 }

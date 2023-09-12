@@ -43,4 +43,9 @@ public class CreditoServicesImplements implements CreditoServices {
         creditoDao.merge(credito);
     }
 
+    @Override
+    public double getTotalCajaCredito() {
+        return creditoDao.getTotalAbonosNoPagado() + creditoDao.getTotalCreditosPagados();
+    }
+
 }

@@ -5,6 +5,7 @@
 package com.intesoft.puntoventa.Services;
 
 import com.intesoft.puntoventa.entity.Operacion;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ public interface OperacionServices {
 
     public Operacion getOperacionById(int numeroVenta);
 
-    public List<Operacion> getAllEgresos();
+    public List<Operacion> getAllEgresos(Date fechaInicio, Date fechaFin);
+
+    public double getTotalCajaVentas();
     
 }

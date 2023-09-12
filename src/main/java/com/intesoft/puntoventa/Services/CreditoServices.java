@@ -21,5 +21,7 @@ public interface CreditoServices {
     public Credito getCreditById(int id);
 
     public void updateCredit(Credito credito);
+
+    public double getTotalCajaCredito();
     
 }

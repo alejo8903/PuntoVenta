@@ -7,6 +7,7 @@ package com.intesoft.puntoventa.controller;
 import com.intesoft.puntoventa.ServicesImplements.OperacionServicesImplement;
 import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.Services.OperacionServices;
+import java.util.Date;
 import java.util.List;
 
 
@@ -30,9 +31,14 @@ public class OperacionController {
         return operacionServices.getOperacionById(numeroOperacion);
     }
 
-    public List<Operacion> getAllEgresos() {
+    public List<Operacion> getAllEgresos(Date fechaInicio, Date fechaFin) {
         OperacionServices operacionServices = new OperacionServicesImplement();
-        return operacionServices.getAllEgresos();
+        return operacionServices.getAllEgresos(fechaInicio, fechaFin);
+    }
+
+    public double getTotalCajaVentas() {
+        OperacionServices operacionServices = new OperacionServicesImplement();
+        return operacionServices.getTotalCajaVentas();
     }
     
 }

@@ -21,10 +21,11 @@ public class CreditoDao {
 
     private final EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
-    
+
     public CreditoDao(String persitencia) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persitencia);
     }
+
     public int create(Credito credito) {
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -38,10 +39,9 @@ public class CreditoDao {
     public Credito findById(int idCredito) {
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        return  entityManager.find(Credito.class, idCredito);
-       
-        
-        }
+        return entityManager.find(Credito.class, idCredito);
+
+    }
 
     public List<CreditoDto> getListaCreditos(String tipoCredito) {
         entityManager = entityManagerFactory.createEntityManager();
@@ -49,16 +49,14 @@ public class CreditoDao {
         try {
             // Escribe una consulta JPQL para recuperar los datos
             String jpql = "SELECT NEW com.intesoft.puntoventa.dto.CreditoDto("
-                + "c.id, c.clientes.nombre, c.clientes.apellido, c.operacion.valor, c.totalAbonado) "
-                + "FROM Credito c "
-                + "WHERE c.pagado = false "  // Cambiado de "FAlSE" a "false"
-                + "AND EXISTS (SELECT o FROM Operacion o WHERE o.idOperacion = c.operacion.idOperacion AND o.operacion = :tipoCredito)";
-
+                    + "c.id, c.clientes.nombre, c.clientes.apellido, c.operacion.valor, c.totalAbonado) "
+                    + "FROM Credito c "
+                    + "WHERE c.pagado = false " // Cambiado de "FAlSE" a "false"
+                    + "AND EXISTS (SELECT o FROM Operacion o WHERE o.idOperacion = c.operacion.idOperacion AND o.operacion = :tipoCredito)";
 
             TypedQuery<CreditoDto> query = entityManager.createQuery(jpql, CreditoDto.class);
             query.setParameter("tipoCredito", tipoCredito);
-            
-            
+
             listCreditoDto = query.getResultList();
             return listCreditoDto;
         } finally {
@@ -74,6 +72,43 @@ public class CreditoDao {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
-}
-    
 
+    public double getTotalCreditosPagados() {
+        entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        // Sumar el valor de créditos pagados
+        Double totalCreditosPagados = entityManager.createQuery(
+                "SELECT SUM(c.totalCredito) FROM Credito c WHERE c.pagado = true", Double.class)
+                .getSingleResult();
+
+        if (totalCreditosPagados == null) {
+            totalCreditosPagados = 0.0;
+        }
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
+        return totalCreditosPagados;
+    }
+
+    public double getTotalAbonosNoPagado() {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+
+        // Sumar los abonos pendientes (donde pagado es igual a false)
+        Double totalAbonosPendientes = entityManager.createQuery(
+                "SELECT SUM(c.totalAbonado) FROM Credito c WHERE c.pagado = false", Double.class)
+                .getSingleResult();
+
+        if (totalAbonosPendientes == null) {
+            totalAbonosPendientes = 0.0;
+        }
+
+        entityManager.getTransaction().commit();
+        entityManager.close();
+
+        return totalAbonosPendientes;
+    }
+
+}

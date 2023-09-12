@@ -32,8 +32,13 @@ public class OperacionServicesImplement implements OperacionServices {
     }
 
     @Override
-    public List<Operacion> getAllEgresos() {
-        return operacionDao.getAllEgresos();
+    public List<Operacion> getAllEgresos(Date fechaInicio, Date fechaFin) {
+        return operacionDao.getAllEgresos(fechaInicio, fechaFin);
+    }
+
+    @Override
+    public double getTotalCajaVentas() {
+        return operacionDao.getTotalCajaVenta();
     }
     
 }

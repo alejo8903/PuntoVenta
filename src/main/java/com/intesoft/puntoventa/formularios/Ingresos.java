@@ -4,6 +4,8 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.CreditoController;
+import com.intesoft.puntoventa.controller.OperacionController;
 import com.intesoft.puntoventa.controller.RegistroVendidoController;
 import com.intesoft.puntoventa.dto.IngresosDto;
 import com.intesoft.puntoventa.util.MonedaTransform;
@@ -39,7 +41,10 @@ public class Ingresos extends javax.swing.JInternalFrame {
         
         startJDateChooser.setDate(nuevaFecha);
         endJDateChooser.setDate(new Date());
-        jButton1ActionPerformed(null);
+        updateTable();
+        ValorCajaTextField.setEditable(false);
+        Jf_totalGanancias.setEditable(false);
+        Jf_totalVentas.setEditable(false);
         
     }
 
@@ -62,7 +67,8 @@ public class Ingresos extends javax.swing.JInternalFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         endJDateChooser = new com.toedter.calendar.JDateChooser();
-        jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        ValorCajaTextField = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -92,16 +98,23 @@ public class Ingresos extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Total Ganancias");
 
+        startJDateChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                startJDateChooserPropertyChange(evt);
+            }
+        });
+
         jLabel4.setText("Fecha Inicial");
 
         jLabel5.setText("Fecha Final");
 
-        jButton1.setText("Filtrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+        endJDateChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                endJDateChooserPropertyChange(evt);
             }
         });
+
+        jLabel3.setText("Valor en Caja:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,7 +125,11 @@ public class Ingresos extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 516, Short.MAX_VALUE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3)
+                        .addGap(18, 18, 18)
+                        .addComponent(ValorCajaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 295, Short.MAX_VALUE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(Jf_totalGanancias, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -129,21 +146,18 @@ public class Ingresos extends javax.swing.JInternalFrame {
                         .addComponent(jLabel5)
                         .addGap(18, 18, 18)
                         .addComponent(endJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(42, 42, 42)
-                        .addComponent(jButton1)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(startJDateChooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(endJDateChooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -151,14 +165,31 @@ public class Ingresos extends javax.swing.JInternalFrame {
                     .addComponent(jLabel1)
                     .addComponent(Jf_totalVentas, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Jf_totalGanancias, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(ValorCajaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void startJDateChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_startJDateChooserPropertyChange
+        updateTable();
+    }//GEN-LAST:event_startJDateChooserPropertyChange
+
+    private void endJDateChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_endJDateChooserPropertyChange
+        updateTable();
+    }//GEN-LAST:event_endJDateChooserPropertyChange
+    public void totalizarCaja(){
+        OperacionController operacionController = new OperacionController();
+        CreditoController creditoController = new CreditoController();
+        
+        double cajaVentas = operacionController.getTotalCajaVentas();
+        double cajaCreditos = creditoController.getTotalCajaCredito();
+        ValorCajaTextField.setText(monedaTransform.formatMoneda(cajaVentas + cajaCreditos));
+    }
+    private void updateTable(){
         registroVendidoController = new RegistroVendidoController();
         Date startDate = startJDateChooser.getDate();
         Date endDate = endJDateChooser.getDate();
@@ -192,16 +223,17 @@ public class Ingresos extends javax.swing.JInternalFrame {
         }
         Jf_totalVentas.setText(monedaTransform.formatMoneda(totalVenta));
         Jf_totalGanancias.setText(monedaTransform.formatMoneda(totalGanacia));
-    }//GEN-LAST:event_jButton1ActionPerformed
-
+        totalizarCaja();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField Jf_totalGanancias;
     private javax.swing.JFormattedTextField Jf_totalVentas;
+    private javax.swing.JTextField ValorCajaTextField;
     private com.toedter.calendar.JDateChooser endJDateChooser;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JScrollPane jScrollPane1;
