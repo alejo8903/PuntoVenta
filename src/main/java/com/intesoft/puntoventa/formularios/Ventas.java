@@ -769,7 +769,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jTextFPago.setText(monedaTransform.formatMoneda(monedaDouble));
         this.jLabel16.setText(monedaTransform.formatMoneda(
                 monedaTransform.transfrormMoneda(jTextFPago.getText()) - monedaTransform.transfrormMoneda(jLTotal.getText())));
-         evt.consume();
+        evt.consume();
     }//GEN-LAST:event_jTextFPagoKeyTyped
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
@@ -777,7 +777,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             int rowIndex = this.jTable1.getSelectedRow();
             String totalAbonado = this.jTable1.getValueAt(rowIndex, 9).toString();
             if (totalAbonado.isEmpty()) {
-                totalAbonado = "0";               
+                totalAbonado = "0";
             }
             if (rowIndex >= 0) {
                 this.credito.setTotalAbonado(this.credito.getTotalAbonado() - monedaTransform.transfrormMoneda(totalAbonado));
@@ -820,6 +820,14 @@ public class Ventas extends javax.swing.JInternalFrame {
         updateTable();
         this.inventario = new Inventario();
         this.cliente = new Clientes();
+        jBCliente.setVisible(false);
+        jLabel4.setVisible(false);
+        jLabel19.setVisible(false);
+        jLabelNombre.setVisible(false);
+        jTextAbono.setVisible(false);
+        jRadioVenta.setEnabled(true);
+        jRadioSeparar.setEnabled(true);
+        jRadioCredito.setEnabled(true);
     }//GEN-LAST:event_jLabel17MouseClicked
 
     private void jRadioSepararStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioSepararStateChanged
