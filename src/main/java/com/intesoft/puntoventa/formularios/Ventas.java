@@ -16,6 +16,7 @@ import com.intesoft.puntoventa.entity.RegistroVendido;
 import com.intesoft.puntoventa.entity.Usuarios;
 import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.util.MonedaTransform;
+import com.intesoft.puntoventa.util.NumericValidator;
 import com.intesoft.puntoventa.util.Operaciones;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -45,9 +46,12 @@ public class Ventas extends javax.swing.JInternalFrame {
     private Clientes cliente;
     private Operacion operacion;
     private Credito credito;
+    private NumericValidator numericValidator;
+
     public Ventas() {
         initComponents();
     }
+
     public Ventas(Usuarios usuarios) {
         this.usuarios = usuarios;
         initComponents();
@@ -62,9 +66,8 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.credito = new Credito();
         this.operacion = new Operacion();
         this.cliente = new Clientes();
-        
-        
-        
+        numericValidator = new NumericValidator();
+
     }
 
     /**
@@ -558,7 +561,7 @@ public class Ventas extends javax.swing.JInternalFrame {
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         String code = this.jTextFCodigo.getText();
-        if( code.isBlank()){
+        if (code.isBlank()) {
             JOptionPane.showMessageDialog(null, "Debe ingresar el codigo o parte del mismo para buscar", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
@@ -571,23 +574,23 @@ public class Ventas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jLabel6MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
-        String cantidad = this.jTextFCantidad.getText() ;
+        String cantidad = this.jTextFCantidad.getText();
         String code = this.jTextFCodigo.getText();
-        String descuento =this.jTextFDescuento.getText();
+        String descuento = this.jTextFDescuento.getText();
         RegistroVendido registroVendido = new RegistroVendido();
         String abono = this.jTextAbono.getText();
         int rows = jTable1.getRowCount();
-        if((abono.isBlank() || this.cliente.getIdCliente() == 0) && (this.jRadioSeparar.isSelected() || this.jRadioCredito.isSelected())){
+        if ((abono.isBlank() || this.cliente.getIdCliente() == 0) && (this.jRadioSeparar.isSelected() || this.jRadioCredito.isSelected())) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente e introducir un abono \n"
                     + " para poder separar o entregar a credito", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(code.isBlank() || this.inventario == null ){
+        if (code.isBlank() || this.inventario == null) {
             JOptionPane.showMessageDialog(null, "Debe ingresar un producto valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if (!cantidad.isBlank() && Integer.parseInt(cantidad ) > 0) {
-        
+        if (!cantidad.isBlank() && Integer.parseInt(cantidad) > 0) {
+
             registroVendido.setId(this.inventario.getId());
             registroVendido.setCodigo(this.inventario.getCodigo().getCodigo());
             registroVendido.setDescripcion(this.inventario.getCodigo().getDescripcion());
@@ -600,53 +603,52 @@ public class Ventas extends javax.swing.JInternalFrame {
             registroVendido.setPorcentajeGananciaE(this.inventario.getPorcentajeGanancia());
             if (descuento.isBlank()) {
                 registroVendido.setDescuento(0);
-            }else{
-            registroVendido.setDescuento(monedaTransform.transfrormMoneda(descuento));
+            } else {
+                registroVendido.setDescuento(monedaTransform.transfrormMoneda(descuento));
             }
-            
-            registroVendido.setValorVenta( monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
-            registroVendido.setPorcentajeGananciaR((float)(registroVendido.getValorVenta()/registroVendido.getTotalCompra())-1);
+
+            registroVendido.setValorVenta(monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
+            registroVendido.setPorcentajeGananciaR((float) (registroVendido.getValorVenta() / registroVendido.getTotalCompra()) - 1);
             totalVenta += (monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
             this.jLTotal.setText(monedaTransform.formatMoneda(totalVenta));
             listRegistroVendidos.add(registroVendido);
-            this.credito.setTotalAbonado(monedaTransform.transfrormMoneda(abono)+credito.getTotalAbonado());
-            this.credito.setTotalCredito(monedaTransform.transfrormMoneda(jTextFValor.getText())+credito.getTotalCredito());
+            this.credito.setTotalAbonado(monedaTransform.transfrormMoneda(abono) + credito.getTotalAbonado());
+            this.credito.setTotalCredito(monedaTransform.transfrormMoneda(jTextFValor.getText()) + credito.getTotalCredito());
             this.jTextFCodigo.setText("");
             this.jTextFCantidad.setText("");
             this.jTextFDescuento.setText("");
             this.jTextFDescripcion.setText("");
             this.jTextFValor.setText("");
             updateTable();
-            
-            
-        }else{
+
+        } else {
             JOptionPane.showMessageDialog(null, "Lacantida debe ser diferente de cero", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        if(rows == 0){
-        this.operacion.setOperacion( Operaciones.VENTA.toString());
-        this.credito.setClientes(this.cliente);
-        
-        if((jRadioCredito.isSelected() || jRadioSeparar.isSelected()) && !abono.isEmpty() && this.cliente != null){
-            
-            if (jRadioCredito.isSelected()) {
-                this.operacion.setOperacion(  Operaciones.VENTACREDITO.toString());
-            }else if(jRadioSeparar.isSelected()){
-                this.operacion.setOperacion( Operaciones.SEPARADO.toString());
+        if (rows == 0) {
+            this.operacion.setOperacion(Operaciones.VENTA.toString());
+            this.credito.setClientes(this.cliente);
+
+            if ((jRadioCredito.isSelected() || jRadioSeparar.isSelected()) && !abono.isEmpty() && this.cliente != null) {
+
+                if (jRadioCredito.isSelected()) {
+                    this.operacion.setOperacion(Operaciones.VENTACREDITO.toString());
+                } else if (jRadioSeparar.isSelected()) {
+                    this.operacion.setOperacion(Operaciones.SEPARADO.toString());
+                }
             }
-        }
         }
         jRadioVenta.setEnabled(false);
         jRadioSeparar.setEnabled(false);
         jRadioCredito.setEnabled(false);
         jBCliente.setEnabled(false);
         jTextAbono.setText("");
-        
-        
+
+
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-        
+
         OperacionController operacionController = new OperacionController();
         CreditoController creditoController = new CreditoController();
         this.operacion.setValor(monedaTransform.transfrormMoneda(this.jLTotal.getText()));
@@ -654,17 +656,17 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.operacion.setUsuario(this.usuarios.getNombres() + " " + this.usuarios.getApellidos());
         int numeroOperacion = operacionController.saveOperacion(this.operacion);
         this.operacion = operacionController.getOperacionById(numeroOperacion);
-        if((!this.operacion.getOperacion().equals(Operaciones.VENTA.toString()))){
+        if ((!this.operacion.getOperacion().equals(Operaciones.VENTA.toString()))) {
             this.credito.setOperacion(this.operacion);
             int idCredito = creditoController.saveCredito(this.credito);
         }
-        
-        for(RegistroVendido registroVendido : this.listRegistroVendidos){
+
+        for (RegistroVendido registroVendido : this.listRegistroVendidos) {
             InventarioController inventarioController = new InventarioController();
             inventarioController.updateInventario(registroVendido.getId(), registroVendido.getCantidad());
             registroVendido.setId(0);
             registroVendido.setVenta(operacion);
-            
+
         }
         RegistroVendidoController registroVendidoController = new RegistroVendidoController();
         registroVendidoController.saveProductosVenta(this.listRegistroVendidos);
@@ -690,26 +692,26 @@ public class Ventas extends javax.swing.JInternalFrame {
 
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
         String descuento = this.jTextFDescuento.getText();
+        String cantidad = this.jTextFCantidad.getText();
+        if (cantidad.isBlank()) {
+            cantidad = "0";
+        }
         if (descuento.isBlank()) {
             descuento = "0";
         }
-        char []p={'1','2','3','4','5','6','7','8','9','0','\b','\0'};
-        int b=0;
-        for(int i=0; i<p.length ;i++){
-            if(evt.getKeyChar() == '\b' || evt.getKeyChar() == '\0'){
-                return;
-            }else if (p[i] == evt.getKeyChar() && Integer.parseInt(this.jTextFCantidad.getText()+String.valueOf(evt.getKeyChar())) <= this.inventario.getCantidad()){
-                b=1;
-            }
-            
-        }
-        if(b==0){
+        char c = evt.getKeyChar();
+        double value = Double.parseDouble(cantidad + c);
+        if (value > this.inventario.getCantidad()) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "La cantidad supera el stock o \n no es un caracter valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "La cantidad supera el stock", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
-        double valor = this.inventario.getValorVenta()* (Double.parseDouble(this.jTextFCantidad.getText()+ String.valueOf(evt.getKeyChar())));
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
+        }
+
+        double valor = this.inventario.getValorVenta() * (Double.parseDouble(cantidad + String.valueOf(evt.getKeyChar())));
         this.jTextFValor.setText(monedaTransform.formatMoneda(valor - Double.parseDouble(descuento)));
     }//GEN-LAST:event_jTextFCantidadKeyTyped
 
@@ -717,40 +719,31 @@ public class Ventas extends javax.swing.JInternalFrame {
         String cantidad = jTextFCantidad.getText();
         String descuento = this.jTextFDescuento.getText();
         boolean flag = false;
-        if (descuento.isBlank()) {
-            descuento = "0";
-            flag = true;
+        if (descuento.isBlank() || descuento == "$ 0" || descuento == "$ ") {
+            descuento = "";
         }
+
         if (cantidad.isBlank()) {
             evt.consume();
             JOptionPane.showMessageDialog(null, "Debe ingresar una cantidad valida", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        char []p={'1','2','3','4','5','6','7','8','9','0','\b','\0'};
-        int b=0;
-        for(int i=0; i<p.length ;i++){
-            if (p[i] == evt.getKeyChar()){
-                String letra = String.valueOf(evt.getKeyChar());
-                String actual = this.jTextFDescuento.getText();
-                evt.consume();
-                if (flag) {
-                    this.jTextFDescuento.setText(monedaTransform.formatMoneda(Double.parseDouble(letra)));
-                }else{
-                    String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(actual));
-                    monedalimpia= monedalimpia.substring(0,monedalimpia.length()-2);
-                    this.jTextFDescuento.setText(monedaTransform.formatMoneda(Double.parseDouble(monedalimpia+letra)));
-                }
-                double valor = this.inventario.getValorVenta()* Double.parseDouble(jTextFCantidad.getText());
-                this.jTextFValor.setText(monedaTransform.formatMoneda(valor - monedaTransform.transfrormMoneda(this.jTextFDescuento.getText())));
-                return;
-            }
-
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
         }
-       
-            evt.consume();
-            JOptionPane.showMessageDialog(null, "No es un caracter valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
-          
-        
+
+        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(descuento + evt.getKeyChar()));
+        double monedaDouble = Double.parseDouble(monedalimpia);
+        this.jTextFDescuento.setText(monedaTransform.formatMoneda(monedaDouble));
+        double valor = this.inventario.getValorVenta() * Double.parseDouble(jTextFCantidad.getText());
+        if ((valor - monedaTransform.transfrormMoneda(this.jTextFDescuento.getText())) < this.inventario.getTotalCompra()) {
+            JOptionPane.showMessageDialog(null, "El descuento sobrepasa el valor de la ganancia del producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            this.jTextFDescuento.setText("");
+        }
+        this.jTextFValor.setText(monedaTransform.formatMoneda(valor - monedaTransform.transfrormMoneda(this.jTextFDescuento.getText())));
+
+        evt.consume();
     }//GEN-LAST:event_jTextFDescuentoKeyTyped
 
     private void jTextFPagoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFPagoKeyTyped
@@ -763,57 +756,45 @@ public class Ventas extends javax.swing.JInternalFrame {
         }
         if (total.isBlank()) {
             evt.consume();
-            JOptionPane.showMessageDialog(null, "Debe tener productos sepsrado para vender", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Debe tener productos separado para vender", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        char []p={'1','2','3','4','5','6','7','8','9','0','\b','\0'};
-        int b=0;
-        for(int i=0; i<p.length ;i++){
-            if (p[i] == evt.getKeyChar()){
-                String letra = String.valueOf(evt.getKeyChar());
-                String actual = this.jTextFPago.getText();
-                evt.consume();
-                if (flag) {
-                    this.jTextFPago.setText(monedaTransform.formatMoneda(Double.parseDouble(letra)));
-                }else{
-                    String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(actual));
-                    monedalimpia= monedalimpia.substring(0,monedalimpia.length()-2);
-                    this.jTextFPago.setText(monedaTransform.formatMoneda(Double.parseDouble(monedalimpia+letra)));
-                    this.jLabel16.setText(monedaTransform.formatMoneda(
-                            monedaTransform.transfrormMoneda(jTextFPago.getText())-monedaTransform.transfrormMoneda(jLTotal.getText())));
-                }
-                return;
-            }
-
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
         }
-        
-        evt.consume();
-        JOptionPane.showMessageDialog(null, "No es un caracter valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        
-            
-        
+
+        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(pago + evt.getKeyChar()));
+        double monedaDouble = Double.parseDouble(monedalimpia);
+        this.jTextFPago.setText(monedaTransform.formatMoneda(monedaDouble));
+        this.jLabel16.setText(monedaTransform.formatMoneda(
+                monedaTransform.transfrormMoneda(jTextFPago.getText()) - monedaTransform.transfrormMoneda(jLTotal.getText())));
+         evt.consume();
     }//GEN-LAST:event_jTextFPagoKeyTyped
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
         if (evt.getClickCount() == 2) {
-             int rowIndex = this.jTable1.getSelectedRow();
-        if(rowIndex >=0 ){
-            this.credito.setTotalAbonado(this.credito.getTotalAbonado() - Double.parseDouble(this.jTable1.getValueAt(rowIndex, 9).toString()));
-            this.jLTotal.setText( monedaTransform.formatMoneda(monedaTransform.transfrormMoneda(jLTotal.getText()) - 
-                    monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString())));
-            int id = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 0).toString());
-            int cantidad = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 6).toString());
-            double descuento = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 7).toString());
-            double valor = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString());
-            setProductoVenta(id, cantidad, descuento, valor);
-            this.listRegistroVendidos.remove(rowIndex);
-            updateTable();
-            
-            
-        }else{
-            JOptionPane.showMessageDialog(null, "No ha selecionado ningun producto para modificar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-            
+            int rowIndex = this.jTable1.getSelectedRow();
+            String totalAbonado = this.jTable1.getValueAt(rowIndex, 9).toString();
+            if (totalAbonado.isEmpty()) {
+                totalAbonado = "0";               
+            }
+            if (rowIndex >= 0) {
+                this.credito.setTotalAbonado(this.credito.getTotalAbonado() - monedaTransform.transfrormMoneda(totalAbonado));
+                this.jLTotal.setText(monedaTransform.formatMoneda(monedaTransform.transfrormMoneda(jLTotal.getText())
+                        - monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString())));
+                int id = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 0).toString());
+                int cantidad = Integer.parseInt(this.jTable1.getValueAt(rowIndex, 6).toString());
+                double descuento = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 7).toString());
+                double valor = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString());
+                setProductoVenta(id, cantidad, descuento, valor);
+                this.listRegistroVendidos.remove(rowIndex);
+                updateTable();
+
+            } else {
+                JOptionPane.showMessageDialog(null, "No ha selecionado ningun producto para modificar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+
         }
     }//GEN-LAST:event_jTable1MouseClicked
 
@@ -848,7 +829,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             jLabel19.setVisible(true);
             jLabelNombre.setVisible(true);
             jTextAbono.setVisible(true);
-            
+
         }
     }//GEN-LAST:event_jRadioSepararStateChanged
 
@@ -873,7 +854,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             jLabelNombre.setText("");
             jTextAbono.setVisible(true);
             jTextAbono.setText("");
-            
+
         }
     }//GEN-LAST:event_jRadioCreditoStateChanged
 
@@ -884,41 +865,42 @@ public class Ventas extends javax.swing.JInternalFrame {
             abono = "0";
             flag = true;
         }
-        char []p={'1','2','3','4','5','6','7','8','9','0','\b','\0'};
-        for(int i=0; i<p.length ;i++){
-            if (p[i] == evt.getKeyChar()){    
+        char[] p = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\b', '\0'};
+        for (int i = 0; i < p.length; i++) {
+            if (p[i] == evt.getKeyChar()) {
                 String letra = String.valueOf(evt.getKeyChar());
                 String actual = this.jTextAbono.getText();
                 evt.consume();
                 if (flag) {
-                        this.jTextAbono.setText(monedaTransform.formatMoneda(Double.parseDouble(letra)));
-                    }else{
-                        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(actual));
-                        monedalimpia= monedalimpia.substring(0,monedalimpia.length()-2);
-                        this.jTextAbono.setText(monedaTransform.formatMoneda(Double.parseDouble(monedalimpia+letra)));
-                    }
+                    this.jTextAbono.setText(monedaTransform.formatMoneda(Double.parseDouble(letra)));
+                } else {
+                    String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(actual));
+                    monedalimpia = monedalimpia.substring(0, monedalimpia.length() - 2);
+                    this.jTextAbono.setText(monedaTransform.formatMoneda(Double.parseDouble(monedalimpia + letra)));
+                }
             }
-            
+
         }
-        
-        
+
+
     }//GEN-LAST:event_jTextAbonoKeyTyped
 
     private void jBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBClienteActionPerformed
         ClientesSelect clientesSelect = new ClientesSelect(this.jLabelNombre, this.cliente);
-        
+
         clientesSelect.setVisible(true);
         clientesSelect.setModal(true);
-        
+
     }//GEN-LAST:event_jBClienteActionPerformed
-    public void setProductoVenta(int id){
+    public void setProductoVenta(int id) {
         InventarioController inventarioController = new InventarioController();
         this.inventario = inventarioController.getProductoById(id);
         jTextFCodigo.setText(inventario.getCodigo().getCodigo());
         jTextFDescripcion.setText(inventario.getCodigo().getDescripcion());
         jTextFValor.setText(monedaTransform.formatMoneda(inventario.getValorVenta()));
     }
-     public void setProductoVenta(int id, int cantidad, double descuento, double valor){
+
+    public void setProductoVenta(int id, int cantidad, double descuento, double valor) {
         InventarioController inventarioController = new InventarioController();
         this.inventario = null;
         this.inventario = inventarioController.getProductoById(id);
@@ -928,26 +910,26 @@ public class Ventas extends javax.swing.JInternalFrame {
         jTextFDescuento.setText(monedaTransform.formatMoneda(descuento));
         jTextFCantidad.setText(String.valueOf(cantidad));
     }
-    
-    private void updateTable(){
+
+    private void updateTable() {
         DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
         model.setNumRows(0);
         int item = 0;
-        for(RegistroVendido registroVendido : this.listRegistroVendidos){
+        for (RegistroVendido registroVendido : this.listRegistroVendidos) {
             item += 1;
             Object[] rowData = {
-            registroVendido.getId(),
-            item,
-            registroVendido.getCodigo(),
-            registroVendido.getDescripcion(),
-            registroVendido.getTalla(),
-            registroVendido.getColor(),
-            registroVendido.getCantidad(),
-            monedaTransform.formatMoneda(registroVendido.getDescuento()),
-            monedaTransform.formatMoneda(registroVendido.getValorVenta()),
-            this.jTextAbono
+                registroVendido.getId(),
+                item,
+                registroVendido.getCodigo(),
+                registroVendido.getDescripcion(),
+                registroVendido.getTalla(),
+                registroVendido.getColor(),
+                registroVendido.getCantidad(),
+                monedaTransform.formatMoneda(registroVendido.getDescuento()),
+                monedaTransform.formatMoneda(registroVendido.getValorVenta()),
+                this.jTextAbono
             };
-      model.addRow(rowData);
+            model.addRow(rowData);
         }
     }
 

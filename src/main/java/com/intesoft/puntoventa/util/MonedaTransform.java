@@ -32,6 +32,9 @@ public class MonedaTransform {
             moneda="0";
         }
         String numeroLimpio = moneda.replaceAll("[^\\d.]", "").replace(".", ""); // Eliminar todo excepto dígitos y el punto decimal
+        if(numeroLimpio.isBlank()){
+            numeroLimpio = "0";
+        }
         double numero = Double.parseDouble(numeroLimpio);
         
         return numero;
