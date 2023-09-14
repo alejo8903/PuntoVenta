@@ -25,10 +25,10 @@ public class Credito {
     @Column(name = "id_credito")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idCredito;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idoperacion")
     Operacion operacion;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente")
     Clientes clientes;
     @Column(name = "total_credito")

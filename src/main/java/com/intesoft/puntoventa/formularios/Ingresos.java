@@ -7,7 +7,9 @@ package com.intesoft.puntoventa.formularios;
 import com.intesoft.puntoventa.controller.CreditoController;
 import com.intesoft.puntoventa.controller.OperacionController;
 import com.intesoft.puntoventa.controller.RegistroVendidoController;
+import com.intesoft.puntoventa.controller.ResumenFinancieroController;
 import com.intesoft.puntoventa.dto.IngresosDto;
+import com.intesoft.puntoventa.entity.ResumenFinanciero;
 import com.intesoft.puntoventa.util.MonedaTransform;
 import java.util.Calendar;
 import java.util.Date;
@@ -27,6 +29,8 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private List<IngresosDto> listIngresosDto;
     private RegistroVendidoController registroVendidoController;
     private MonedaTransform monedaTransform;
+    private ResumenFinancieroController resumenFinancieroController;
+    private ResumenFinanciero resumenFinanciero;
     public Ingresos() {
         initComponents();
         monedaTransform = new MonedaTransform();
@@ -42,9 +46,10 @@ public class Ingresos extends javax.swing.JInternalFrame {
         startJDateChooser.setDate(nuevaFecha);
         endJDateChooser.setDate(new Date());
         updateTable();
-        ValorCajaTextField.setEditable(false);
+        valorCajaTextField.setEditable(false);
         Jf_totalGanancias.setEditable(false);
         Jf_totalVentas.setEditable(false);
+        
         
     }
 
@@ -68,7 +73,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         endJDateChooser = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
-        ValorCajaTextField = new javax.swing.JTextField();
+        valorCajaTextField = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -128,7 +133,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(ValorCajaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(valorCajaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 295, Short.MAX_VALUE)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
@@ -167,7 +172,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
                     .addComponent(Jf_totalGanancias, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
                     .addComponent(jLabel3)
-                    .addComponent(ValorCajaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(valorCajaTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -181,13 +186,12 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private void endJDateChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_endJDateChooserPropertyChange
         updateTable();
     }//GEN-LAST:event_endJDateChooserPropertyChange
-    public void totalizarCaja(){
-        OperacionController operacionController = new OperacionController();
-        CreditoController creditoController = new CreditoController();
+    private void totalizarCaja(){
+        resumenFinancieroController  = new ResumenFinancieroController();
+        resumenFinanciero = resumenFinancieroController.getTotalCaja();
+        valorCajaTextField.setText(monedaTransform.formatMoneda(resumenFinanciero.getTotalAbonosNoPagado() 
+                + resumenFinanciero.getTotalCajaVenta()+ resumenFinanciero.getTotalAbonosNoPagado()));
         
-        double cajaVentas = operacionController.getTotalCajaVentas();
-        double cajaCreditos = creditoController.getTotalCajaCredito();
-        ValorCajaTextField.setText(monedaTransform.formatMoneda(cajaVentas + cajaCreditos));
     }
     private void updateTable(){
         registroVendidoController = new RegistroVendidoController();
@@ -229,7 +233,6 @@ public class Ingresos extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField Jf_totalGanancias;
     private javax.swing.JFormattedTextField Jf_totalVentas;
-    private javax.swing.JTextField ValorCajaTextField;
     private com.toedter.calendar.JDateChooser endJDateChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -239,5 +242,6 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private com.toedter.calendar.JDateChooser startJDateChooser;
+    private javax.swing.JTextField valorCajaTextField;
     // End of variables declaration//GEN-END:variables
 }

@@ -20,6 +20,7 @@ import javax.persistence.TypedQuery;
 public class OperacionDao {
 
     private final EntityManagerFactory entityManagerFactory;
+    private EntityManager entityManager;
 
     public OperacionDao(String persistence) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
@@ -30,7 +31,7 @@ public class OperacionDao {
     }
 
     public int crearVenta(Operacion operacion) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(operacion);
         entityManager.flush();
@@ -41,7 +42,7 @@ public class OperacionDao {
     }
 
     public Operacion getById(int id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         Operacion venta = entityManager.find(Operacion.class, id);
         entityManager.getTransaction().commit();
@@ -50,7 +51,7 @@ public class OperacionDao {
     }
 
     public List<Operacion> getAllEgresos(Date fechaInicio, Date fechaFin) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
         List<Operacion> listOperacion = new ArrayList<>();
@@ -74,7 +75,7 @@ public class OperacionDao {
     }
 
     public double getTotalCajaVenta() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
         // Sumar el valor de operaciones SEPARADO y VENTACREDITO

@@ -6,13 +6,18 @@ package com.intesoft.puntoventa.formularios;
 
 import com.intesoft.puntoventa.controller.CreditoController;
 import com.intesoft.puntoventa.controller.OperacionController;
+import com.intesoft.puntoventa.controller.ResumenFinancieroController;
 import com.intesoft.puntoventa.entity.Operacion;
+import com.intesoft.puntoventa.entity.ResumenFinanciero;
 import com.intesoft.puntoventa.entity.Usuarios;
 import com.intesoft.puntoventa.util.MonedaTransform;
+import com.intesoft.puntoventa.util.NumericValidator;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -32,6 +37,9 @@ public class Egresos extends javax.swing.JInternalFrame {
     private Usuarios usuarios;
     private OperacionController operacionController;
     private MonedaTransform monedaTransform;
+    private NumericValidator numericValidator;
+    private ResumenFinancieroController resumenFinancieroController;
+    private ResumenFinanciero resumenFinanciero;
 
     public Egresos() {
         initComponents();
@@ -58,6 +66,8 @@ public class Egresos extends javax.swing.JInternalFrame {
         monedaTransform = new MonedaTransform();
         jDateChooser1.setDate(nuevaFecha);
         jDateChooser2.setDate(new Date());
+        numericValidator = new NumericValidator();
+       
 
         updateTable();
     }
@@ -111,6 +121,12 @@ public class Egresos extends javax.swing.JInternalFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setText("Costos:");
+
+        Jt_Gastos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                Jt_GastosKeyTyped(evt);
+            }
+        });
 
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/contabilidad.png"))); // NOI18N
         jButton1.setText("Ingresar Gastos");
@@ -218,11 +234,12 @@ public class Egresos extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String gasto = Jt_Gastos.getText();
         int tipoGasto = jComboBox1.getSelectedIndex();
+        
         if (!gasto.isEmpty() && tipoGasto != 0) {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres guardar este gasto? \n"
                     + jComboBox1.getSelectedItem().toString() + " por valor de " + gasto, "Confirmación", JOptionPane.YES_NO_OPTION);
             if (respuesta == JOptionPane.YES_OPTION) {
-                double gastoNum = Double.parseDouble(gasto);
+                double gastoNum = monedaTransform.transfrormMoneda(gasto);
             gastoNum = gastoNum * -1;
             Operacion operacion = new Operacion();
             operacion.setFecha(new Date());
@@ -230,6 +247,12 @@ public class Egresos extends javax.swing.JInternalFrame {
             operacion.setUsuario(this.usuarios.getNombres() + " " + this.usuarios.getApellidos());
             operacion.setValor(gastoNum);
             int id = operacionController.saveOperacion(operacion);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(Egresos.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            jDateChooser2.setDate(new Date());
             updateTable();
             JOptionPane.showMessageDialog(null, "El egreso " + id + " ha sido registrado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
@@ -249,6 +272,18 @@ public class Egresos extends javax.swing.JInternalFrame {
     private void jDateChooser2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser2PropertyChange
         updateTable();
     }//GEN-LAST:event_jDateChooser2PropertyChange
+
+    private void Jt_GastosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Jt_GastosKeyTyped
+        String gastos = Jt_Gastos.getText();
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
+        }
+        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(gastos + evt.getKeyChar()));
+        double monedaDouble = Double.parseDouble(monedalimpia);
+        this.Jt_Gastos.setText(monedaTransform.formatMoneda(monedaDouble));
+        evt.consume();
+    }//GEN-LAST:event_Jt_GastosKeyTyped
 
     private void updateTable() {
         OperacionController operacionController = new OperacionController();
@@ -272,13 +307,11 @@ public class Egresos extends javax.swing.JInternalFrame {
         Jf_TotalGastod.setText(monedaTransform.formatMoneda(totalGastos*-1));
         totalizarCaja();
     }
-    public void totalizarCaja(){
-        OperacionController operacionController = new OperacionController();
-        CreditoController creditoController = new CreditoController();
-        
-        double cajaVentas = operacionController.getTotalCajaVentas();
-        double cajaCreditos = creditoController.getTotalCajaCredito();
-        valorCajaTextField.setText(monedaTransform.formatMoneda(cajaVentas + cajaCreditos));
+    private void totalizarCaja(){
+        resumenFinancieroController  = new ResumenFinancieroController();
+        resumenFinanciero = resumenFinancieroController.getTotalCaja();
+        valorCajaTextField.setText(monedaTransform.formatMoneda(resumenFinanciero.getTotalAbonosNoPagado() 
+                + resumenFinanciero.getTotalCajaVenta()+ resumenFinanciero.getTotalAbonosNoPagado()));
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField Jf_TotalGastod;
