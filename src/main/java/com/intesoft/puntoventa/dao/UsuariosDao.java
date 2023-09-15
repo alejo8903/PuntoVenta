@@ -18,40 +18,46 @@ import javax.swing.JOptionPane;
  */
 @Stateless
 public class UsuariosDao {
+
     private final EntityManagerFactory entityManagerFactory;
+    private EntityManager entityManager;
 
     public UsuariosDao(String persistence) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
     }
-    
-    public void  close(){
+
+    public void close() {
         entityManagerFactory.close();
     }
-    
-    public List<Usuarios> getAll(){
+
+    public List<Usuarios> getAll() {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         List<Usuarios> usuariosList = entityManager
-                .createQuery("SELECT u FROM Usuarios u",Usuarios.class)
+                .createQuery("SELECT u FROM Usuarios u", Usuarios.class)
                 .getResultList();
-        
+
         entityManager.getTransaction().commit();
+        entityManager.flush();
         entityManager.close();
-        return usuariosList;  
-    } 
-    
-    public Usuarios getById (int idUsuario){
+        entityManagerFactory.close();
+        return usuariosList;
+    }
+
+    public Usuarios getById(int idUsuario) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         Usuarios usuarios = entityManager
-                .find(Usuarios.class,idUsuario);
+                .find(Usuarios.class, idUsuario);
         entityManager.getTransaction().commit();
+        entityManager.flush();
         entityManager.close();
+        entityManagerFactory.close();
         return usuarios;
     }
-    
-    public Usuarios getByUser (String user){
-       try{
+
+    public Usuarios getByUser(String user) {
+        try {
             EntityManager entityManager = entityManagerFactory.createEntityManager();
             entityManager.getTransaction().begin();
             Usuarios usuario = entityManager
@@ -60,34 +66,50 @@ public class UsuariosDao {
                     .getSingleResult();
             entityManager.getTransaction().commit();
             entityManager.close();
-            return usuario; 
-       }catch(Exception e){
-           e.printStackTrace();
-           JOptionPane.showMessageDialog(null, "Usuario no encontrado \n" + e, "Advertencia", JOptionPane.WARNING_MESSAGE);
-           Usuarios usuario = null;
-           return usuario;
-       }
+            return usuario;
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Usuario no encontrado \n" + e, "Advertencia", JOptionPane.WARNING_MESSAGE);
+            Usuarios usuario = null;
+            return usuario;
+        } finally {
+
             
+            entityManagerFactory.close();
+        }
+
     }
-    
-    public void update (Usuarios usuarios){
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.merge(usuarios);
-        entityManager.getTransaction().commit();
+
+    public void update(Usuarios usuarios) {
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+            entityManager.merge(usuarios);
+            entityManager.getTransaction().commit();
+        } finally {
+            
+            
+
         entityManager.close();
-    }
+                entityManagerFactory.close();
+            }
+
+        }
+
     
-    public void create (Usuarios usuarios){
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+    public void create(Usuarios usuarios) {
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(usuarios);
         entityManager.getTransaction().commit();
+
         entityManager.close();
+        entityManagerFactory.close();
     }
 
     public void delete(int id) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         Usuarios usuarios = entityManager.find(Usuarios.class, id);
 
@@ -99,6 +121,7 @@ public class UsuariosDao {
             JOptionPane.showMessageDialog(null, "Usuario no encontrado", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
 
-        entityManager.close();}
+        entityManager.close();
+        entityManagerFactory.close();
+    }
 }
-

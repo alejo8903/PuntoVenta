@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -32,21 +33,30 @@ public class CreditoDao {
         entityManager.persist(credito);
         int idVenta = credito.getIdCredito();
         entityManager.getTransaction().commit();
+
         entityManager.close();
+        entityManagerFactory.close();
         return idVenta;
     }
 
     public Credito findById(int idCredito) {
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        return entityManager.find(Credito.class, idCredito);
+        Credito credito = entityManager.find(Credito.class, idCredito);
+
+        entityManager.close();
+        entityManagerFactory.close();
+        return credito;
+        
 
     }
 
     public List<CreditoDto> getListaCreditos(String tipoCredito) {
+        try {
         entityManager = entityManagerFactory.createEntityManager();
         List<CreditoDto> listCreditoDto = new ArrayList<>();
-        try {
+        entityManager.getTransaction().begin();
+        
             // Escribe una consulta JPQL para recuperar los datos
             String jpql = "SELECT NEW com.intesoft.puntoventa.dto.CreditoDto("
                     + "c.id, c.clientes.nombre, c.clientes.apellido, c.operacion.valor, c.totalAbonado) "
@@ -56,11 +66,14 @@ public class CreditoDao {
 
             TypedQuery<CreditoDto> query = entityManager.createQuery(jpql, CreditoDto.class);
             query.setParameter("tipoCredito", tipoCredito);
-
+            
             listCreditoDto = query.getResultList();
+            entityManager.getTransaction().commit();
             return listCreditoDto;
         } finally {
+
             entityManager.close();
+            entityManagerFactory.close();
         }
 
     }
@@ -70,10 +83,13 @@ public class CreditoDao {
         entityManager.getTransaction().begin();
         entityManager.merge(credito);
         entityManager.getTransaction().commit();
-        entityManager.close();
-    }
 
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+    @Transactional
     public double getTotalCreditosPagados() {
+        try{
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
@@ -87,13 +103,21 @@ public class CreditoDao {
         }
 
         entityManager.getTransaction().commit();
-        entityManager.close();
-
         return totalCreditosPagados;
-    }
+        }finally{
 
+           entityManager.close(); 
+           entityManagerFactory.close();
+        }
+        
+
+        
+    }
+    @Transactional
     public double getTotalAbonosNoPagado() {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        
+        try {
+            entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
         // Sumar los abonos pendientes (donde pagado es igual a false)
@@ -106,9 +130,14 @@ public class CreditoDao {
         }
 
         entityManager.getTransaction().commit();
-        entityManager.close();
+        
 
         return totalAbonosPendientes;
+        } finally {
+            entityManager.close();
+            entityManagerFactory.close();
+        }
+        
     }
 
 }

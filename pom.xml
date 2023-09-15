@@ -102,6 +102,11 @@
             <version>1.4.200</version> <!-- Utiliza la versión más reciente -->
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.zaxxer</groupId>
+            <artifactId>HikariCP</artifactId>
+            <version>5.0.0</version> <!-- Reemplaza con la versión más reciente -->
+        </dependency>
     </dependencies>
     <build>
         <plugins>

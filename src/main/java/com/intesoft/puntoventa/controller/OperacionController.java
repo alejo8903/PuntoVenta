@@ -37,7 +37,7 @@ public class OperacionController {
     }
 
     public double getTotalCajaVentas() {
-        OperacionServices operacionServices = new OperacionServicesImplement();
+        final OperacionServices operacionServices = new OperacionServicesImplement();
         return operacionServices.getTotalCajaVentas();
     }
     

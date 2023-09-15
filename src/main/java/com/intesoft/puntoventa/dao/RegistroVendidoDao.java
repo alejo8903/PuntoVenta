@@ -14,6 +14,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -65,7 +66,7 @@ public class RegistroVendidoDao {
             entityManager.close();
         }
     }
-
+    @Transactional
     public List<IngresosDto> getIngresosEntreFechas(Date fechaInicio, Date fechaFin) {
         entityManager = entityManagerFactory.createEntityManager();
         List<IngresosDto> listIngresosDto = new ArrayList<>();

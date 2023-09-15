@@ -1,10 +1,11 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
-
 package com.intesoft.puntoventa;
 
 import com.intesoft.puntoventa.formularios.Login;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,32 +34,31 @@ public class PuntoVenta {
 
     public static void main(String[] args) {
         URL jarUrl = PuntoVenta.class.getProtectionDomain().getCodeSource().getLocation();
-        String jarPath ="";
+        String jarPath = "";
         try {
             jarPath = jarUrl.toURI().getPath();
         } catch (URISyntaxException ex) {
             Logger.getLogger(PuntoVenta.class.getName()).log(Level.SEVERE, null, ex);
         }
         String configFilePath = jarPath + "config.properties";
-        try {       
+        try {
             configFilePath = URLDecoder.decode(configFilePath, "UTF-8");
         } catch (UnsupportedEncodingException ex) {
             Logger.getLogger(PuntoVenta.class.getName()).log(Level.SEVERE, null, ex);
         }
         File jarFile = new File(jarPath);
         String parentDirectory = jarFile.getParent();
-        if (!(parentDirectory == null)){
+        if (!(parentDirectory == null)) {
             configFilePath = parentDirectory + File.separator + "config.properties";
         }
         try {
-                    UIManager.setLookAndFeel(new NimbusLookAndFeel());
-                   
-                } catch (UnsupportedLookAndFeelException ex) {
-                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-                }
-        
-        
-          Properties properties = new Properties();  
+            UIManager.setLookAndFeel(new NimbusLookAndFeel());
+
+        } catch (UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Properties properties = new Properties();
         try (InputStream input = new FileInputStream(configFilePath)) {
             properties.load(input);
         } catch (IOException e) {
@@ -70,30 +70,27 @@ public class PuntoVenta {
         System.setProperty("config.database.username", properties.getProperty("database.username"));
         System.setProperty("config.database.password", properties.getProperty("database.password"));
         
+
+
         Login login = new Login();
         try {
-        
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
 
-        EntityManager em = emf.createEntityManager();
+            EntityManagerFactory emf = Persistence.createEntityManagerFactory("myPersistenceUnit");
 
-        // Realiza operaciones de comprobación (por ejemplo, obtener una entidad)
-        // ...
+            EntityManager em = emf.createEntityManager();
 
-        // Cierra el EntityManager y el EntityManagerFactory
-        em.close();
-        emf.close(); // Pausa de 2 segundos (ajusta el tiempo según tus necesidades)
+            em.close();
+            emf.close(); 
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "No hay conexion con la base de datos", "Advertencia", 0);
-            
+
         }
         SwingUtilities.invokeLater(() -> {
-            
+
             login.setVisible(true);
-                       
+
         });
     }
-    
-}
 
+}

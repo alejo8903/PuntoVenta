@@ -11,7 +11,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 
 /**
  *
@@ -31,32 +33,37 @@ public class OperacionDao {
     }
 
     public int crearVenta(Operacion operacion) {
-        entityManager = entityManagerFactory.createEntityManager();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(operacion);
         entityManager.flush();
         int idVenta = operacion.getIdOperacion();
         entityManager.getTransaction().commit();
+
         entityManager.close();
+        entityManagerFactory.close();
         return idVenta;
     }
 
     public Operacion getById(int id) {
-        entityManager = entityManagerFactory.createEntityManager();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         Operacion venta = entityManager.find(Operacion.class, id);
         entityManager.getTransaction().commit();
+
         entityManager.close();
+        entityManagerFactory.close();
         return venta;
     }
 
+    @Transactional
     public List<Operacion> getAllEgresos(Date fechaInicio, Date fechaFin) {
-        entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-
-        List<Operacion> listOperacion = new ArrayList<>();
-
         try {
+            EntityManager entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            List<Operacion> listOperacion;
+
             String jpql = "SELECT o FROM Operacion o "
                     + "WHERE o.fecha BETWEEN :fechaInicio AND :fechaFin "
                     + "AND o.valor < 0";
@@ -67,15 +74,20 @@ public class OperacionDao {
 
             listOperacion = query.getResultList();
             entityManager.getTransaction().commit();
-        } finally {
             entityManager.close();
+
+            return listOperacion;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            entityManagerFactory.close();
         }
 
-        return listOperacion;
     }
 
     public double getTotalCajaVenta() {
-        entityManager = entityManagerFactory.createEntityManager();
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
 
         // Sumar el valor de operaciones SEPARADO y VENTACREDITO
@@ -88,7 +100,9 @@ public class OperacionDao {
         }
 
         entityManager.getTransaction().commit();
+
         entityManager.close();
+        entityManagerFactory.close();
 
         return totalCaja;
     }

@@ -40,6 +40,8 @@ public class Egresos extends javax.swing.JInternalFrame {
     private NumericValidator numericValidator;
     private ResumenFinancieroController resumenFinancieroController;
     private ResumenFinanciero resumenFinanciero;
+    private boolean flag1 = false;
+    private boolean flag2 = false;
 
     public Egresos() {
         initComponents();
@@ -96,6 +98,7 @@ public class Egresos extends javax.swing.JInternalFrame {
         jDateChooser2 = new com.toedter.calendar.JDateChooser();
         jLabel6 = new javax.swing.JLabel();
         valorCajaTextField = new javax.swing.JTextField();
+        jToggleButton1 = new javax.swing.JToggleButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -142,23 +145,18 @@ public class Egresos extends javax.swing.JInternalFrame {
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "SERVICIOS", "ALIMENTACION", "NOMINA", "MANTENIMIENTO" }));
 
-        jDateChooser1.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDateChooser1PropertyChange(evt);
-            }
-        });
-
         jLabel4.setText("inicial");
 
         jLabel5.setText("Final");
 
-        jDateChooser2.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                jDateChooser2PropertyChange(evt);
+        jLabel6.setText("Total en Caja:");
+
+        jToggleButton1.setText("Buscar");
+        jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jToggleButton1ActionPerformed(evt);
             }
         });
-
-        jLabel6.setText("Total en Caja:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -189,7 +187,8 @@ public class Egresos extends javax.swing.JInternalFrame {
                                 .addComponent(jLabel5)
                                 .addGap(18, 18, 18)
                                 .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+                                .addComponent(jToggleButton1))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(jLabel6)
@@ -216,7 +215,8 @@ public class Egresos extends javax.swing.JInternalFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(jLabel5)
                         .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jToggleButton1))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -265,14 +265,6 @@ public class Egresos extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void jDateChooser1PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser1PropertyChange
-        updateTable();
-    }//GEN-LAST:event_jDateChooser1PropertyChange
-
-    private void jDateChooser2PropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jDateChooser2PropertyChange
-        updateTable();
-    }//GEN-LAST:event_jDateChooser2PropertyChange
-
     private void Jt_GastosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Jt_GastosKeyTyped
         String gastos = Jt_Gastos.getText();
         numericValidator.validation(evt);
@@ -284,6 +276,10 @@ public class Egresos extends javax.swing.JInternalFrame {
         this.Jt_Gastos.setText(monedaTransform.formatMoneda(monedaDouble));
         evt.consume();
     }//GEN-LAST:event_Jt_GastosKeyTyped
+
+    private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
+        updateTable();
+    }//GEN-LAST:event_jToggleButton1ActionPerformed
 
     private void updateTable() {
         OperacionController operacionController = new OperacionController();
@@ -328,6 +324,7 @@ public class Egresos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTextField valorCajaTextField;
     // End of variables declaration//GEN-END:variables
 }
