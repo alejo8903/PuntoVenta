@@ -17,6 +17,7 @@ import java.util.List;
 public class CreditoServicesImplements implements CreditoServices {
 
     public CreditoDao creditoDao;
+    public Credito credito;
 
     public CreditoServicesImplements() {
         this.creditoDao = new CreditoDao("myPersistenceUnit");
@@ -24,28 +25,36 @@ public class CreditoServicesImplements implements CreditoServices {
 
     @Override
     public int saveCredito(Credito credito) {
-
-        return creditoDao.create(credito);
+        int idCredito = creditoDao.create(credito);
+        creditoDao.close();
+        return idCredito;
     }
 
     @Override
     public List<CreditoDto> getListaCreditos(String tipoCredito) {
-        return creditoDao.getListaCreditos(tipoCredito);
+        List<CreditoDto> listCreditoDto = creditoDao.getListaCreditos(tipoCredito);
+        creditoDao.close();
+        return listCreditoDto;
     }
 
     @Override
     public Credito getCreditById(int id) {
-        return creditoDao.findById(id);
+        this.credito = creditoDao.findById(id);
+        creditoDao.close();
+        return this.credito;
     }
 
     @Override
     public void updateCredit(Credito credito) {
         creditoDao.merge(credito);
+        creditoDao.close();
     }
 
     @Override
     public double getTotalCajaCredito() {
-        return creditoDao.getTotalAbonosNoPagado() + creditoDao.getTotalCreditosPagados();
+        double totalCajaCredito =creditoDao.getTotalAbonosNoPagado() + creditoDao.getTotalCreditosPagados();
+        creditoDao.close();
+        return totalCajaCredito;
     }
 
 }

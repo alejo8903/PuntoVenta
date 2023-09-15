@@ -384,6 +384,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_search1JTextFieldKeyReleased
 
     private void updateTableCreditos() {
+        CreditoController creditoController = new CreditoController();
         listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.VENTACREDITO.toString());
         modelCredito.setRowCount(0);
         for (CreditoDto creditoDto : listCreditoDtoCredito) {
@@ -401,6 +402,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     }
 
     private void updateTableSeparados() {
+        CreditoController creditoController = new CreditoController();
         listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.SEPARADO.toString());
         modelSeparado.setRowCount(0);
         for (CreditoDto creditoDto : listCreditoDtoCredito) {

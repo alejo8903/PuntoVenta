@@ -26,6 +26,9 @@ public class CreditoDao {
     public CreditoDao(String persitencia) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persitencia);
     }
+    public void close(){
+        entityManagerFactory.close();
+    }
 
     public int create(Credito credito) {
         entityManager = entityManagerFactory.createEntityManager();
@@ -35,7 +38,6 @@ public class CreditoDao {
         entityManager.getTransaction().commit();
 
         entityManager.close();
-        entityManagerFactory.close();
         return idVenta;
     }
 
@@ -45,7 +47,6 @@ public class CreditoDao {
         Credito credito = entityManager.find(Credito.class, idCredito);
 
         entityManager.close();
-        entityManagerFactory.close();
         return credito;
         
 
@@ -73,7 +74,6 @@ public class CreditoDao {
         } finally {
 
             entityManager.close();
-            entityManagerFactory.close();
         }
 
     }
@@ -85,7 +85,7 @@ public class CreditoDao {
         entityManager.getTransaction().commit();
 
         entityManager.close();
-        entityManagerFactory.close();
+        
     }
     @Transactional
     public double getTotalCreditosPagados() {
@@ -107,7 +107,7 @@ public class CreditoDao {
         }finally{
 
            entityManager.close(); 
-           entityManagerFactory.close();
+           
         }
         
 
@@ -135,7 +135,7 @@ public class CreditoDao {
         return totalAbonosPendientes;
         } finally {
             entityManager.close();
-            entityManagerFactory.close();
+            
         }
         
     }
