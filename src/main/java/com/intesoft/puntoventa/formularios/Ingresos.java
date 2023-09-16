@@ -185,7 +185,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
         resumenFinancieroController  = new ResumenFinancieroController();
         resumenFinanciero = resumenFinancieroController.getTotalCaja();
         valorCajaTextField.setText(monedaTransform.formatMoneda(resumenFinanciero.getTotalAbonosNoPagado() 
-                + resumenFinanciero.getTotalCajaVenta()+ resumenFinanciero.getTotalAbonosNoPagado()));
+                + resumenFinanciero.getTotalCajaVenta()+ resumenFinanciero.getTotalCreditosPagados()));
         
     }
     private void updateTable(){
