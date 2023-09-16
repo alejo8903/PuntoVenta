@@ -190,7 +190,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="Tj_abonos">
               <Events>
-                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="Tj_abonosKeyReleased"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="Tj_abonosKeyTyped"/>
               </Events>
             </Component>
           </SubComponents>
@@ -342,7 +342,7 @@
             </Component>
             <Component class="javax.swing.JTextField" name="Jt_abonoSeparado">
               <Events>
-                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="Jt_abonoSeparadoKeyReleased"/>
+                <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="Jt_abonoSeparadoKeyTyped"/>
               </Events>
             </Component>
           </SubComponents>

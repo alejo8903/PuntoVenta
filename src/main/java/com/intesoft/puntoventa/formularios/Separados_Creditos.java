@@ -45,6 +45,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         listCreditoDtoSeparado = new ArrayList<>();
         creditoController = new CreditoController();
         monedaTransform = new MonedaTransform();
+        numericValidator = new NumericValidator();
         updateTableCreditos();
         updateTableSeparados();
 
@@ -130,8 +131,8 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         jLabel4.setText("Abonos:");
 
         Tj_abonos.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                Tj_abonosKeyReleased(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                Tj_abonosKeyTyped(evt);
             }
         });
 
@@ -218,8 +219,8 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         jLabel5.setText("Abonos:");
 
         Jt_abonoSeparado.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                Jt_abonoSeparadoKeyReleased(evt);
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                Jt_abonoSeparadoKeyTyped(evt);
             }
         });
 
@@ -383,19 +384,11 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         modelarTablaSeparado.filter(search, null);
     }//GEN-LAST:event_search1JTextFieldKeyReleased
 
-    private void Tj_abonosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tj_abonosKeyReleased
-         String abono = this.Tj_abonos.getText();
-        numericValidator.validation(evt);
-        if (numericValidator.getFlag()) {
-            return;
+    private void Jt_abonoSeparadoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Jt_abonoSeparadoKeyTyped
+        String abono = this.Jt_abonoSeparado.getText();
+        if (abono.isBlank() || abono == "$ 0" || abono == "$ ") {
+            abono = "";
         }
-        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(abono + evt.getKeyChar()));
-        double monedaDouble = Double.parseDouble(monedalimpia);
-        this.Tj_abonos.setText(monedaTransform.formatMoneda(monedaDouble));
-    }//GEN-LAST:event_Tj_abonosKeyReleased
-
-    private void Jt_abonoSeparadoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Jt_abonoSeparadoKeyReleased
-         String abono = this.Jt_abonoSeparado.getText();
         numericValidator.validation(evt);
         if (numericValidator.getFlag()) {
             return;
@@ -403,7 +396,23 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(abono + evt.getKeyChar()));
         double monedaDouble = Double.parseDouble(monedalimpia);
         this.Jt_abonoSeparado.setText(monedaTransform.formatMoneda(monedaDouble));
-    }//GEN-LAST:event_Jt_abonoSeparadoKeyReleased
+        evt.consume();
+    }//GEN-LAST:event_Jt_abonoSeparadoKeyTyped
+
+    private void Tj_abonosKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tj_abonosKeyTyped
+        String abono = this.Tj_abonos.getText();
+        if (abono.isBlank() || abono == "$ 0" || abono == "$ ") {
+            abono = "";
+        }
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
+        }
+        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(abono + evt.getKeyChar()));
+        double monedaDouble = Double.parseDouble(monedalimpia);
+        this.Tj_abonos.setText(monedaTransform.formatMoneda(monedaDouble));
+        evt.consume();
+    }//GEN-LAST:event_Tj_abonosKeyTyped
 
     private void updateTableCreditos() {
         creditoController = new CreditoController();

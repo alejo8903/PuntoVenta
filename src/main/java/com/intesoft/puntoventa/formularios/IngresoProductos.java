@@ -147,8 +147,8 @@ public class IngresoProductos extends javax.swing.JDialog {
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(jTextTipo, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                                    .addComponent(jTextTalla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextCodigo, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addComponent(jTextCodigo, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextTalla, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jBGenerar))
                             .addComponent(jTextColor, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -216,7 +216,15 @@ public class IngresoProductos extends javax.swing.JDialog {
 
     private void jBEjecutarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBEjecutarActionPerformed
         String tipo = jTextTipo.getText();
+        String descripcion = jTextDescripcion.getText();
+        String talla = jTextTalla.getText();
+        String color = jTextColor.getText();
+        
         if(tipo.length()>=2){
+            if(descripcion != "" || talla != "" || color != ""){
+            JOptionPane.showMessageDialog(null, "Todos los campos deben estar diligenciados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+            }
             Maestro maestro = new Maestro();
             maestro.setCodigo( (jTextCodigo.getText() + jTextTipo.getText()));
             maestro.setDescripcion(jTextDescripcion.getText());
