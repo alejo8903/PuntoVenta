@@ -298,7 +298,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
             if (respuesta == JOptionPane.YES_OPTION) {
 
                 double totalAbonado = monedaTransform.transfrormMoneda(jTable2.getValueAt(rowIndex, 4).toString());
-                double abono = Double.parseDouble(Jt_abonoSeparado.getText());
+                double abono = monedaTransform.transfrormMoneda(Jt_abonoSeparado.getText());
                 double deuda = monedaTransform.transfrormMoneda(jTable2.getValueAt(rowIndex, 5).toString());
                 Credito credito = creditoController.getCreditById(Integer.parseInt(jTable2.getValueAt(rowIndex, 0).toString()));
 
@@ -343,7 +343,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
             if (respuesta == JOptionPane.YES_OPTION) {
 
                 double totalAbonado = monedaTransform.transfrormMoneda(jTable1.getValueAt(rowIndex, 4).toString());
-                double abono = Double.parseDouble(Tj_abonos.getText());
+                double abono = monedaTransform.transfrormMoneda(Tj_abonos.getText());
                 double deuda = monedaTransform.transfrormMoneda(jTable1.getValueAt(rowIndex, 5).toString());
                 Credito credito = creditoController.getCreditById(Integer.parseInt(jTable1.getValueAt(rowIndex, 0).toString()));
 
