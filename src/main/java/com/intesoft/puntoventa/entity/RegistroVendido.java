@@ -25,7 +25,7 @@ public class RegistroVendido {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "idoperacion")
     private Operacion operacion;
     @Column(name = "codigo")

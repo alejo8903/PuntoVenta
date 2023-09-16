@@ -26,7 +26,8 @@ public class CreditoDao {
     public CreditoDao(String persitencia) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persitencia);
     }
-    public void close(){
+
+    public void close() {
         entityManagerFactory.close();
     }
 
@@ -48,16 +49,15 @@ public class CreditoDao {
 
         entityManager.close();
         return credito;
-        
 
     }
 
     public List<CreditoDto> getListaCreditos(String tipoCredito) {
-        try {
-        entityManager = entityManagerFactory.createEntityManager();
-        List<CreditoDto> listCreditoDto = new ArrayList<>();
-        entityManager.getTransaction().begin();
         
+            entityManager = entityManagerFactory.createEntityManager();
+            List<CreditoDto> listCreditoDto = new ArrayList<>();
+            entityManager.getTransaction().begin();
+
             // Escribe una consulta JPQL para recuperar los datos
             String jpql = "SELECT NEW com.intesoft.puntoventa.dto.CreditoDto("
                     + "c.id, c.clientes.nombre, c.clientes.apellido, c.operacion.valor, c.totalAbonado) "
@@ -67,14 +67,12 @@ public class CreditoDao {
 
             TypedQuery<CreditoDto> query = entityManager.createQuery(jpql, CreditoDto.class);
             query.setParameter("tipoCredito", tipoCredito);
-            
+
             listCreditoDto = query.getResultList();
             entityManager.getTransaction().commit();
-            return listCreditoDto;
-        } finally {
-
             entityManager.close();
-        }
+            return listCreditoDto;
+        
 
     }
 
@@ -85,58 +83,50 @@ public class CreditoDao {
         entityManager.getTransaction().commit();
 
         entityManager.close();
-        
+
     }
+
     @Transactional
     public double getTotalCreditosPagados() {
-        try{
-        entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
-
-        // Sumar el valor de créditos pagados
-        Double totalCreditosPagados = entityManager.createQuery(
-                "SELECT SUM(c.totalCredito) FROM Credito c WHERE c.pagado = true", Double.class)
-                .getSingleResult();
-
-        if (totalCreditosPagados == null) {
-            totalCreditosPagados = 0.0;
-        }
-
-        entityManager.getTransaction().commit();
-        return totalCreditosPagados;
-        }finally{
-
-           entityManager.close(); 
-           
-        }
         
-
-        
-    }
-    @Transactional
-    public double getTotalAbonosNoPagado() {
-        
-        try {
             entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
+            entityManager.getTransaction().begin();
 
-        // Sumar los abonos pendientes (donde pagado es igual a false)
-        Double totalAbonosPendientes = entityManager.createQuery(
-                "SELECT SUM(c.totalAbonado) FROM Credito c WHERE c.pagado = false", Double.class)
-                .getSingleResult();
+            // Sumar el valor de créditos pagados
+            Double totalCreditosPagados = entityManager.createQuery(
+                    "SELECT SUM(c.totalCredito) FROM Credito c WHERE c.pagado = true", Double.class)
+                    .getSingleResult();
 
-        if (totalAbonosPendientes == null) {
-            totalAbonosPendientes = 0.0;
-        }
+            if (totalCreditosPagados == null) {
+                totalCreditosPagados = 0.0;
+            }
 
-        entityManager.getTransaction().commit();
+            entityManager.getTransaction().commit();
+            entityManager.close();
+            return totalCreditosPagados;
         
 
-        return totalAbonosPendientes;
-        } finally {
+    }
+
+
+    public double getTotalAbonosNoPagado() {
+
+        
+            entityManager = entityManagerFactory.createEntityManager();
+            entityManager.getTransaction().begin();
+
+            // Sumar los abonos pendientes (donde pagado es igual a false)
+            Double totalAbonosPendientes = entityManager.createQuery(
+                    "SELECT SUM(c.totalAbonado) FROM Credito c WHERE c.pagado = false", Double.class)
+                    .getSingleResult();
+
+            if (totalAbonosPendientes == null) {
+                totalAbonosPendientes = 0.0;
+            }
+
+            entityManager.getTransaction().commit();
             entityManager.close();
-            
-        }
+            return totalAbonosPendientes;
         
     }
 
