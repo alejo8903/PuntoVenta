@@ -339,7 +339,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                     if ((deuda - abono) == 0) {
                         credito.setPagado(true);
                     }
-                    creditoController.updateCredito(credito);
+                    creditoController = new CreditoController();
                     updateTableCreditos();
                 }
 

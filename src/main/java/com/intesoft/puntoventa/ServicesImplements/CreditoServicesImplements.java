@@ -39,6 +39,7 @@ public class CreditoServicesImplements implements CreditoServices {
 
     @Override
     public Credito getCreditById(int id) {
+        creditoDao = new CreditoDao("myPersistenceUnit");
         this.credito = creditoDao.findById(id);
         creditoDao.close();
         return this.credito;
