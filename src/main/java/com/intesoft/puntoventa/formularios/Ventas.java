@@ -263,6 +263,9 @@ public class Ventas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel11MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel11MouseEntered(evt);
+            }
         });
 
         jLabel20.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -688,7 +691,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         jRadioCredito.setEnabled(true);
         jBCliente.setEnabled(true);
         jBCliente.setSelected(true);
-        jLTotal.setText("$");
+        this.totalVenta=0;
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
@@ -901,6 +904,10 @@ public class Ventas extends javax.swing.JInternalFrame {
         clientesSelect.setModal(true);
 
     }//GEN-LAST:event_jBClienteActionPerformed
+
+    private void jLabel11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel11MouseEntered
     public void setProductoVenta(int id) {
         InventarioController inventarioController = new InventarioController();
         this.inventario = inventarioController.getProductoById(id);
