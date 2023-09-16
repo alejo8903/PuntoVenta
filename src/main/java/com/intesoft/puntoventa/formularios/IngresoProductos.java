@@ -6,6 +6,7 @@ package com.intesoft.puntoventa.formularios;
 
 import com.intesoft.puntoventa.controller.MaestroController;
 import com.intesoft.puntoventa.entity.Maestro;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -20,7 +21,8 @@ public class IngresoProductos extends javax.swing.JDialog {
     private MaestroController maestroController;
     private Maestro maestro;
     private String proceso;
-    public IngresoProductos(Maestro maestro, String proceso) {
+    Productos productos;
+    public IngresoProductos(Maestro maestro, String proceso, Productos productos) {
         this.maestro = maestro;
         this.proceso = proceso;
         initComponents();
@@ -37,14 +39,16 @@ public class IngresoProductos extends javax.swing.JDialog {
         this.jTextColor.setText(this.maestro.getColor());
         this.jBEjecutar.setText("Modificar");
         this.jBGenerar.setVisible(false);
+        this.productos = productos;
         
     }
     public IngresoProductos() {
         
         initComponents();
     }
-    public IngresoProductos(String proceso) {
+    public IngresoProductos(String proceso, Productos productos) {
         this.proceso = proceso;
+        this.productos = productos;
         initComponents();
     }
 
@@ -221,7 +225,7 @@ public class IngresoProductos extends javax.swing.JDialog {
         String color = jTextColor.getText();
         
         if(tipo.length()>=2){
-            if(descripcion != "" || talla != "" || color != ""){
+            if(descripcion == "" || talla == "" || color == ""){
             JOptionPane.showMessageDialog(null, "Todos los campos deben estar diligenciados", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
             }
@@ -239,6 +243,7 @@ public class IngresoProductos extends javax.swing.JDialog {
                 maestroController.crearProducto(maestro);
 
             }
+            productos.listarProductos();
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(null, "El campo tipo debe tener dos digitos", "Advertencia", JOptionPane.WARNING_MESSAGE);

@@ -165,9 +165,11 @@ public class Productos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarPActionPerformed
-        IngresoProductos ingresoProductos = new IngresoProductos("ingresar");
+        IngresoProductos ingresoProductos = new IngresoProductos("ingresar", this);
         ingresoProductos.setModal(true);
-        ingresoProductos.setVisible(true);
+        ingresoProductos.setVisible(true); 
+        
+        
     }//GEN-LAST:event_jBAgregarPActionPerformed
 
     private void jBActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarActionPerformed
@@ -182,7 +184,7 @@ public class Productos extends javax.swing.JInternalFrame {
             maestro.setDescripcion(jTable1.getValueAt(rowIndex,2).toString());
             maestro.setTalla(jTable1.getValueAt(rowIndex,3).toString());
             maestro.setColor(jTable1.getValueAt(rowIndex,4).toString());
-            IngresoProductos ingresoProductos = new IngresoProductos(maestro, "modificar");
+            IngresoProductos ingresoProductos = new IngresoProductos(maestro, "modificar", this);
             ingresoProductos.setModal(true);
             ingresoProductos.setVisible(true);
             
@@ -218,7 +220,7 @@ public class Productos extends javax.swing.JInternalFrame {
             
         }
     }
-    private void listarProductos(){
+    public void listarProductos(){
         MaestroController maestroController = new MaestroController();
         List<Maestro> listaProductos = maestroController.getAllProductos();
         this.model.setNumRows(0);
