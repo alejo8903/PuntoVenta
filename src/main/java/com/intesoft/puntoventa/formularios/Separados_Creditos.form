@@ -169,7 +169,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="searchJTextrField">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchJTextrFieldActionPerformed"/>
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="searchJTextrFieldKeyReleased"/>
               </Events>
             </Component>
@@ -328,7 +327,6 @@
             </Component>
             <Component class="javax.swing.JTextField" name="search1JTextField">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="search1JTextFieldActionPerformed"/>
                 <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="search1JTextFieldKeyReleased"/>
               </Events>
             </Component>

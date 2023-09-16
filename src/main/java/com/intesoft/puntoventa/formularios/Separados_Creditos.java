@@ -111,11 +111,6 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel1.setText("Busqueda");
 
-        searchJTextrField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchJTextrFieldActionPerformed(evt);
-            }
-        });
         searchJTextrField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 searchJTextrFieldKeyReleased(evt);
@@ -206,11 +201,6 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setText("Busqueda");
 
-        search1JTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                search1JTextFieldActionPerformed(evt);
-            }
-        });
         search1JTextField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 search1JTextFieldKeyReleased(evt);
@@ -279,14 +269,6 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void searchJTextrFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchJTextrFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchJTextrFieldActionPerformed
-
-    private void search1JTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_search1JTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_search1JTextFieldActionPerformed
-
     private void Jb_SeparadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jb_SeparadosActionPerformed
         int rowIndex = jTable2.getSelectedRow();
         String abonoText = Jt_abonoSeparado.getText();
@@ -298,7 +280,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                     + "Abono: " + Jt_abonoSeparado.getText() + " \n",
                     "Advertencia", JOptionPane.YES_NO_OPTION);
 
-            if (respuesta == JOptionPane.YES_OPTION ) {
+            if (respuesta == JOptionPane.YES_OPTION) {
 
                 double totalAbonado = monedaTransform.transfrormMoneda(jTable1.getValueAt(rowIndex, 4).toString());
                 double abono = Double.parseDouble(Jt_abonoSeparado.getText());
@@ -308,21 +290,20 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                 if ((deuda - abono) < 0) {
                     JOptionPane.showMessageDialog(null, "Favor veifique el monto del abono, no puede ser mayor a la deuda",
                             "Advertenvia", JOptionPane.WARNING_MESSAGE);
- 
-                } else if((deuda - abono) == 0){
+
+                } else if ((deuda - abono) == 0) {
                     credito.setTotalAbonado(totalAbonado + abono);
                     credito.setPagado(true);
                     creditoController.updateCredito(credito);
                     updateTableSeparados();
-                }else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Los separados deben saldarse para entregarse\n"
                             + "verifique que el abono corresponde al saldo pendiente", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        
-                    
+
                 }
 
-            }else{
-                
+            } else {
+
             }
 
         } else {
@@ -342,7 +323,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                     + "Abono: " + Tj_abonos.getText() + " \n",
                     "Advertencia", JOptionPane.YES_NO_OPTION);
 
-            if (respuesta == JOptionPane.YES_OPTION ) {
+            if (respuesta == JOptionPane.YES_OPTION) {
 
                 double totalAbonado = monedaTransform.transfrormMoneda(jTable1.getValueAt(rowIndex, 4).toString());
                 double abono = Double.parseDouble(Tj_abonos.getText());
@@ -352,25 +333,25 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                 if ((deuda - abono) < 0) {
                     JOptionPane.showMessageDialog(null, "Favor veifique el monto del abono, no puede ser mayor a la deuda",
                             "Advertenvia", JOptionPane.WARNING_MESSAGE);
- 
+
                 } else {
                     credito.setTotalAbonado(totalAbonado + abono);
-                    if((deuda - abono) == 0){
+                    if ((deuda - abono) == 0) {
                         credito.setPagado(true);
                     }
                     creditoController.updateCredito(credito);
                     updateTableCreditos();
                 }
 
-            }else{
-                
+            } else {
+
             }
 
         } else {
             JOptionPane.showMessageDialog(null, "Debe Seleccionar un credito de la lista"
                     + "\n y debe introcir un abono valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-        
+
     }//GEN-LAST:event_Jb_creditosActionPerformed
 
     private void searchJTextrFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchJTextrFieldKeyReleased
@@ -384,7 +365,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_search1JTextFieldKeyReleased
 
     private void updateTableCreditos() {
-        CreditoController creditoController = new CreditoController();
+        creditoController = new CreditoController();
         listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.VENTACREDITO.toString());
         modelCredito.setRowCount(0);
         for (CreditoDto creditoDto : listCreditoDtoCredito) {
@@ -402,7 +383,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     }
 
     private void updateTableSeparados() {
-        CreditoController creditoController = new CreditoController();
+        creditoController = new CreditoController();
         listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.SEPARADO.toString());
         modelSeparado.setRowCount(0);
         for (CreditoDto creditoDto : listCreditoDtoCredito) {
