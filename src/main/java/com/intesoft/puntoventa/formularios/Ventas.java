@@ -688,6 +688,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         jRadioCredito.setEnabled(true);
         jBCliente.setEnabled(true);
         jBCliente.setSelected(true);
+        jLTotal.setText("$");
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
