@@ -9,6 +9,7 @@ import com.intesoft.puntoventa.dto.CreditoDto;
 import com.intesoft.puntoventa.entity.Credito;
 import com.intesoft.puntoventa.util.ModelarTabla;
 import com.intesoft.puntoventa.util.MonedaTransform;
+import com.intesoft.puntoventa.util.NumericValidator;
 import com.intesoft.puntoventa.util.Operaciones;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     private List<CreditoDto> listCreditoDtoSeparado;
     private CreditoController creditoController;
     private MonedaTransform monedaTransform;
+    private NumericValidator numericValidator;
 
     public Separados_Creditos() {
         initComponents();
@@ -127,6 +129,12 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
 
         jLabel4.setText("Abonos:");
 
+        Tj_abonos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                Tj_abonosKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -209,6 +217,12 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Abonos:");
 
+        Jt_abonoSeparado.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                Jt_abonoSeparadoKeyReleased(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -282,7 +296,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
 
             if (respuesta == JOptionPane.YES_OPTION) {
 
-                double totalAbonado = monedaTransform.transfrormMoneda(jTable1.getValueAt(rowIndex, 4).toString());
+                double totalAbonado = monedaTransform.transfrormMoneda(jTable2.getValueAt(rowIndex, 4).toString());
                 double abono = Double.parseDouble(Jt_abonoSeparado.getText());
                 double deuda = monedaTransform.transfrormMoneda(jTable2.getValueAt(rowIndex, 5).toString());
                 Credito credito = creditoController.getCreditById(Integer.parseInt(jTable2.getValueAt(rowIndex, 0).toString()));
@@ -310,6 +324,8 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Debe Seleccionar un credito de la lista"
                     + "\n y debe introcir un abono valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
+        Jt_abonoSeparado.setText("");
+        search1JTextField.setText("");
     }//GEN-LAST:event_Jb_SeparadosActionPerformed
 
     private void Jb_creditosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jb_creditosActionPerformed
@@ -352,6 +368,8 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Debe Seleccionar un credito de la lista"
                     + "\n y debe introcir un abono valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
+        Tj_abonos.setText("");
+        searchJTextrField.setText("");
 
     }//GEN-LAST:event_Jb_creditosActionPerformed
 
@@ -364,6 +382,28 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         String search = search1JTextField.getText();
         modelarTablaSeparado.filter(search, null);
     }//GEN-LAST:event_search1JTextFieldKeyReleased
+
+    private void Tj_abonosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Tj_abonosKeyReleased
+         String abono = this.Tj_abonos.getText();
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
+        }
+        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(abono + evt.getKeyChar()));
+        double monedaDouble = Double.parseDouble(monedalimpia);
+        this.Tj_abonos.setText(monedaTransform.formatMoneda(monedaDouble));
+    }//GEN-LAST:event_Tj_abonosKeyReleased
+
+    private void Jt_abonoSeparadoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_Jt_abonoSeparadoKeyReleased
+         String abono = this.Jt_abonoSeparado.getText();
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
+        }
+        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(abono + evt.getKeyChar()));
+        double monedaDouble = Double.parseDouble(monedalimpia);
+        this.Jt_abonoSeparado.setText(monedaTransform.formatMoneda(monedaDouble));
+    }//GEN-LAST:event_Jt_abonoSeparadoKeyReleased
 
     private void updateTableCreditos() {
         creditoController = new CreditoController();
