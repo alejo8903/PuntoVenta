@@ -52,5 +52,5 @@ public class InventarioServicesImplement implements InventarioServices {
     public void insertInventario(Inventario inventario) {
         inventarioDao.create(inventario);
     }
-    
+
 }

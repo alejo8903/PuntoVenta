@@ -4,6 +4,7 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.ClientesController;
 import com.intesoft.puntoventa.controller.CreditoController;
 import com.intesoft.puntoventa.controller.InventarioController;
 import com.intesoft.puntoventa.controller.RegistroVendidoController;
@@ -580,12 +581,21 @@ public class Ventas extends javax.swing.JInternalFrame {
         String cantidad = this.jTextFCantidad.getText();
         String code = this.jTextFCodigo.getText();
         String descuento = this.jTextFDescuento.getText();
+        double valor = monedaTransform.transfrormMoneda(this.jTextFValor.getText());
         RegistroVendido registroVendido = new RegistroVendido();
         String abono = this.jTextAbono.getText();
+
         int rows = jTable1.getRowCount();
         if ((abono.isBlank() || this.cliente.getIdCliente() == 0) && (this.jRadioSeparar.isSelected() || this.jRadioCredito.isSelected())) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente e introducir un abono \n"
                     + " para poder separar o entregar a credito", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        double posibleDeuda = this.cliente.getDeuda() + valor - monedaTransform.transfrormMoneda(abono)
+                + monedaTransform.transfrormMoneda(jLTotal.getText()) - monedaTransform.transfrormMoneda(abono);
+
+        if ((posibleDeuda > this.cliente.getLimiteCredito()) && this.jRadioCredito.isSelected()) {
+            JOptionPane.showMessageDialog(null, "El cliente no posse credito aprobado para el monto actual", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
         if (code.isBlank() || this.inventario == null) {
@@ -611,6 +621,9 @@ public class Ventas extends javax.swing.JInternalFrame {
             }
 
             registroVendido.setValorVenta(monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
+            if (this.jRadioCredito.isSelected()) {
+                cliente.setDeuda(this.cliente.getDeuda() + registroVendido.getValorVenta());
+            }
             registroVendido.setPorcentajeGananciaR((float) (registroVendido.getValorVenta() / registroVendido.getTotalCompra()) - 1);
             totalVenta += (monedaTransform.transfrormMoneda(this.jTextFValor.getText()));
             this.jLTotal.setText(monedaTransform.formatMoneda(totalVenta));
@@ -673,6 +686,11 @@ public class Ventas extends javax.swing.JInternalFrame {
         }
         RegistroVendidoController registroVendidoController = new RegistroVendidoController();
         registroVendidoController.saveProductosVenta(this.listRegistroVendidos);
+
+        if (jRadioCredito.isSelected()) {
+            final ClientesController clientesController = new ClientesController();
+            clientesController.actualizarCliente(cliente);
+        }
         DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
         model.setNumRows(0);
         this.jTextFCodigo.setText("");
@@ -691,7 +709,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         jRadioCredito.setEnabled(true);
         jBCliente.setEnabled(true);
         jBCliente.setSelected(true);
-        this.totalVenta=0;
+        this.totalVenta = 0;
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
@@ -792,6 +810,8 @@ public class Ventas extends javax.swing.JInternalFrame {
                 double descuento = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 7).toString());
                 double valor = monedaTransform.transfrormMoneda(this.jTable1.getValueAt(rowIndex, 8).toString());
                 setProductoVenta(id, cantidad, descuento, valor);
+                this.cliente.setDeuda(this.cliente.getDeuda() - monedaTransform.transfrormMoneda(
+                        this.jTable1.getValueAt(rowIndex, 8).toString()));
                 this.listRegistroVendidos.remove(rowIndex);
                 updateTable();
 

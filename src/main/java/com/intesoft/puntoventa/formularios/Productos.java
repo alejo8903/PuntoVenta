@@ -4,7 +4,10 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.InventarioController;
 import com.intesoft.puntoventa.controller.MaestroController;
+import com.intesoft.puntoventa.dto.InventarioDto;
+import com.intesoft.puntoventa.entity.Inventario;
 import com.intesoft.puntoventa.entity.Maestro;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -200,6 +203,15 @@ public class Productos extends javax.swing.JInternalFrame {
         if(rowIndex >=0 ){
             
             String codigo = (jTable1.getValueAt(rowIndex,0).toString()+jTable1.getValueAt(rowIndex,1).toString());
+            InventarioController inventarioController = new InventarioController();
+            List <InventarioDto> listInventario = inventarioController.searchProducto(Integer.parseInt(codigo));
+            for (InventarioDto inventarioDto : listInventario) {
+                String code = String.valueOf(inventarioDto.getCodigo());
+                if (codigo.equals(code)) {
+                    JOptionPane.showMessageDialog(null, "No puede eliminar productos que esten en inventario o hallan sido vendidos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+            }
             MaestroController maestroController = new MaestroController();
             maestroController.deleteProducto(codigo);
             

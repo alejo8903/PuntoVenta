@@ -97,4 +97,6 @@ public class InventarioDao {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+   
 }

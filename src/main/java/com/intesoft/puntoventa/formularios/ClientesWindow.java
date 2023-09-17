@@ -2,6 +2,8 @@ package com.intesoft.puntoventa.formularios;
 
 import com.intesoft.puntoventa.controller.ClientesController;
 import com.intesoft.puntoventa.entity.Clientes;
+import com.intesoft.puntoventa.util.MonedaTransform;
+import com.intesoft.puntoventa.util.NumericValidator;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -11,7 +13,6 @@ import javax.swing.table.DefaultTableModel;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JInternalFrame.java to edit this template
  */
-
 /**
  *
  * @author alejo
@@ -23,16 +24,21 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
      */
     private Clientes cliente;
     private List<Clientes> listClientes;
+    private NumericValidator numericValidator;
+    private MonedaTransform monedaTransform;
+
     public ClientesWindow() {
+        numericValidator = new NumericValidator();
+        monedaTransform = new MonedaTransform();
         initComponents();
         updateTable();
-        
-        
+
     }
+
     public ClientesWindow(String Search) {
         initComponents();
         updateTable();
-              
+
     }
 
     /**
@@ -75,6 +81,12 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
         jLabel4.setText("Direccion");
 
         jLabel5.setText("Limite credito");
+
+        jTextLimCredito.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextLimCreditoKeyTyped(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -172,28 +184,38 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String operacion = jButton1.getText();
-        
+        String nombre = jTextNombre.getText();
+        String apellido =  jTextApellido.getText();
+        String telefono = jTextTelefono.getText();
+        String direccion = jTextDireccion.getText();
         String limCredito = jTextLimCredito.getText();
+        
+        if ( nombre.isBlank() ||  apellido.isBlank() ||  telefono.isBlank() || direccion.isBlank() || limCredito.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos deben estar diligenciados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String operacion = jButton1.getText();
+
         this.cliente.setNombre(jTextNombre.getText());
         this.cliente.setApellido(jTextApellido.getText());
         this.cliente.setTelefono(jTextTelefono.getText());
         this.cliente.setDireccion(jTextDireccion.getText());
-        if (limCredito.isBlank() || limCredito == "0" ) {
+
+        if (limCredito == "0") {
             this.cliente.setLimiteCredito(0);
-        }else{
-            this.cliente.setLimiteCredito(Double.parseDouble(jTextLimCredito.getText()));
+        } else {
+            this.cliente.setLimiteCredito(monedaTransform.transfrormMoneda(jTextLimCredito.getText()));
         }
-        if(operacion == "Agregar"){
+        if (operacion == "Agregar") {
             ClientesController clientesController = new ClientesController();
             clientesController.guardarCliente(this.cliente);
-            
-        }else if(operacion == "Modificar"){
+
+        } else if (operacion == "Modificar") {
             ClientesController clientesController = new ClientesController();
             clientesController.actualizarCliente(this.cliente);
             this.jButton1.setText("Agregar");
         }
-        
+
         jTextNombre.setText("");
         jTextApellido.setText("");
         jTextTelefono.setText("");
@@ -210,21 +232,36 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
             this.cliente.setApellido(this.jTable1.getValueAt(row, 2).toString());
             this.cliente.setTelefono(this.jTable1.getValueAt(row, 3).toString());
             this.cliente.setDireccion(this.jTable1.getValueAt(row, 4).toString());
-            this.cliente.setLimiteCredito(Double.parseDouble(this.jTable1.getValueAt(row, 5).toString()));
-            this.cliente.setDeuda(Double.parseDouble(this.jTable1.getValueAt(row, 6).toString()));
+            this.cliente.setLimiteCredito(monedaTransform.transfrormMoneda(this.jTable1.getValueAt(row, 5).toString()));
+            this.cliente.setDeuda(monedaTransform.transfrormMoneda(this.jTable1.getValueAt(row, 6).toString()));
             this.jTextNombre.setText(this.cliente.getNombre());
             this.jTextApellido.setText(this.cliente.getApellido());
             this.jTextTelefono.setText(this.cliente.getTelefono());
             this.jTextDireccion.setText(this.cliente.getDireccion());
-            this.jTextLimCredito.setText(String.valueOf(this.cliente.getLimiteCredito()));
+            this.jTextLimCredito.setText(monedaTransform.formatMoneda(this.cliente.getLimiteCredito()));
             this.jButton1.setText("Modificar");
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "No ha seleccionado un registro para cambiar", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-        
-        
+
+
     }//GEN-LAST:event_jButton2ActionPerformed
-    private void updateTable(){
+
+    private void jTextLimCreditoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextLimCreditoKeyTyped
+        String limite = this.jTextLimCredito.getText();
+        if (limite.isBlank() || limite == "$ 0" || limite == "$ ") {
+            limite = "";
+        }
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
+        }
+        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(limite + evt.getKeyChar()));
+        double monedaDouble = Double.parseDouble(monedalimpia);
+        this.jTextLimCredito.setText(monedaTransform.formatMoneda(monedaDouble));
+        evt.consume();
+    }//GEN-LAST:event_jTextLimCreditoKeyTyped
+    private void updateTable() {
         this.cliente = new Clientes();
         this.listClientes = new ArrayList<>();
         ClientesController clientesController = new ClientesController();
@@ -238,16 +275,17 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
                 cliente.getApellido(),
                 cliente.getTelefono(),
                 cliente.getDireccion(),
-                cliente.getLimiteCredito(),
-                cliente.getDeuda()
+                monedaTransform.formatMoneda(cliente.getLimiteCredito()),
+                monedaTransform.formatMoneda(cliente.getDeuda())
             };
             model.addRow(rowData);
         }
     }
-    public Clientes asignarCliente(){
-        
+
+    public Clientes asignarCliente() {
+
         return this.cliente;
-        
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

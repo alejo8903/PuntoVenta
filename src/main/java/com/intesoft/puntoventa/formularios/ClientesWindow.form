@@ -134,6 +134,9 @@
     <Component class="javax.swing.JTextField" name="jTextDireccion">
     </Component>
     <Component class="javax.swing.JTextField" name="jTextLimCredito">
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextLimCreditoKeyTyped"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
       <AuxValues>

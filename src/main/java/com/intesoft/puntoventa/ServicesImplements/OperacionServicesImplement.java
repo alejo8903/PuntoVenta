@@ -15,7 +15,7 @@ import java.util.List;
  * @author alejo
  */
 public class OperacionServicesImplement implements OperacionServices {
-    private final OperacionDao operacionDao;
+    private OperacionDao operacionDao;
     public OperacionServicesImplement(){
         operacionDao = new OperacionDao("myPersistenceUnit");
     }
@@ -35,7 +35,6 @@ public class OperacionServicesImplement implements OperacionServices {
     @Override
     public List<Operacion> getAllEgresos(Date fechaInicio, Date fechaFin) {
         List<Operacion> listOperacion = operacionDao.getAllEgresos(fechaInicio, fechaFin);
-        operacionDao.close();
         return listOperacion;
         
     }

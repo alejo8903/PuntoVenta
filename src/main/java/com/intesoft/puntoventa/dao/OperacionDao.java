@@ -22,7 +22,6 @@ import javax.transaction.Transactional;
 public class OperacionDao {
 
     private final EntityManagerFactory entityManagerFactory;
-    private EntityManager entityManager;
 
     public OperacionDao(String persistence) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
@@ -36,12 +35,10 @@ public class OperacionDao {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         entityManager.persist(operacion);
-        entityManager.flush();
         int idVenta = operacion.getIdOperacion();
         entityManager.getTransaction().commit();
 
         entityManager.close();
-        entityManagerFactory.close();
         return idVenta;
     }
 
@@ -52,7 +49,6 @@ public class OperacionDao {
         entityManager.getTransaction().commit();
 
         entityManager.close();
-        entityManagerFactory.close();
         return venta;
     }
 
@@ -80,10 +76,8 @@ public class OperacionDao {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        } finally {
-            entityManagerFactory.close();
-        }
 
+        }
     }
 
     public double getTotalCajaVenta() {
@@ -102,7 +96,6 @@ public class OperacionDao {
         entityManager.getTransaction().commit();
 
         entityManager.close();
-        entityManagerFactory.close();
 
         return totalCaja;
     }
