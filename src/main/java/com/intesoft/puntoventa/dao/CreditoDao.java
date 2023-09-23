@@ -127,6 +127,7 @@ public class CreditoDao {
     }
 
     public Credito getCreditByOperation(int idOperacion) {
+        try{
         entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
         // Escribe una consulta JPQL para recuperar los datos
@@ -141,6 +142,9 @@ public class CreditoDao {
         entityManager.getTransaction().commit();
         entityManager.close();
         return credito;
+        }catch(Exception e){
+            return null;
+        }
 
     }
 

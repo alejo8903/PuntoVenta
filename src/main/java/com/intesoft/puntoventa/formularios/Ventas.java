@@ -16,6 +16,7 @@ import com.intesoft.puntoventa.entity.Inventario;
 import com.intesoft.puntoventa.entity.RegistroVendido;
 import com.intesoft.puntoventa.entity.Usuarios;
 import com.intesoft.puntoventa.entity.Operacion;
+import com.intesoft.puntoventa.util.JTablePrinter;
 import com.intesoft.puntoventa.util.MonedaTransform;
 import com.intesoft.puntoventa.util.NumericValidator;
 import com.intesoft.puntoventa.util.Operaciones;
@@ -567,7 +568,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFDescripcionActionPerformed
     @Override
-    public void dispose(){
+    public void dispose() {
         principal.liberarInstancia("ventas");
         super.dispose();
     }
@@ -585,7 +586,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         seleccionProducto.setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
-    
+
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         String cantidad = this.jTextFCantidad.getText();
         String code = this.jTextFCodigo.getText();
@@ -675,63 +676,66 @@ public class Ventas extends javax.swing.JInternalFrame {
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
         int numRow = jTable1.getRowCount();
-        if(numRow != 0){
-        OperacionController operacionController = new OperacionController();
-        CreditoController creditoController = new CreditoController();
-        this.operacion.setValor(monedaTransform.transfrormMoneda(this.jLTotal.getText()));
-        this.operacion.setFecha(new Date());
-        this.operacion.setUsuario(this.usuarios.getNombres() + " " + this.usuarios.getApellidos());
-        int numeroOperacion = operacionController.saveOperacion(this.operacion);
-        this.operacion = operacionController.getOperacionById(numeroOperacion);
-        if ((!this.operacion.getOperacion().equals(Operaciones.VENTA.toString()))) {
-            this.credito.setOperacion(this.operacion);
-            int idCredito = creditoController.saveCredito(this.credito);
+        if (numRow != 0) {
+            OperacionController operacionController = new OperacionController();
+            CreditoController creditoController = new CreditoController();
+            this.operacion.setValor(monedaTransform.transfrormMoneda(this.jLTotal.getText()));
+            this.operacion.setFecha(new Date());
+            this.operacion.setUsuario(this.usuarios.getNombres() + " " + this.usuarios.getApellidos());
+            int numeroOperacion = operacionController.saveOperacion(this.operacion);
+            this.operacion = operacionController.getOperacionById(numeroOperacion);
+            if ((!this.operacion.getOperacion().equals(Operaciones.VENTA.toString()))) {
+                this.credito.setOperacion(this.operacion);
+                int idCredito = creditoController.saveCredito(this.credito);
+            }
+
+            for (RegistroVendido registroVendido : this.listRegistroVendidos) {
+                InventarioController inventarioController = new InventarioController();
+                inventarioController.updateInventario(registroVendido.getId(), registroVendido.getCantidad());
+                registroVendido.setId(0);
+                registroVendido.setVenta(operacion);
+
+            }
+            RegistroVendidoController registroVendidoController = new RegistroVendidoController();
+            registroVendidoController.saveProductosVenta(this.listRegistroVendidos);
+
+            if (jRadioCredito.isSelected()) {
+                final ClientesController clientesController = new ClientesController();
+                clientesController.actualizarCliente(cliente);
+            }
+            JTablePrinter jTablePrinter = new JTablePrinter();
+            jTablePrinter.printTable(this.jTable1, "productos vendidos", "Total Venta: " + this.jLTotal.getText()
+                    + "\n" + " Operacion: " + this.operacion.getOperacion());
+            DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
+            model.setNumRows(0);
+            this.jTextFCodigo.setText("");
+            this.jTextFCantidad.setText("");
+            this.jTextFDescuento.setText("");
+            this.jTextFDescripcion.setText("");
+            this.jTextFValor.setText("");
+            this.jLTotal.setText("$");
+            this.jLabel16.setText("$");
+            this.jTextFPago.setText("");
+            this.operacion = new Operacion();
+            this.cliente = new Clientes();
+            this.listRegistroVendidos.clear();
+            this.jLNombre.setText("");
+            this.jRadioVenta.setEnabled(true);
+            this.jRadioVenta.isSelected();
+            this.jRadioSeparar.setEnabled(true);
+            this.jRadioCredito.setEnabled(true);
+            this.jBCliente.setEnabled(true);
+            this.jBCliente.setSelected(true);
+            this.totalVenta = 0;
+            this.operacion = new Operacion();
+            this.credito = new Credito();
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe tener producto en la tabla par efectuar la venta", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
 
-        for (RegistroVendido registroVendido : this.listRegistroVendidos) {
-            InventarioController inventarioController = new InventarioController();
-            inventarioController.updateInventario(registroVendido.getId(), registroVendido.getCantidad());
-            registroVendido.setId(0);
-            registroVendido.setVenta(operacion);
-
-        }
-        RegistroVendidoController registroVendidoController = new RegistroVendidoController();
-        registroVendidoController.saveProductosVenta(this.listRegistroVendidos);
-
-        if (jRadioCredito.isSelected()) {
-            final ClientesController clientesController = new ClientesController();
-            clientesController.actualizarCliente(cliente);
-        }
-        DefaultTableModel model = (DefaultTableModel) this.jTable1.getModel();
-        model.setNumRows(0);
-        this.jTextFCodigo.setText("");
-        this.jTextFCantidad.setText("");
-        this.jTextFDescuento.setText("");
-        this.jTextFDescripcion.setText("");
-        this.jTextFValor.setText("");
-        this.jLTotal.setText("$");
-        this.jLabel16.setText("$");
-        this.jTextFPago.setText("");
-        this.operacion = new Operacion();
-        this.cliente = new Clientes();
-        this.listRegistroVendidos.clear();
-        this.jLNombre.setText("");
-        this.jRadioVenta.setEnabled(true);
-        this.jRadioVenta.isSelected();
-        this.jRadioSeparar.setEnabled(true);
-        this.jRadioCredito.setEnabled(true);
-        this.jBCliente.setEnabled(true);
-        this.jBCliente.setSelected(true);
-        this.totalVenta = 0;
-        this.operacion = new Operacion();
-        this.credito = new Credito();
-        } else{
-            JOptionPane.showMessageDialog(null,"Debe tener producto en la tabla par efectuar la venta", "Advertencia",JOptionPane.WARNING_MESSAGE);
-        }
-        
     }//GEN-LAST:event_jLabel18MouseClicked
 
-    
+
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
         String descuento = this.jTextFDescuento.getText();
         String cantidad = this.jTextFCantidad.getText();
@@ -937,7 +941,7 @@ public class Ventas extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jTextAbonoKeyTyped
 
-    public void cambioSeparado(double abono){
+    public void cambioSeparado(double abono) {
         this.jTextAbono.setText(monedaTransform.formatMoneda(abono));
         this.jRadioSeparar.isSelected();
         this.jRadioCredito.setEnabled(false);
@@ -945,7 +949,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jRadioVenta.setEnabled(false);
         this.jTextAbono.setEnabled(false);
     }
-    
+
     private void jBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBClienteActionPerformed
         ClientesSelect clientesSelect = new ClientesSelect(this.jLabelNombre, this.cliente);
 

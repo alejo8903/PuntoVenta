@@ -24,12 +24,11 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author alejo
  */
-public class Separados extends javax.swing.JDialog {
+public class Despliegue extends javax.swing.JDialog {
 
     /**
-     * Creates new form Separados
+     * Creates new form Despliegue
      */
-
     private int idOperacion;
     private RegistroVendidoController registroVendidoController;
     private MonedaTransform monedaTransform;
@@ -40,14 +39,15 @@ public class Separados extends javax.swing.JDialog {
     private Operacion operacion;
     private RegistroVendido registroVendido;
     private InventarioController inventarioController;
+    private String tipoOPeracion;
     private Operaciones operaciones;
     private Usuarios usuario;
 
-    public Separados() {
+    public Despliegue() {
         initComponents();
     }
 
-    public Separados(Usuarios usuario, int idOperacion, SeparadosCreditos separadosCreditos) {
+    public Despliegue(Usuarios usuario, int idOperacion, SeparadosCreditos separadosCreditos, String operacion) {
         initComponents();
         this.idOperacion = idOperacion;
         monedaTransform = new MonedaTransform();
@@ -56,6 +56,7 @@ public class Separados extends javax.swing.JDialog {
         this.operacionController = new OperacionController();
         this.creditoController = new CreditoController();
         this.usuario = usuario;
+        this.tipoOPeracion = operacion;
         updateTable();
     }
 
@@ -136,35 +137,51 @@ public class Separados extends javax.swing.JDialog {
             this.registroVendido = this.registroVendidoController.getRegistroVendidoByIdOperation(idRegistroVendido);
             this.credito = this.creditoController.getCreditByOperation(idOperacion);
             if ((credito.getTotalCredito() - registroVendido.getValorVenta()) == 0) {
-                Object[] customOptions = {"Cancelar \n separado", "Cambiar \n separdo", "Cancelar"};
-                int result = JOptionPane.showInternalOptionDialog(null, "Que desea realizar: ", "Proceso", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, customOptions, EXIT_ON_CLOSE);
-                if (result == JOptionPane.YES_OPTION) {
-                    this.inventarioController.updateInventario(registroVendido.getIdInventario(), (-1 * registroVendido.getCantidad()));
-                    this.registroVendido.setDescripcion(this.registroVendido.getDescripcion() + " " + "Canelacion ceparado");
-                    this.registroVendido.setCantidad(1);
-                    this.registroVendido.setTotalCompra(0);
-                    this.registroVendido.setValorCompra(0);
-                    this.registroVendido.setPorcentajeGananciaR(1);
-                    this.registroVendido.setIva(0);
-                    this.registroVendido.setDescuento(0);
-                    this.registroVendido.setValorVenta(this.credito.getTotalAbonado());
-                    this.registroVendidoController.removeRegistroVendido(this.registroVendido);
-                    this.operacion.setOperacion(Operaciones.CANCELACIONSEPARADO.toString());
-                    this.operacion.setFecha(new Date());
-                    this.creditoController.removeCredito(this.credito);
-                    this.operacionController.updateOperacion(this.operacion);
-                    this.dispose();
-                } else if (result == JOptionPane.NO_OPTION) {
-                    JOptionPane.showMessageDialog(null, "Recordar que el cliente abono: \n"
-                            + monedaTransform.formatMoneda(this.credito.getTotalAbonado()),
-                            "Advertencia", JOptionPane.WARNING_MESSAGE);
-                    this.inventarioController.updateInventario(registroVendido.getIdInventario(), (-1 * registroVendido.getCantidad()));
-                    this.registroVendidoController.removeRegistroVendido(this.registroVendido);
-                    this.creditoController.removeCredito(this.credito);
-                    this.operacionController.removeOperacion(this.operacion);
-                    this.dispose();
-                } else if (result == JOptionPane.CANCEL_OPTION) {
-                    return;
+                if (this.tipoOPeracion == "credito") {
+                    int result = JOptionPane.showConfirmDialog(null, "¿Desea Cambiar el producto? ", "Proceso", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (result == JOptionPane.YES_OPTION) {
+                        JOptionPane.showMessageDialog(null, "Recordar que el cliente abono: \n"
+                                + monedaTransform.formatMoneda(this.credito.getTotalAbonado()),
+                                "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        this.inventarioController.updateInventario(registroVendido.getIdInventario(), (-1 * registroVendido.getCantidad()));
+                        this.registroVendidoController.removeRegistroVendido(this.registroVendido);
+                        this.creditoController.removeCredito(this.credito);
+                        this.operacionController.removeOperacion(this.operacion);
+                        this.dispose();
+                    } else if (result == JOptionPane.NO_OPTION) {
+                        this.dispose();
+                    }
+                } else {
+                    Object[] customOptions = {"Cancelar \n separado", "Cambiar \n separdo", "Cancelar"};
+                    int result = JOptionPane.showInternalOptionDialog(null, "Que desea realizar: ", "Proceso", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, customOptions, EXIT_ON_CLOSE);
+                    if (result == JOptionPane.YES_OPTION) {
+                        this.inventarioController.updateInventario(registroVendido.getIdInventario(), (-1 * registroVendido.getCantidad()));
+                        this.registroVendido.setDescripcion(this.registroVendido.getDescripcion() + " " + "Canelacion ceparado");
+                        this.registroVendido.setCantidad(1);
+                        this.registroVendido.setTotalCompra(0);
+                        this.registroVendido.setValorCompra(0);
+                        this.registroVendido.setPorcentajeGananciaR(1);
+                        this.registroVendido.setIva(0);
+                        this.registroVendido.setDescuento(0);
+                        this.registroVendido.setValorVenta(this.credito.getTotalAbonado());
+                        this.registroVendidoController.removeRegistroVendido(this.registroVendido);
+                        this.operacion.setOperacion(Operaciones.CANCELACIONSEPARADO.toString());
+                        this.operacion.setFecha(new Date());
+                        this.creditoController.removeCredito(this.credito);
+                        this.operacionController.updateOperacion(this.operacion);
+                        this.dispose();
+                    } else if (result == JOptionPane.NO_OPTION) {
+                        JOptionPane.showMessageDialog(null, "Recordar que el cliente abono: \n"
+                                + monedaTransform.formatMoneda(this.credito.getTotalAbonado()),
+                                "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        this.inventarioController.updateInventario(registroVendido.getIdInventario(), (-1 * registroVendido.getCantidad()));
+                        this.registroVendidoController.removeRegistroVendido(this.registroVendido);
+                        this.creditoController.removeCredito(this.credito);
+                        this.operacionController.removeOperacion(this.operacion);
+                        this.dispose();
+                    } else if (result == JOptionPane.CANCEL_OPTION) {
+                        return;
+                    }
                 }
 
             } else {
@@ -181,9 +198,9 @@ public class Separados extends javax.swing.JDialog {
         }
 
         this.separadosCreditos.updateTableSeparados();
+        this.separadosCreditos.updateTableCreditos();
 
     }//GEN-LAST:event_jButton1ActionPerformed
-    
 
     /**
      * @param args the command line arguments
@@ -202,20 +219,21 @@ public class Separados extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Separados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Despliegue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Separados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Despliegue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Separados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Despliegue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Separados.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Despliegue.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Separados().setVisible(true);
+                new Despliegue().setVisible(true);
             }
         });
     }

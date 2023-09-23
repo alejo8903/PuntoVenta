@@ -51,7 +51,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
         this.registroVendidoController = new RegistroVendidoController();
         this.inventarioController = new InventarioController();
         this.creditoController = new CreditoController();
-        
+
         // Obtén la fecha actual
         Calendar calendar = Calendar.getInstance();
 
@@ -208,7 +208,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     @Override
-    public void dispose(){
+    public void dispose() {
         principal.liberarInstancia("ingresos");
         super.dispose();
     }
@@ -219,11 +219,34 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int row = this.jTable1.getSelectedRow();
         if (row >= 0) {
-            this.operacion = operacionController.getOperacionById(Integer.parseInt(jTable1.getValueAt(row, 1).toString()));
-            this.registroVendido = registroVendidoController.getRegistroVendidoByIdOperation(
-                    Integer.parseInt(jTable1.getValueAt(row, 0).toString()));
-            this.credito = creditoController.getCreditByOperation(operacion.getIdOperacion());
-            inventarioController.updateInventario(registroVendido.getIdInventario(), -1*(registroVendido.getCantidad()));
+            JOptionPane.showMessageDialog(null, "El producto seleccionado es: \n"
+                    + "Codigo: " + jTable1.getValueAt(row, 2).toString() + "\n"
+                    + "Descripcion: " + jTable1.getValueAt(row, 3).toString() + "\n"
+                    + "Color:" + jTable1.getValueAt(row, 5).toString() + "\n"
+                    + "Talla: " + jTable1.getValueAt(row, 4).toString() + "\n"
+                    + "Valor: " + jTable1.getValueAt(row, 11).toString() + "\n",
+                     title, HEIGHT
+            );
+            Object[] customOptions = {"Si", "No", "Cancelar"};
+            int result = JOptionPane.showInternalOptionDialog(null, "Desea recibir el producto vendido \n "
+                    + "y cambiarlo por otro ", "Proceso", JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.WARNING_MESSAGE, null, customOptions, EXIT_ON_CLOSE);
+            if (result == JOptionPane.YES_OPTION) {
+                this.operacion = operacionController.getOperacionById(Integer.parseInt(jTable1.getValueAt(row, 1).toString()));
+                this.registroVendido = registroVendidoController.getRegistroVendidoByIdOperation(
+                        Integer.parseInt(jTable1.getValueAt(row, 0).toString()));
+                this.credito = creditoController.getCreditByOperation(operacion.getIdOperacion());
+                if (this.credito != null) {
+                    this.creditoController.removeCredito(this.credito);
+                }
+                inventarioController.updateInventario(registroVendido.getIdInventario(), -1 * (registroVendido.getCantidad()));
+                this.registroVendidoController.removeRegistroVendido(this.registroVendido);
+                this.operacionController.removeOperacion(this.operacion);
+                JOptionPane.showMessageDialog(null, "el cliente pago: " + jTable1.getValueAt(row, 11).toString() + "\n"
+                        + "Este valor debe ser tenido en cuenta para el otro producto", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                this.updateTable();
+                
+            }
         }
     }//GEN-LAST:event_jButton2ActionPerformed
     private void totalizarCaja() {
