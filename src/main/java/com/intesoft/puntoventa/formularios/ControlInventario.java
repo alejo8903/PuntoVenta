@@ -140,7 +140,7 @@ public class ControlInventario extends javax.swing.JInternalFrame {
         super.dispose();
     }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        IngresoInventario ingresoinventario = new IngresoInventario(this);
+        IngresoInventario ingresoinventario = new IngresoInventario(this,this.usuarios);
         ingresoinventario.setModal(true);
         ingresoinventario.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
