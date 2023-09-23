@@ -13,6 +13,7 @@ import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.entity.Usuarios;
 import com.intesoft.puntoventa.util.MonedaTransform;
 import com.intesoft.puntoventa.util.Operaciones;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 /**
@@ -300,6 +301,7 @@ public class IngresoInventario extends javax.swing.JDialog {
                 inventario.setValorVenta(monedaTransform.transfrormMoneda(this.jTextVVenta.getText()));
                 inventarioController.insertInventario(inventario);
                 operacion.setIdOperacion(0);
+                operacion.setFecha(new Date());
                 operacion.setOperacion(Operaciones.COMPRAPRODUCTOS.toString());
                 operacion.setUsuario(this.usuario.getNombres() + " " + this.usuario.getApellidos());
                 operacion.setValor(inventario.getTotalCompra() * inventario.getCantidad() * -1);
