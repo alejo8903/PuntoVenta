@@ -9,6 +9,8 @@ import com.intesoft.puntoventa.entity.Usuarios;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 /**
  *
@@ -20,10 +22,13 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     private Usuarios usuarios;
+    private SeparadosCreditos separadosCreditos;
+
     public Principal() {
         initComponents();
     }
-    public Principal(Usuarios usuarios){
+
+    public Principal(Usuarios usuarios) {
         this.usuarios = usuarios;
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/tienda.png")).getImage());
@@ -221,22 +226,27 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
-  
-            SeparadosCreditos creditos_separados = SeparadosCreditos.obtenerInstancia(this.usuarios);
-            if(creditos_separados.validarInstancia()){
-            this.desktopPane.add(creditos_separados);
-            creditos_separados.setVisible(true);
-            }else{
-                JOptionPane.showMessageDialog(null, "La ventana ya esta abierta", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-       
+        if (separadosCreditos == null) {
+            separadosCreditos = SeparadosCreditos.obtenerInstancia(this.usuarios);
+            separadosCreditos.addInternalFrameListener(new InternalFrameAdapter() {
+                @Override
+                public void internalFrameClosed(InternalFrameEvent e) {
+                    separadosCreditos = null; // Libera la instancia al cerrar el JInternalFrame
+                }
+            });
+            this.desktopPane.add(separadosCreditos);
+            separadosCreditos.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "La ventana ya esta abierta", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_jMenu8MouseClicked
 
     private void jMenu9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu9MouseClicked
         Egresos egresos = new Egresos(this.usuarios);
         this.desktopPane.add(egresos);
         egresos.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenu9MouseClicked
 
     private void jMenu10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu10MouseClicked

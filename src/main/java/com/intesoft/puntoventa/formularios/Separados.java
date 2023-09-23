@@ -29,7 +29,7 @@ public class Separados extends javax.swing.JDialog {
     /**
      * Creates new form Separados
      */
-    private static Separados instancia;
+
     private int idOperacion;
     private RegistroVendidoController registroVendidoController;
     private MonedaTransform monedaTransform;
@@ -43,11 +43,11 @@ public class Separados extends javax.swing.JDialog {
     private Operaciones operaciones;
     private Usuarios usuario;
 
-    private Separados() {
+    public Separados() {
         initComponents();
     }
 
-    private Separados(Usuarios usuario, int idOperacion, SeparadosCreditos separadosCreditos) {
+    public Separados(Usuarios usuario, int idOperacion, SeparadosCreditos separadosCreditos) {
         initComponents();
         this.idOperacion = idOperacion;
         monedaTransform = new MonedaTransform();
@@ -184,19 +184,7 @@ public class Separados extends javax.swing.JDialog {
 
     }//GEN-LAST:event_jButton1ActionPerformed
     
-    public static Separados obtenerInstancia(Usuarios usuario, int idOperacion, SeparadosCreditos separadosCreditos) {
-        if (instancia == null) {
-            instancia = new Separados(usuario, idOperacion, separadosCreditos);
-        }
-        return instancia;
-    }
-    
-    public boolean validarInstancia(){
-        if (instancia == null) {
-            return true;
-        }
-        return false;
-    }
+
     /**
      * @param args the command line arguments
      */

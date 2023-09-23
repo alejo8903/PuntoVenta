@@ -39,7 +39,6 @@ public class SeparadosCreditos extends javax.swing.JInternalFrame {
     private MonedaTransform monedaTransform;
     private NumericValidator numericValidator;
     private boolean activo = true;
-    
 
     private SeparadosCreditos(Usuarios usuario) {
         initComponents();
@@ -303,23 +302,25 @@ public class SeparadosCreditos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     public static SeparadosCreditos obtenerInstancia(Usuarios usuario) {
-        
-            if (instancia == null) {
-                instancia = new SeparadosCreditos(usuario);
-            }
-        
+
+        if (instancia == null) {
+            instancia = new SeparadosCreditos(usuario);
+        }
+
         return instancia;
     }
-    public boolean validarInstancia(){
-        
+
+    public boolean validarInstancia() {
+
         if (activo) {
             this.activo = false;
             return true;
-            
-        }else{
-        return false;
+
+        } else {
+            return false;
         }
     }
+
 
     private void Jb_SeparadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jb_SeparadosActionPerformed
         int rowIndex = jTable2.getSelectedRow();
@@ -454,11 +455,11 @@ public class SeparadosCreditos extends javax.swing.JInternalFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int rowIndex = jTable2.getSelectedRow();
 
-        int idCredito = Integer.parseInt(jTable2.getValueAt(rowIndex, 0).toString());
-        Credito credito = creditoController.getCreditById(idCredito);
-        int idOperacion = credito.getOperacion().getIdOperacion();
         if (rowIndex >= 0) {
-            Separados separados = Separados.obtenerInstancia(this.usuario, idOperacion, this);
+            int idCredito = Integer.parseInt(jTable2.getValueAt(rowIndex, 0).toString());
+            Credito credito = creditoController.getCreditById(idCredito);
+            int idOperacion = credito.getOperacion().getIdOperacion();
+            Separados separados = new Separados(this.usuario, idOperacion, this);
             separados.setModal(true);
             separados.setVisible(true);
         } else {

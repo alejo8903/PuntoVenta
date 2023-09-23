@@ -419,6 +419,9 @@ public class Ventas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel18MouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel18MouseEntered(evt);
+            }
         });
 
         jLabel17.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/limpiar mediano.png"))); // NOI18N
@@ -711,6 +714,9 @@ public class Ventas extends javax.swing.JInternalFrame {
         jBCliente.setEnabled(true);
         jBCliente.setSelected(true);
         this.totalVenta = 0;
+        this.operacion = new Operacion();
+        this.credito = new Credito();
+        
     }//GEN-LAST:event_jLabel18MouseClicked
 
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
@@ -938,6 +944,10 @@ public class Ventas extends javax.swing.JInternalFrame {
     private void jLabel11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseEntered
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel11MouseEntered
+
+    private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLabel18MouseEntered
     public void setProductoVenta(int id) {
         InventarioController inventarioController = new InventarioController();
         this.inventario = inventarioController.getProductoById(id);

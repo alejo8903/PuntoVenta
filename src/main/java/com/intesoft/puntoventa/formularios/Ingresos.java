@@ -5,10 +5,15 @@
 package com.intesoft.puntoventa.formularios;
 
 import com.intesoft.puntoventa.controller.CreditoController;
+import com.intesoft.puntoventa.controller.InventarioController;
 import com.intesoft.puntoventa.controller.OperacionController;
 import com.intesoft.puntoventa.controller.RegistroVendidoController;
 import com.intesoft.puntoventa.controller.ResumenFinancieroController;
 import com.intesoft.puntoventa.dto.IngresosDto;
+import com.intesoft.puntoventa.entity.Credito;
+import com.intesoft.puntoventa.entity.Inventario;
+import com.intesoft.puntoventa.entity.Operacion;
+import com.intesoft.puntoventa.entity.RegistroVendido;
 import com.intesoft.puntoventa.entity.ResumenFinanciero;
 import com.intesoft.puntoventa.util.MonedaTransform;
 import java.util.Calendar;
@@ -31,26 +36,38 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private MonedaTransform monedaTransform;
     private ResumenFinancieroController resumenFinancieroController;
     private ResumenFinanciero resumenFinanciero;
+    private OperacionController operacionController;
+    private Operacion operacion;
+    private RegistroVendido registroVendido;
+    private CreditoController creditoController;
+    private Credito credito;
+    private Inventario inventario;
+    private InventarioController inventarioController;
+
     public Ingresos() {
         initComponents();
-        monedaTransform = new MonedaTransform();
+        this.monedaTransform = new MonedaTransform();
+        this.operacionController = new OperacionController();
+        this.registroVendidoController = new RegistroVendidoController();
+        this.inventarioController = new InventarioController();
+        this.creditoController = new CreditoController();
+        
         // Obtén la fecha actual
         Calendar calendar = Calendar.getInstance();
-        
+
         // Resta 7 días a la fecha actual
         calendar.add(Calendar.DAY_OF_YEAR, -7);
-        
+
         // Convierte el resultado de nuevo a un objeto Date
         Date nuevaFecha = calendar.getTime();
-        
+
         startJDateChooser.setDate(nuevaFecha);
         endJDateChooser.setDate(new Date());
         updateTable();
         valorCajaTextField.setEditable(false);
         Jf_totalGanancias.setEditable(false);
         Jf_totalVentas.setEditable(false);
-        
-        
+
     }
 
     /**
@@ -75,6 +92,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         valorCajaTextField = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -117,6 +135,13 @@ public class Ingresos extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton2.setText("Cancelar Venta");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -149,6 +174,8 @@ public class Ingresos extends javax.swing.JInternalFrame {
                         .addComponent(endJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
+                        .addGap(37, 37, 37)
+                        .addComponent(jButton2)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -161,7 +188,9 @@ public class Ingresos extends javax.swing.JInternalFrame {
                     .addComponent(startJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(endJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(jButton1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton2)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 371, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -181,25 +210,37 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         updateTable();
     }//GEN-LAST:event_jButton1ActionPerformed
-    private void totalizarCaja(){
-        resumenFinancieroController  = new ResumenFinancieroController();
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int row = this.jTable1.getSelectedRow();
+        if (row >= 0) {
+            this.operacion = operacionController.getOperacionById(Integer.parseInt(jTable1.getValueAt(row, 1).toString()));
+            this.registroVendido = registroVendidoController.getRegistroVendidoByIdOperation(
+                    Integer.parseInt(jTable1.getValueAt(row, 0).toString()));
+            this.credito = creditoController.getCreditByOperation(operacion.getIdOperacion());
+            inventarioController.updateInventario(registroVendido.getIdInventario(), -1*(registroVendido.getCantidad()));
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+    private void totalizarCaja() {
+        resumenFinancieroController = new ResumenFinancieroController();
         resumenFinanciero = resumenFinancieroController.getTotalCaja();
-        valorCajaTextField.setText(monedaTransform.formatMoneda(resumenFinanciero.getTotalAbonosNoPagado() 
-                + resumenFinanciero.getTotalCajaVenta()+ resumenFinanciero.getTotalCreditosPagados()));
-        
+        valorCajaTextField.setText(monedaTransform.formatMoneda(resumenFinanciero.getTotalAbonosNoPagado()
+                + resumenFinanciero.getTotalCajaVenta() + resumenFinanciero.getTotalCreditosPagados()));
+
     }
-    private void updateTable(){
+
+    private void updateTable() {
         registroVendidoController = new RegistroVendidoController();
         Date startDate = startJDateChooser.getDate();
         Date endDate = endJDateChooser.getDate();
-        listIngresosDto = registroVendidoController.getIngresosByDateRange(startDate, endDate );
+        listIngresosDto = registroVendidoController.getIngresosByDateRange(startDate, endDate);
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setNumRows(0);
         double ganacia = 0;
         double totalGanacia = 0;
         double totalVenta = 0;
         for (IngresosDto ingresosDto : listIngresosDto) {
-            ganacia = (ingresosDto.getValorVenta()- ingresosDto.getValorCompra());
+            ganacia = (ingresosDto.getValorVenta() - ingresosDto.getValorCompra());
             totalVenta += ingresosDto.getValorVenta();
             totalGanacia += ganacia;
             Object[] rowData = {
@@ -218,7 +259,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
                 monedaTransform.formatMoneda(ganacia)
             };
             model.addRow(rowData);
-            
+
         }
         Jf_totalVentas.setText(monedaTransform.formatMoneda(totalVenta));
         Jf_totalGanancias.setText(monedaTransform.formatMoneda(totalGanacia));
@@ -230,6 +271,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private javax.swing.JFormattedTextField Jf_totalVentas;
     private com.toedter.calendar.JDateChooser endJDateChooser;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
