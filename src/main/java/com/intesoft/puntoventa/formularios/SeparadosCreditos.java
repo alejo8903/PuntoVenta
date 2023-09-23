@@ -7,10 +7,12 @@ package com.intesoft.puntoventa.formularios;
 import com.intesoft.puntoventa.controller.CreditoController;
 import com.intesoft.puntoventa.dto.CreditoDto;
 import com.intesoft.puntoventa.entity.Credito;
+import com.intesoft.puntoventa.entity.Usuarios;
 import com.intesoft.puntoventa.util.ModelarTabla;
 import com.intesoft.puntoventa.util.MonedaTransform;
 import com.intesoft.puntoventa.util.NumericValidator;
 import com.intesoft.puntoventa.util.Operaciones;
+import java.awt.Dialog;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -20,11 +22,13 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Usuario
  */
-public class Separados_Creditos extends javax.swing.JInternalFrame {
+public class SeparadosCreditos extends javax.swing.JInternalFrame {
 
     /**
-     * Creates new form Separados_Creditos
+     * Creates new form SeparadosCreditos
      */
+    private static SeparadosCreditos instancia;
+    private Usuarios usuario;
     private ModelarTabla modelarTablaCredito;
     private ModelarTabla modelarTablaSeparado;
     private DefaultTableModel modelCredito;
@@ -34,8 +38,10 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     private CreditoController creditoController;
     private MonedaTransform monedaTransform;
     private NumericValidator numericValidator;
+    private boolean activo = true;
+    
 
-    public Separados_Creditos() {
+    private SeparadosCreditos(Usuarios usuario) {
         initComponents();
         modelarTablaCredito = new ModelarTabla(jTable1);
         modelarTablaSeparado = new ModelarTabla(jTable2);
@@ -46,6 +52,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         creditoController = new CreditoController();
         monedaTransform = new MonedaTransform();
         numericValidator = new NumericValidator();
+        this.usuario = usuario;
         updateTableCreditos();
         updateTableSeparados();
 
@@ -78,6 +85,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         Jt_abonoSeparado = new javax.swing.JTextField();
+        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -224,6 +232,13 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
             }
         });
 
+        jButton2.setText("Desplegar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -245,6 +260,8 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                 .addComponent(Jb_Separados)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
+                .addGap(40, 40, 40)
+                .addComponent(jButton2)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -257,7 +274,8 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
                     .addComponent(jLabel3)
                     .addComponent(jLabel5)
                     .addComponent(Jb_Separados)
-                    .addComponent(Jt_abonoSeparado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(Jt_abonoSeparado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -283,6 +301,25 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    public static SeparadosCreditos obtenerInstancia(Usuarios usuario) {
+        
+            if (instancia == null) {
+                instancia = new SeparadosCreditos(usuario);
+            }
+        
+        return instancia;
+    }
+    public boolean validarInstancia(){
+        
+        if (activo) {
+            this.activo = false;
+            return true;
+            
+        }else{
+        return false;
+        }
+    }
 
     private void Jb_SeparadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jb_SeparadosActionPerformed
         int rowIndex = jTable2.getSelectedRow();
@@ -414,6 +451,22 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
         evt.consume();
     }//GEN-LAST:event_Tj_abonosKeyTyped
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int rowIndex = jTable2.getSelectedRow();
+
+        int idCredito = Integer.parseInt(jTable2.getValueAt(rowIndex, 0).toString());
+        Credito credito = creditoController.getCreditById(idCredito);
+        int idOperacion = credito.getOperacion().getIdOperacion();
+        if (rowIndex >= 0) {
+            Separados separados = Separados.obtenerInstancia(this.usuario, idOperacion, this);
+            separados.setModal(true);
+            separados.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(null, "Debe Seleccionar una fila para desplegar",
+                    "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
     private void updateTableCreditos() {
         creditoController = new CreditoController();
         listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.VENTACREDITO.toString());
@@ -432,7 +485,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
 
     }
 
-    private void updateTableSeparados() {
+    public void updateTableSeparados() {
         creditoController = new CreditoController();
         listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.SEPARADO.toString());
         modelSeparado.setRowCount(0);
@@ -454,6 +507,7 @@ public class Separados_Creditos extends javax.swing.JInternalFrame {
     private javax.swing.JButton Jb_creditos;
     private javax.swing.JTextField Jt_abonoSeparado;
     private javax.swing.JTextField Tj_abonos;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

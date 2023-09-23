@@ -52,11 +52,13 @@ public class RegistroVendido {
     double descuento;
     @Column(name = "valorventa")
     double valorVenta;
+    @Column(name = "idinventario")
+    int idInventario;
 
     public RegistroVendido() {
     }
 
-    public RegistroVendido(int id, Operacion operacion, String codigo, String descripcion, String talla, String color, int cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGananciaE, float porcentajeGananciaR, double descuento, double valorVenta) {
+    public RegistroVendido(int id, Operacion operacion, String codigo, String descripcion, String talla, String color, int cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGananciaE, float porcentajeGananciaR, double descuento, double valorVenta, int idInventario) {
         this.id = id;
         this.operacion = operacion;
         this.codigo = codigo;
@@ -71,7 +73,10 @@ public class RegistroVendido {
         this.porcentajeGananciaR = porcentajeGananciaR;
         this.descuento = descuento;
         this.valorVenta = valorVenta;
+        this.idInventario = idInventario;
     }
+
+    
 
     public int getId() {
         return id;
@@ -184,6 +189,23 @@ public class RegistroVendido {
     public void setValorVenta(double valorVenta) {
         this.valorVenta = valorVenta;
     }
+
+    public Operacion getOperacion() {
+        return operacion;
+    }
+
+    public void setOperacion(Operacion operacion) {
+        this.operacion = operacion;
+    }
+
+    public int getIdInventario() {
+        return idInventario;
+    }
+
+    public void setIdInventario(int idInventario) {
+        this.idInventario = idInventario;
+    }
+    
 
     
 }

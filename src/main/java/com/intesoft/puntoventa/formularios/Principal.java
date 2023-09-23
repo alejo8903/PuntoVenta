@@ -8,6 +8,7 @@ import com.intesoft.puntoventa.controller.OperacionController;
 import com.intesoft.puntoventa.entity.Usuarios;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -220,9 +221,15 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu7MouseClicked
 
     private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
-        Separados_Creditos creditos_separados = new Separados_Creditos();
-        this.desktopPane.add(creditos_separados);
-        creditos_separados.setVisible(true);
+  
+            SeparadosCreditos creditos_separados = SeparadosCreditos.obtenerInstancia(this.usuarios);
+            if(creditos_separados.validarInstancia()){
+            this.desktopPane.add(creditos_separados);
+            creditos_separados.setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(null, "La ventana ya esta abierta", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+       
     }//GEN-LAST:event_jMenu8MouseClicked
 
     private void jMenu9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu9MouseClicked

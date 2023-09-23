@@ -19,14 +19,12 @@ import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.util.MonedaTransform;
 import com.intesoft.puntoventa.util.NumericValidator;
 import com.intesoft.puntoventa.util.Operaciones;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import java.math.*;
+import java.util.concurrent.CountDownLatch;
 
 /**
  *
@@ -42,7 +40,6 @@ public class Ventas extends javax.swing.JInternalFrame {
     private Inventario inventario;
     private List<RegistroVendido> listRegistroVendidos;
     private double totalVenta;
-    private int item = 0;
     private MonedaTransform monedaTransform;
     private Clientes cliente;
     private Operacion operacion;
@@ -124,6 +121,8 @@ public class Ventas extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
         setTitle("Ventas");
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/compras.png"))); // NOI18N
 
@@ -577,6 +576,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         seleccionProducto.setVisible(true);
     }//GEN-LAST:event_jLabel6MouseClicked
 
+    
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
         String cantidad = this.jTextFCantidad.getText();
         String code = this.jTextFCodigo.getText();
@@ -605,6 +605,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         if (!cantidad.isBlank() && Integer.parseInt(cantidad) > 0) {
 
             registroVendido.setId(this.inventario.getId());
+            registroVendido.setIdInventario(this.inventario.getId());
             registroVendido.setCodigo(this.inventario.getCodigo().getCodigo());
             registroVendido.setDescripcion(this.inventario.getCodigo().getDescripcion());
             registroVendido.setTalla(this.inventario.getCodigo().getTalla());
@@ -917,6 +918,15 @@ public class Ventas extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_jTextAbonoKeyTyped
 
+    public void cambioSeparado(double abono){
+        this.jTextAbono.setText(monedaTransform.formatMoneda(abono));
+        this.jRadioSeparar.isSelected();
+        this.jRadioCredito.setEnabled(false);
+        this.jRadioSeparar.setEnabled(false);
+        this.jRadioVenta.setEnabled(false);
+        this.jTextAbono.setEnabled(false);
+    }
+    
     private void jBClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBClienteActionPerformed
         ClientesSelect clientesSelect = new ClientesSelect(this.jLabelNombre, this.cliente);
 

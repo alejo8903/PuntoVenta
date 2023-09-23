@@ -43,5 +43,15 @@ public class OperacionServicesImplement implements OperacionServices {
     public double getTotalCajaVentas() {
         return operacionDao.getTotalCajaVenta();
     }
+
+    @Override
+    public void removeOperacion(Operacion operacion) {
+        operacionDao.remove(operacion);
+    }
+
+    @Override
+    public void updateOperacion(Operacion operacion) {
+        operacionDao.update(operacion);
+    }
     
 }

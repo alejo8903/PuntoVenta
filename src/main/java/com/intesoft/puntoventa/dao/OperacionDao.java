@@ -100,4 +100,21 @@ public class OperacionDao {
         return totalCaja;
     }
 
+    public void remove(Operacion operacion) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        Operacion operacionConectada = entityManager.merge(operacion);
+        entityManager.remove(operacionConectada);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
+
+    public void update(Operacion operacion) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.merge(operacion);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+    }
+
 }

@@ -66,6 +66,7 @@ public class RegistroVendidoDao {
             entityManager.close();
         }
     }
+
     @Transactional
     public List<IngresosDto> getIngresosEntreFechas(Date fechaInicio, Date fechaFin) {
         entityManager = entityManagerFactory.createEntityManager();
@@ -84,12 +85,68 @@ public class RegistroVendidoDao {
             TypedQuery<IngresosDto> query = entityManager.createQuery(jpql, IngresosDto.class);
             query.setParameter("fechaInicio", fechaInicio);
             query.setParameter("fechaFin", fechaFin);
-            
+
             listIngresosDto = query.getResultList();
             return listIngresosDto;
         } finally {
             entityManager.close();
         }
 
+    }
+
+    public List<IngresosDto> getIngresosByIdOperation(int idOperatcion) {
+        entityManager = entityManagerFactory.createEntityManager();
+        List<IngresosDto> listIngresosDto = new ArrayList<>();
+        try {
+            // Escribe una consulta JPQL para recuperar los datos
+            String jpql = "SELECT NEW com.intesoft.puntoventa.dto.IngresosDto("
+                    + "rv.id, rv.operacion.idOperacion, rv.codigo, rv.descripcion, rv.talla, rv.color, "
+                    + "rv.operacion.operacion, rv.operacion.fecha, rv.operacion.usuario, rv.cantidad, rv.valorCompra, "
+                    + "rv.valorVenta) "
+                    + "FROM RegistroVendido rv "
+                    + "WHERE rv.operacion.idOperacion = :idOperacion";
+
+            TypedQuery<IngresosDto> query = entityManager.createQuery(jpql, IngresosDto.class);
+            query.setParameter("idOperacion", idOperatcion);
+
+            listIngresosDto = query.getResultList();
+            return listIngresosDto;
+        } finally {
+            entityManager.close();
+        }
+
+    }
+
+    public RegistroVendido getRegistroVendidoByIdOperation(int idRegistroVendido) {
+        entityManager = entityManagerFactory.createEntityManager();
+        
+        try {
+            // Escribe una consulta JPQL para recuperar los datos
+            String jpql = "SELECT rv FROM RegistroVendido rv "
+                    + "WHERE rv.id = :idRegistroVendido";
+
+            TypedQuery<RegistroVendido> query = entityManager.createQuery(jpql, RegistroVendido.class);
+            query.setParameter("idRegistroVendido", idRegistroVendido);
+
+            RegistroVendido registroVendido  = query.getSingleResult();
+            return registroVendido;
+        } finally {
+            entityManager.close();
+        }
+
+    }
+
+    public void remove(RegistroVendido registroVendido) {
+        entityManager = entityManagerFactory.createEntityManager();
+
+        entityManager.getTransaction().begin();
+        
+        RegistroVendido entidadConectada = entityManager.merge(registroVendido);
+
+        entityManager.remove(entidadConectada);
+
+        entityManager.getTransaction().commit();
+
+        entityManager.close();
     }
 }

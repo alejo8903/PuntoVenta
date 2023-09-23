@@ -37,8 +37,18 @@ public class OperacionController {
     }
 
     public double getTotalCajaVentas() {
-        final OperacionServices operacionServices = new OperacionServicesImplement();
+        OperacionServices operacionServices = new OperacionServicesImplement();
         return operacionServices.getTotalCajaVentas();
+    }
+
+    public void removeOperacion(Operacion operacion) {
+         OperacionServices operacionServices = new OperacionServicesImplement();
+        operacionServices.removeOperacion(operacion);
+    }
+
+    public void updateOperacion(Operacion operacion) {
+        OperacionServices operacionServices = new OperacionServicesImplement();
+        operacionServices.updateOperacion(operacion);
     }
     
 }

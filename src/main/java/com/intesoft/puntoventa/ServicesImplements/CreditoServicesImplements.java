@@ -53,4 +53,15 @@ public class CreditoServicesImplements implements CreditoServices {
         return totalCajaCredito;
     }
 
+    @Override
+    public Credito getCreditByOperation(int idOperacion) {
+        Credito credito = creditoDao.getCreditByOperation(idOperacion);
+        return credito;
+    }
+
+    @Override
+    public void removeCredito(Credito credito) {
+        creditoDao.remove(credito);
+    }
+
 }

@@ -19,6 +19,7 @@ public class RegistroVendidoController {
 
     private RegistroVendidoServices registroVendidoServices;
     private List<IngresosDto> listIngresosDto;
+    private RegistroVendido registroVendido;
     
     public void saveProductosVenta(List<RegistroVendido> listRegistroVendidos) {
         registroVendidoServices = new RegistroVendidoServicesImplement();
@@ -29,6 +30,24 @@ public class RegistroVendidoController {
         registroVendidoServices = new RegistroVendidoServicesImplement();
         listIngresosDto = registroVendidoServices.getIngresosByDateRange(startDate, endDate);
         return listIngresosDto;
+    }
+
+    public List<IngresosDto> getIngresosByIdOperation(int idOperacion) {
+        registroVendidoServices = new RegistroVendidoServicesImplement();
+        listIngresosDto = registroVendidoServices.getIngresosByIdOperation(idOperacion);
+        return listIngresosDto;
+    }
+
+    public RegistroVendido getRegistroVendidoByIdOperation(int idRegistroVendido) {
+        registroVendidoServices = new RegistroVendidoServicesImplement();
+        registroVendido = registroVendidoServices.getRegistroVendidoByIdOperation(idRegistroVendido);
+        return registroVendido;
+    }
+
+    public void removeRegistroVendido(RegistroVendido registroVendido) {
+        registroVendidoServices = new RegistroVendidoServicesImplement();
+        registroVendidoServices.removeRegistroVendido(registroVendido);
+        
     }
 
     

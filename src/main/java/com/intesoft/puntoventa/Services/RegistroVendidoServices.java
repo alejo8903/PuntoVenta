@@ -18,5 +18,11 @@ public interface RegistroVendidoServices {
     public void saveProductosVenta(List<RegistroVendido> listRegistroVendidos);
 
     public List<IngresosDto> getIngresosByDateRange(Date startDate, Date endDate);
+
+    public List<IngresosDto> getIngresosByIdOperation(int idOperatcion);
+
+    public RegistroVendido getRegistroVendidoByIdOperation(int idRegistroVendido);
+
+    public void removeRegistroVendido(RegistroVendido registroVendido);
     
 }

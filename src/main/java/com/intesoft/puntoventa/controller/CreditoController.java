@@ -8,6 +8,7 @@ import com.intesoft.puntoventa.Services.CreditoServices;
 import com.intesoft.puntoventa.ServicesImplements.CreditoServicesImplements;
 import com.intesoft.puntoventa.dto.CreditoDto;
 import com.intesoft.puntoventa.entity.Credito;
+import com.intesoft.puntoventa.entity.Operacion;
 import java.util.List;
 
 /**
@@ -35,6 +36,14 @@ public class CreditoController {
 
     public double getTotalCajaCredito() {
         return creditoServices.getTotalCajaCredito();
+    }
+
+    public Credito getCreditByOperation(int idOperacion) {
+        return creditoServices.getCreditByOperation(idOperacion);
+    }
+
+    public void removeCredito(Credito credito) {
+        creditoServices.removeCredito(credito);
     }
     
 }

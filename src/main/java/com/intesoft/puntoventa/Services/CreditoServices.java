@@ -23,5 +23,9 @@ public interface CreditoServices {
     public void updateCredit(Credito credito);
 
     public double getTotalCajaCredito();
+
+    public Credito getCreditByOperation(int idOperacion);
+
+    public void removeCredito(Credito credito);
     
 }

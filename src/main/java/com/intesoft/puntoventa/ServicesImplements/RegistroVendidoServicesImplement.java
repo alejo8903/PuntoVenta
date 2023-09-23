@@ -19,6 +19,7 @@ public class RegistroVendidoServicesImplement implements RegistroVendidoServices
 
     private RegistroVendidoDao registroVendidoDao;
     private List<IngresosDto> listIngresosDto;
+    private RegistroVendido registroVendido;
     
     
     public  RegistroVendidoServicesImplement(){
@@ -34,5 +35,24 @@ public class RegistroVendidoServicesImplement implements RegistroVendidoServices
         listIngresosDto = registroVendidoDao.getIngresosEntreFechas(startDate, endDate);
         return listIngresosDto;
     }
+
+    @Override
+    public List<IngresosDto> getIngresosByIdOperation(int idOperatcion) {
+        listIngresosDto = registroVendidoDao.getIngresosByIdOperation(idOperatcion);
+        return listIngresosDto;
+    }
+
+    @Override
+    public RegistroVendido getRegistroVendidoByIdOperation(int idRegistroVendido) {
+        registroVendido = registroVendidoDao.getRegistroVendidoByIdOperation(idRegistroVendido);
+        return registroVendido;
+    }
+
+    @Override
+    public void removeRegistroVendido(RegistroVendido registroVendido) {
+        registroVendidoDao.remove(registroVendido);
+    }
+
+    
     
 }

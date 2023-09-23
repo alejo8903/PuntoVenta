@@ -21,5 +21,9 @@ public interface OperacionServices {
     public List<Operacion> getAllEgresos(Date fechaInicio, Date fechaFin);
 
     public double getTotalCajaVentas();
+
+    public void removeOperacion(Operacion operacion);
+
+    public void updateOperacion(Operacion operacion);
     
 }
