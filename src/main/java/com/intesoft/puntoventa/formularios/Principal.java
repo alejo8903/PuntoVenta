@@ -6,6 +6,9 @@ package com.intesoft.puntoventa.formularios;
 
 import com.intesoft.puntoventa.controller.OperacionController;
 import com.intesoft.puntoventa.entity.Usuarios;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -23,6 +26,19 @@ public class Principal extends javax.swing.JFrame {
      */
     private Usuarios usuarios;
     private SeparadosCreditos separadosCreditos;
+    private Ventas venta;
+    private ControlInventario inventario;
+    private Productos productos;
+    private ClientesWindow clientes;
+    private Egresos egresos;
+    private Ingresos ingresos;
+    private boolean estadoSeparadosCreditos = true;
+    private boolean estadoVentas = true;
+    private boolean estadoInventario = true;
+    private boolean estadoClientes = true;
+    private boolean estadoProductos = true;
+    private boolean estadoEgresos = true;
+    private boolean estadoIngresos = true;
 
     public Principal() {
         initComponents();
@@ -202,58 +218,87 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_exitMenuItemActionPerformed
 
     private void menuVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuVentasMouseClicked
-        Ventas venta = new Ventas(this.usuarios);
-        this.desktopPane.add(venta);
-        venta.setVisible(true);
+        if (this.estadoVentas) {
+            venta = new Ventas(this.usuarios, this);
+            this.desktopPane.add(this.venta);
+            try {
+                venta.setMaximum(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.venta.setVisible(true);
+            this.estadoVentas = false;
+        } else {
+            JOptionPane.showMessageDialog(null, "La ventana Ventas ya esta abierta ", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_menuVentasMouseClicked
 
     private void editMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMenuMouseClicked
-        ControlInventario inventario = new ControlInventario(this.usuarios);
-        this.desktopPane.add(inventario);
-        inventario.setVisible(true);
+        if (this.estadoInventario) {
+            this.inventario = new ControlInventario(this.usuarios, this);
+            this.desktopPane.add(this.inventario);
+            this.inventario.setVisible(true);
+            this.estadoInventario = false;
+        } else {
+            JOptionPane.showMessageDialog(null, "La ventana Inventario ya esta abierta ","Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_editMenuMouseClicked
 
     private void menuProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuProductosMouseClicked
-        Productos productos = new Productos();
-        this.desktopPane.add(productos);
-        productos.setVisible(true);
+        if (this.estadoProductos) {
+            this.productos = new Productos(this);
+            this.desktopPane.add(this.productos);
+            this.productos.setVisible(true);
+            this.estadoProductos = false;
+        } else {
+            JOptionPane.showMessageDialog(null, "La ventana Productos ya esta abierta ", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_menuProductosMouseClicked
 
     private void jMenu7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu7MouseClicked
-        ClientesWindow clientes = new ClientesWindow();
-        this.desktopPane.add(clientes);
-        clientes.setVisible(true);
+        if (this.estadoClientes) {
+            this.clientes = new ClientesWindow(this);
+            this.desktopPane.add(this.clientes);
+            this.clientes.setVisible(true);
+            this.estadoClientes = false;
+        } else {
+            JOptionPane.showMessageDialog(null, "La ventana Clientes ya esta abierta ", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jMenu7MouseClicked
 
-    private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
-        if (separadosCreditos == null) {
-            separadosCreditos = SeparadosCreditos.obtenerInstancia(this.usuarios);
-            separadosCreditos.addInternalFrameListener(new InternalFrameAdapter() {
-                @Override
-                public void internalFrameClosed(InternalFrameEvent e) {
-                    separadosCreditos = null; // Libera la instancia al cerrar el JInternalFrame
-                }
-            });
-            this.desktopPane.add(separadosCreditos);
-            separadosCreditos.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, "La ventana ya esta abierta", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-
-    }//GEN-LAST:event_jMenu8MouseClicked
-
     private void jMenu9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu9MouseClicked
-        Egresos egresos = new Egresos(this.usuarios);
-        this.desktopPane.add(egresos);
-        egresos.setVisible(true);
-
+        if (this.estadoEgresos) {
+            egresos = new Egresos(this.usuarios, this);
+            this.desktopPane.add(this.egresos);
+            this.egresos.setVisible(true);
+            this.estadoEgresos = false;
+        } else {
+            JOptionPane.showMessageDialog(null, "La ventana Egresos ya esta abierta ", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_jMenu9MouseClicked
 
     private void jMenu10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu10MouseClicked
-        Ingresos ingresos = new Ingresos();
-        this.desktopPane.add(ingresos);
-        ingresos.setVisible(true);
+        if (this.estadoIngresos) {
+            this.ingresos = new Ingresos(this);
+            this.desktopPane.add(this.ingresos);
+            this.ingresos.setVisible(true);
+            this.estadoIngresos = false;
+        } else {
+            JOptionPane.showMessageDialog(null, "La ventana Ingresos ya esta abierta ", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_jMenu10MouseClicked
+
+    private void jMenu8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu8MouseClicked
+        if (this.estadoSeparadosCreditos) {
+            this.separadosCreditos = new SeparadosCreditos(usuarios, this);
+            this.desktopPane.add(separadosCreditos);
+            this.separadosCreditos.setVisible(true);
+            this.estadoSeparadosCreditos = false;
+        } else {
+            JOptionPane.showMessageDialog(null, "La ventana Creditos y separados ya esta abierta ", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_jMenu8MouseClicked
 
     /**
      * @param args the command line arguments
@@ -288,6 +333,36 @@ public class Principal extends javax.swing.JFrame {
                 new Principal().setVisible(true);
             }
         });
+    }
+
+    public void liberarInstancia(String instancia) {
+        switch (instancia) {
+            case "separadosCreistos":
+                estadoSeparadosCreditos = true;
+                break;
+            case "ingresos":
+                estadoIngresos = true;
+                break;
+
+            case "egresos":
+                estadoEgresos = true;
+                break;
+            case "ventas":
+                estadoVentas = true;
+                break;
+
+            case "productos":
+                estadoProductos = true;
+                break;
+            case "inventario":
+                estadoInventario = true;
+                break;
+            case "clientes":
+                estadoClientes = true;
+                break;
+            default:
+                throw new AssertionError();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

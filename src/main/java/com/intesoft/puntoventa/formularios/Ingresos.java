@@ -41,10 +41,10 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private RegistroVendido registroVendido;
     private CreditoController creditoController;
     private Credito credito;
-    private Inventario inventario;
+    private Principal principal;
     private InventarioController inventarioController;
 
-    public Ingresos() {
+    public Ingresos(Principal principal) {
         initComponents();
         this.monedaTransform = new MonedaTransform();
         this.operacionController = new OperacionController();
@@ -67,6 +67,7 @@ public class Ingresos extends javax.swing.JInternalFrame {
         valorCajaTextField.setEditable(false);
         Jf_totalGanancias.setEditable(false);
         Jf_totalVentas.setEditable(false);
+        this.principal = principal;
 
     }
 
@@ -206,7 +207,11 @@ public class Ingresos extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    @Override
+    public void dispose(){
+        principal.liberarInstancia("ingresos");
+        super.dispose();
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         updateTable();
     }//GEN-LAST:event_jButton1ActionPerformed

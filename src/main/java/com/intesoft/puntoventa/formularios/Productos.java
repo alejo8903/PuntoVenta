@@ -24,17 +24,19 @@ public class Productos extends javax.swing.JInternalFrame {
     /**
      * Creates new form IngresoProductos
      */
-    TableRowSorter<DefaultTableModel> sorter;
-    DefaultTableModel model;
-    public Productos() {
+    private TableRowSorter<DefaultTableModel> sorter;
+    private DefaultTableModel model;
+    private Principal principal;
+    public Productos(Principal principal) {
         initComponents();
         
         this.model =  (DefaultTableModel) jTable1.getModel();
         this.jTable1.setModel(model);
         this.jTable1.setAutoCreateRowSorter(true);
-        sorter = new TableRowSorter<>(model);
+        this.sorter = new TableRowSorter<>(model);
         this.jTable1.setRowSorter(sorter);
         this.listarProductos();
+        this.principal = principal;
     }
 
     /**
@@ -166,7 +168,13 @@ public class Productos extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    @Override
+    public void dispose(){
+        this.principal.liberarInstancia("productos");
+        super.dispose();
+    }
+    
     private void jBAgregarPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAgregarPActionPerformed
         IngresoProductos ingresoProductos = new IngresoProductos("ingresar", this);
         ingresoProductos.setModal(true);

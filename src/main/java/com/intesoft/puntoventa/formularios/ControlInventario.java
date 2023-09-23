@@ -20,17 +20,19 @@ public class ControlInventario extends javax.swing.JInternalFrame {
     /**
      * Creates new form controlInventario
      */
-    InventarioController inventarioController;
-    MonedaTransform monedaTransform;
-    Usuarios usuarios;
+    private Principal principal;
+    private InventarioController inventarioController;
+    private MonedaTransform monedaTransform;
+    private Usuarios usuarios;
     public ControlInventario() {
         initComponents();
     }
-    public ControlInventario(Usuarios usuarios) {
+    public ControlInventario(Usuarios usuarios, Principal principal) {
         this.usuarios = usuarios;
         this.monedaTransform = new MonedaTransform();
         initComponents();
         updateTable();
+        this.principal = principal;
         
     }
 
@@ -131,7 +133,12 @@ public class ControlInventario extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    @Override
+    public void dispose(){
+        this.principal.liberarInstancia("inventario");
+        super.dispose();
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         IngresoInventario ingresoinventario = new IngresoInventario(this);
         ingresoinventario.setModal(true);

@@ -38,9 +38,10 @@ public class SeparadosCreditos extends javax.swing.JInternalFrame {
     private CreditoController creditoController;
     private MonedaTransform monedaTransform;
     private NumericValidator numericValidator;
+    private Principal principal;
     private boolean activo = true;
 
-    private SeparadosCreditos(Usuarios usuario) {
+    public SeparadosCreditos(Usuarios usuario, Principal principal) {
         initComponents();
         modelarTablaCredito = new ModelarTabla(jTable1);
         modelarTablaSeparado = new ModelarTabla(jTable2);
@@ -51,6 +52,7 @@ public class SeparadosCreditos extends javax.swing.JInternalFrame {
         creditoController = new CreditoController();
         monedaTransform = new MonedaTransform();
         numericValidator = new NumericValidator();
+        this.principal = principal;
         this.usuario = usuario;
         updateTableCreditos();
         updateTableSeparados();
@@ -89,6 +91,7 @@ public class SeparadosCreditos extends javax.swing.JInternalFrame {
         setClosable(true);
         setIconifiable(true);
         setTitle("Creditos & Separados");
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/tarjeta-de-debito.png"))); // NOI18N
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -301,24 +304,10 @@ public class SeparadosCreditos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public static SeparadosCreditos obtenerInstancia(Usuarios usuario) {
-
-        if (instancia == null) {
-            instancia = new SeparadosCreditos(usuario);
-        }
-
-        return instancia;
-    }
-
-    public boolean validarInstancia() {
-
-        if (activo) {
-            this.activo = false;
-            return true;
-
-        } else {
-            return false;
-        }
+    @Override
+    public void dispose() {
+        this.principal.liberarInstancia("separadosCreistos");
+        super.dispose();
     }
 
 
@@ -488,6 +477,7 @@ public class SeparadosCreditos extends javax.swing.JInternalFrame {
 
     public void updateTableSeparados() {
         creditoController = new CreditoController();
+
         listCreditoDtoCredito = creditoController.getListaCreditos(Operaciones.SEPARADO.toString());
         modelSeparado.setRowCount(0);
         for (CreditoDto creditoDto : listCreditoDtoCredito) {

@@ -45,12 +45,13 @@ public class Ventas extends javax.swing.JInternalFrame {
     private Operacion operacion;
     private Credito credito;
     private NumericValidator numericValidator;
+    private Principal principal;
 
     public Ventas() {
         initComponents();
     }
 
-    public Ventas(Usuarios usuarios) {
+    public Ventas(Usuarios usuarios, Principal principal) {
         this.usuarios = usuarios;
         initComponents();
         this.jLNombre.setText(this.usuarios.getNombres());
@@ -65,6 +66,7 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.operacion = new Operacion();
         this.cliente = new Clientes();
         numericValidator = new NumericValidator();
+        this.principal = principal;
 
     }
 
@@ -190,8 +192,8 @@ public class Ventas extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -199,12 +201,12 @@ public class Ventas extends javax.swing.JInternalFrame {
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLRol, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -212,7 +214,7 @@ public class Ventas extends javax.swing.JInternalFrame {
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -372,23 +374,23 @@ public class Ventas extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(jTextFDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextFValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(jTextFValor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel10)
-                            .addComponent(jLabel11))
-                        .addGap(24, 24, 24))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel11)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jRadioVenta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jRadioSeparar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jRadioCredito)
-                        .addContainerGap())))
+                        .addComponent(jRadioCredito)))
+                .addContainerGap())
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -443,13 +445,8 @@ public class Ventas extends javax.swing.JInternalFrame {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(95, 95, 95)
                         .addComponent(jLabel17)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel18))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(104, 104, 104)
-                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextFPago, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabel18))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(24, 24, 24)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,7 +458,12 @@ public class Ventas extends javax.swing.JInternalFrame {
                             .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(81, 81, 81)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextFPago, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -479,15 +481,15 @@ public class Ventas extends javax.swing.JInternalFrame {
                         .addComponent(jLabel15)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel16)))
-                .addGap(27, 27, 27)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jTextFPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel17, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(37, 37, 37))
+                    .addComponent(jLabel17)
+                    .addComponent(jLabel18))
+                .addGap(75, 75, 75))
         );
 
         jBCliente.setText("Clientes");
@@ -543,8 +545,8 @@ public class Ventas extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(5, 5, 5)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jBCliente)
                             .addComponent(jLabel4)
@@ -554,8 +556,8 @@ public class Ventas extends javax.swing.JInternalFrame {
                             .addComponent(jLabel19)
                             .addComponent(jTextAbono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(5, 5, 5))
         );
 
         pack();
@@ -564,7 +566,11 @@ public class Ventas extends javax.swing.JInternalFrame {
     private void jTextFDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFDescripcionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFDescripcionActionPerformed
-
+    @Override
+    public void dispose(){
+        principal.liberarInstancia("ventas");
+        super.dispose();
+    }
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
         String code = this.jTextFCodigo.getText();
         if (code.isBlank()) {
@@ -595,7 +601,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             return;
         }
         double posibleDeuda = this.cliente.getDeuda() + valor - monedaTransform.transfrormMoneda(abono)
-                + monedaTransform.transfrormMoneda(jLTotal.getText()) - monedaTransform.transfrormMoneda(abono);
+                + monedaTransform.transfrormMoneda(jLTotal.getText());
 
         if ((posibleDeuda > this.cliente.getLimiteCredito()) && this.jRadioCredito.isSelected()) {
             JOptionPane.showMessageDialog(null, "El cliente no posse credito aprobado para el monto actual", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -668,7 +674,8 @@ public class Ventas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jLabel11MouseClicked
 
     private void jLabel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseClicked
-
+        int numRow = jTable1.getRowCount();
+        if(numRow != 0){
         OperacionController operacionController = new OperacionController();
         CreditoController creditoController = new CreditoController();
         this.operacion.setValor(monedaTransform.transfrormMoneda(this.jLTotal.getText()));
@@ -707,18 +714,24 @@ public class Ventas extends javax.swing.JInternalFrame {
         this.jTextFPago.setText("");
         this.operacion = new Operacion();
         this.cliente = new Clientes();
-        this.listRegistroVendidos.clear();;
-        jRadioVenta.setEnabled(true);
-        jRadioSeparar.setEnabled(true);
-        jRadioCredito.setEnabled(true);
-        jBCliente.setEnabled(true);
-        jBCliente.setSelected(true);
+        this.listRegistroVendidos.clear();
+        this.jLNombre.setText("");
+        this.jRadioVenta.setEnabled(true);
+        this.jRadioVenta.isSelected();
+        this.jRadioSeparar.setEnabled(true);
+        this.jRadioCredito.setEnabled(true);
+        this.jBCliente.setEnabled(true);
+        this.jBCliente.setSelected(true);
         this.totalVenta = 0;
         this.operacion = new Operacion();
         this.credito = new Credito();
+        } else{
+            JOptionPane.showMessageDialog(null,"Debe tener producto en la tabla par efectuar la venta", "Advertencia",JOptionPane.WARNING_MESSAGE);
+        }
         
     }//GEN-LAST:event_jLabel18MouseClicked
 
+    
     private void jTextFCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFCantidadKeyTyped
         String descuento = this.jTextFDescuento.getText();
         String cantidad = this.jTextFCantidad.getText();

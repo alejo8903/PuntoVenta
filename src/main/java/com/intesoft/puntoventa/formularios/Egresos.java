@@ -40,6 +40,7 @@ public class Egresos extends javax.swing.JInternalFrame {
     private NumericValidator numericValidator;
     private ResumenFinancieroController resumenFinancieroController;
     private ResumenFinanciero resumenFinanciero;
+    private Principal principal;
     private boolean flag1 = false;
     private boolean flag2 = false;
 
@@ -48,7 +49,7 @@ public class Egresos extends javax.swing.JInternalFrame {
 
     }
 
-    public Egresos(Usuarios usuarios) {
+    public Egresos(Usuarios usuarios, Principal principal) {
         initComponents();
         this.usuarios = usuarios;
         this.listOperacion = new ArrayList<>();
@@ -69,6 +70,7 @@ public class Egresos extends javax.swing.JInternalFrame {
         jDateChooser1.setDate(nuevaFecha);
         jDateChooser2.setDate(new Date());
         numericValidator = new NumericValidator();
+        this.principal = principal;
        
 
         updateTable();
@@ -231,6 +233,12 @@ public class Egresos extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public void dispose(){
+        principal.liberarInstancia("egresos");
+        super.dispose();
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String gasto = Jt_Gastos.getText();
         int tipoGasto = jComboBox1.getSelectedIndex();

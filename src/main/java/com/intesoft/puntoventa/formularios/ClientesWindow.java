@@ -26,12 +26,14 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
     private List<Clientes> listClientes;
     private NumericValidator numericValidator;
     private MonedaTransform monedaTransform;
+    private Principal principal;
 
-    public ClientesWindow() {
+    public ClientesWindow( Principal principal) {
         numericValidator = new NumericValidator();
         monedaTransform = new MonedaTransform();
         initComponents();
         updateTable();
+        this.principal = principal;
 
     }
 
@@ -183,6 +185,12 @@ public class ClientesWindow extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    @Override
+    public void dispose(){
+        principal.liberarInstancia("clientes");
+        super.dispose();
+    }
+    
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String nombre = jTextNombre.getText();
         String apellido =  jTextApellido.getText();
