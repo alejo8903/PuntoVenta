@@ -66,9 +66,9 @@
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTextGanancia" min="-2" max="-2" attributes="0"/>
                           <Component id="jTextTCompra" alignment="0" pref="120" max="32767" attributes="0"/>
                           <Component id="jTextVVenta" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jTextGanancia" alignment="0" min="-2" pref="76" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -263,9 +263,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextVVenta">
-      <Properties>
-        <Property name="editable" type="boolean" value="false"/>
-      </Properties>
+      <Events>
+        <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="jTextVVentaKeyTyped"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
       <Properties>

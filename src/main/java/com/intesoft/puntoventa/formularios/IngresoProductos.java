@@ -225,7 +225,7 @@ public class IngresoProductos extends javax.swing.JDialog {
         String color = jTextColor.getText();
         
         if(tipo.length()>=2){
-            if(descripcion == "" || talla == "" || color == ""){
+            if(descripcion.isBlank() || talla.isBlank() || color.isBlank()){
             JOptionPane.showMessageDialog(null, "Todos los campos deben estar diligenciados", "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
             }

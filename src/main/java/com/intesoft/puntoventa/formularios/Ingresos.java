@@ -15,6 +15,7 @@ import com.intesoft.puntoventa.entity.Inventario;
 import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.entity.RegistroVendido;
 import com.intesoft.puntoventa.entity.ResumenFinanciero;
+import com.intesoft.puntoventa.entity.Usuarios;
 import com.intesoft.puntoventa.util.MonedaTransform;
 import java.util.Calendar;
 import java.util.Date;
@@ -43,14 +44,16 @@ public class Ingresos extends javax.swing.JInternalFrame {
     private Credito credito;
     private Principal principal;
     private InventarioController inventarioController;
+    private Usuarios usuarios;
 
-    public Ingresos(Principal principal) {
+    public Ingresos(Principal principal, Usuarios usuarios) {
         initComponents();
         this.monedaTransform = new MonedaTransform();
         this.operacionController = new OperacionController();
         this.registroVendidoController = new RegistroVendidoController();
         this.inventarioController = new InventarioController();
         this.creditoController = new CreditoController();
+        this.usuarios = usuarios;
 
         // Obtén la fecha actual
         Calendar calendar = Calendar.getInstance();
@@ -68,6 +71,12 @@ public class Ingresos extends javax.swing.JInternalFrame {
         Jf_totalGanancias.setEditable(false);
         Jf_totalVentas.setEditable(false);
         this.principal = principal;
+        if(!usuarios.ispAdminUser()){
+            this.jLabel2.setVisible(false);
+            this.jLabel1.setVisible(false);
+            this.Jf_totalGanancias.setVisible(false);
+            this.Jf_totalVentas.setVisible(false);
+        }
 
     }
 
@@ -168,14 +177,14 @@ public class Ingresos extends javax.swing.JInternalFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
-                        .addComponent(startJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(47, 47, 47)
-                        .addComponent(jLabel5)
+                        .addComponent(startJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(endJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(endJDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jButton1)
-                        .addGap(37, 37, 37)
+                        .addGap(28, 28, 28)
                         .addComponent(jButton2)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())

@@ -49,6 +49,10 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         setIconImage(new ImageIcon(getClass().getResource("/imagenes/tienda.png")).getImage());
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        if(!usuarios.ispAdminUser()){
+            this.menuProductos.setVisible(false);
+            this.menuInventario.setVisible(false);
+        }
     }
 
     /**
@@ -75,7 +79,7 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         menuProductos = new javax.swing.JMenu();
-        editMenu = new javax.swing.JMenu();
+        menuInventario = new javax.swing.JMenu();
         menuVentas = new javax.swing.JMenu();
         jMenu7 = new javax.swing.JMenu();
         jMenu8 = new javax.swing.JMenu();
@@ -131,15 +135,15 @@ public class Principal extends javax.swing.JFrame {
         });
         menuBar.add(menuProductos);
 
-        editMenu.setBorder(null);
-        editMenu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lista.png"))); // NOI18N
-        editMenu.setText("Inventario");
-        editMenu.addMouseListener(new java.awt.event.MouseAdapter() {
+        menuInventario.setBorder(null);
+        menuInventario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/lista.png"))); // NOI18N
+        menuInventario.setText("Inventario");
+        menuInventario.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editMenuMouseClicked(evt);
+                menuInventarioMouseClicked(evt);
             }
         });
-        menuBar.add(editMenu);
+        menuBar.add(menuInventario);
 
         menuVentas.setBorder(null);
         menuVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bolsa-de-la-compra.png"))); // NOI18N
@@ -233,7 +237,7 @@ public class Principal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_menuVentasMouseClicked
 
-    private void editMenuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editMenuMouseClicked
+    private void menuInventarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuInventarioMouseClicked
         if (this.estadoInventario) {
             this.inventario = new ControlInventario(this.usuarios, this);
             this.desktopPane.add(this.inventario);
@@ -242,7 +246,7 @@ public class Principal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "La ventana Inventario ya esta abierta ","Advertencia", JOptionPane.WARNING_MESSAGE);
         }
-    }//GEN-LAST:event_editMenuMouseClicked
+    }//GEN-LAST:event_menuInventarioMouseClicked
 
     private void menuProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuProductosMouseClicked
         if (this.estadoProductos) {
@@ -279,7 +283,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenu10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenu10MouseClicked
         if (this.estadoIngresos) {
-            this.ingresos = new Ingresos(this);
+            this.ingresos = new Ingresos(this,this.usuarios);
             this.desktopPane.add(this.ingresos);
             this.ingresos.setVisible(true);
             this.estadoIngresos = false;
@@ -368,7 +372,6 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem aboutMenuItem;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu editMenu;
     private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenu helpMenu;
@@ -387,6 +390,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar3;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu menuInventario;
     private javax.swing.JMenu menuProductos;
     private javax.swing.JMenu menuVentas;
     // End of variables declaration//GEN-END:variables

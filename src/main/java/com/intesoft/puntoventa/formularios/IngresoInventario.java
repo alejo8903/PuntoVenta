@@ -4,15 +4,19 @@
  */
 package com.intesoft.puntoventa.formularios;
 
+import com.intesoft.puntoventa.controller.DescripcionOperacionController;
 import com.intesoft.puntoventa.controller.InventarioController;
 import com.intesoft.puntoventa.controller.MaestroController;
 import com.intesoft.puntoventa.controller.OperacionController;
+import com.intesoft.puntoventa.entity.DescripcionOperacion;
 import com.intesoft.puntoventa.entity.Inventario;
 import com.intesoft.puntoventa.entity.Maestro;
 import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.entity.Usuarios;
 import com.intesoft.puntoventa.util.MonedaTransform;
+import com.intesoft.puntoventa.util.NumericValidator;
 import com.intesoft.puntoventa.util.Operaciones;
+import java.text.DecimalFormat;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
@@ -29,7 +33,9 @@ public class IngresoInventario extends javax.swing.JDialog {
     ControlInventario controlInventario;
     MonedaTransform monedaTransform;
     private Usuarios usuario;
-
+    private NumericValidator numericValidator;
+    private double ganancia;
+    private DecimalFormat formato;
     public IngresoInventario() {
         initComponents();
     }
@@ -39,6 +45,8 @@ public class IngresoInventario extends javax.swing.JDialog {
         this.maestro = new Maestro();
         this.monedaTransform = new MonedaTransform();
         this.usuario = usuario;
+        this.numericValidator = new NumericValidator();
+        this.formato =formato = new DecimalFormat("#.##");
         initComponents();
     }
 
@@ -132,7 +140,11 @@ public class IngresoInventario extends javax.swing.JDialog {
 
         jLabel9.setText("Valor Venta");
 
-        jTextVVenta.setEditable(false);
+        jTextVVenta.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTextVVentaKeyTyped(evt);
+            }
+        });
 
         jButton1.setText("Validar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -191,9 +203,9 @@ public class IngresoInventario extends javax.swing.JDialog {
                             .addComponent(jLabel9))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextTCompra, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                            .addComponent(jTextVVenta)))
+                            .addComponent(jTextVVenta)
+                            .addComponent(jTextGanancia, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
@@ -277,7 +289,7 @@ public class IngresoInventario extends javax.swing.JDialog {
         String vVenta = this.jTextVVenta.getText();
         String iva = this.jTextIva.getText();
         String totalCompra = this.jTextTCompra.getText();
-        String ganancia = this.jTextGanancia.getText();
+        String ganancia = String.valueOf(this.ganancia);
         String vCompra = this.jTextVCompra.getText();
         String cantidad = this.jTextCantidad.getText();
 
@@ -288,6 +300,8 @@ public class IngresoInventario extends javax.swing.JDialog {
 
         } else {
             try {
+                DescripcionOperacionController descripcionOperacionController = new DescripcionOperacionController();
+                DescripcionOperacion descripcionOperacion = new DescripcionOperacion();
                 InventarioController inventarioController = new InventarioController();
                 OperacionController operacionController = new OperacionController();
                 Operacion operacion = new Operacion();
@@ -297,7 +311,7 @@ public class IngresoInventario extends javax.swing.JDialog {
                 inventario.setValorCompra(monedaTransform.transfrormMoneda(this.jTextVCompra.getText()));
                 inventario.setIva(Float.parseFloat(this.jTextIva.getText()) / 100);
                 inventario.setTotalCompra(monedaTransform.transfrormMoneda(this.jTextTCompra.getText()));
-                inventario.setPorcentajeGanancia(Float.parseFloat(this.jTextGanancia.getText()) / 100);
+                inventario.setPorcentajeGanancia(Float.parseFloat(String.valueOf(this.ganancia / 100)));
                 inventario.setValorVenta(monedaTransform.transfrormMoneda(this.jTextVVenta.getText()));
                 inventarioController.insertInventario(inventario);
                 operacion.setIdOperacion(0);
@@ -306,6 +320,10 @@ public class IngresoInventario extends javax.swing.JDialog {
                 operacion.setUsuario(this.usuario.getNombres() + " " + this.usuario.getApellidos());
                 operacion.setValor(inventario.getTotalCompra() * inventario.getCantidad() * -1);
                 operacionController.saveOperacion(operacion);
+                descripcionOperacion.setOperacion(operacion);
+                descripcionOperacion.setDescripcion("Ingreso compra de productos al inventario");
+                descripcionOperacionController.saveDescripcionOperacion(descripcionOperacion);
+                
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Hubo un error en el ingreso del (los) productos", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -392,7 +410,7 @@ public class IngresoInventario extends javax.swing.JDialog {
 
     private void jTextGananciaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextGananciaKeyTyped
         String tecla = String.valueOf(evt.getKeyChar());
-        char[] p = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\b', '\0'};
+        char[] p = {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '\b', '\0', '.'};
         int b = 0;
         for (int i = 0; i < p.length; i++) {
             if (evt.getKeyChar() == '\b' || evt.getKeyChar() == '\0') {
@@ -407,12 +425,41 @@ public class IngresoInventario extends javax.swing.JDialog {
             }
 
         }
-
+        this.ganancia = Double.parseDouble(jTextGanancia.getText());
         evt.consume();
         JOptionPane.showMessageDialog(null, "No es un caracter valido", "Advertencia", JOptionPane.WARNING_MESSAGE);
 
 
     }//GEN-LAST:event_jTextGananciaKeyTyped
+
+    private void jTextVVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextVVentaKeyTyped
+        String precioCompra = jTextVCompra.getText();
+        String precioVenta = this.jTextVVenta.getText();
+        boolean flag = false;
+        if (precioVenta.isBlank() || precioCompra.isBlank()) {
+            precioVenta = "";
+        }
+
+        if (precioCompra.isBlank()) {
+            evt.consume();
+            JOptionPane.showMessageDialog(null, "Debe ingresar un precio de compra", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        numericValidator.validation(evt);
+        if (numericValidator.getFlag()) {
+            return;
+        }
+
+        String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(precioVenta + evt.getKeyChar()));
+        double monedaDouble = Double.parseDouble(monedalimpia);
+        this.jTextVVenta.setText(monedaTransform.formatMoneda(monedaDouble));
+               if ((monedaDouble - monedaTransform.transfrormMoneda(this.jTextVCompra.getText())) > 0) {
+            this.ganancia = ((monedaDouble/monedaTransform.transfrormMoneda(this.jTextTCompra.getText())-1)*100); 
+            this.jTextGanancia.setText(formato.format(this.ganancia).replace(",", "."));
+        }
+        evt.consume();
+                                
+    }//GEN-LAST:event_jTextVVentaKeyTyped
 
     public double calculoValor(double valor, double porcentaje) {
         double resultado = 0;

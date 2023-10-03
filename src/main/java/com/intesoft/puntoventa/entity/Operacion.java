@@ -4,6 +4,7 @@
  */
 package com.intesoft.puntoventa.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "operacion")
-public class Operacion {
+public class Operacion implements Serializable{
     @Id
     @Column(name = "idoperacion")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

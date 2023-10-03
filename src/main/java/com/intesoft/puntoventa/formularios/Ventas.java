@@ -266,9 +266,6 @@ public class Ventas extends javax.swing.JInternalFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jLabel11MouseClicked(evt);
             }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                jLabel11MouseEntered(evt);
-            }
         });
 
         jLabel20.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -533,7 +530,7 @@ public class Ventas extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 365, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(8, 8, 8)))
@@ -600,10 +597,12 @@ public class Ventas extends javax.swing.JInternalFrame {
         String abono = this.jTextAbono.getText();
 
         int rows = jTable1.getRowCount();
-        if ((abono.isBlank() || this.cliente.getIdCliente() == 0) && (this.jRadioSeparar.isSelected() || this.jRadioCredito.isSelected())) {
-            JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente e introducir un abono \n"
-                    + " para poder separar o entregar a credito", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
+        if (rows == 0) {
+            if ((abono.isBlank() || this.cliente.getIdCliente() == 0) && (this.jRadioSeparar.isSelected() || this.jRadioCredito.isSelected())) {
+                JOptionPane.showMessageDialog(null, "Debe seleccionar un cliente e introducir un abono \n"
+                        + " para poder separar o entregar a credito", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
         }
         double posibleDeuda = this.cliente.getDeuda() + valor - monedaTransform.transfrormMoneda(abono)
                 + monedaTransform.transfrormMoneda(jLTotal.getText());
@@ -673,8 +672,8 @@ public class Ventas extends javax.swing.JInternalFrame {
         jRadioSeparar.setEnabled(false);
         jRadioCredito.setEnabled(false);
         jBCliente.setEnabled(false);
+        jTextAbono.setEnabled(false);
         jTextAbono.setText("");
-
 
     }//GEN-LAST:event_jLabel11MouseClicked
 
@@ -894,13 +893,14 @@ public class Ventas extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jRadioSepararStateChanged
 
     private void jRadioVentaStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jRadioVentaStateChanged
+
         if (jRadioVenta.isSelected() == Boolean.TRUE) {
             jBCliente.setVisible(false);
             jLabel4.setVisible(false);
             jLabel19.setVisible(false);
             jLabelNombre.setVisible(false);
-            jLabelNombre.setText("");
             jTextAbono.setVisible(false);
+            jLabelNombre.setText("");
             jTextAbono.setText("");
         }
     }//GEN-LAST:event_jRadioVentaStateChanged
@@ -911,9 +911,7 @@ public class Ventas extends javax.swing.JInternalFrame {
             jLabel4.setVisible(true);
             jLabel19.setVisible(true);
             jLabelNombre.setVisible(true);
-            jLabelNombre.setText("");
             jTextAbono.setVisible(true);
-            jTextAbono.setText("");
 
         }
     }//GEN-LAST:event_jRadioCreditoStateChanged
@@ -961,10 +959,6 @@ public class Ventas extends javax.swing.JInternalFrame {
         clientesSelect.setModal(true);
 
     }//GEN-LAST:event_jBClienteActionPerformed
-
-    private void jLabel11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel11MouseEntered
 
     private void jLabel18MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel18MouseEntered
         // TODO add your handling code here:

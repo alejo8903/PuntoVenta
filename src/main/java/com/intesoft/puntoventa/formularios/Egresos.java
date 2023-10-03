@@ -5,8 +5,10 @@
 package com.intesoft.puntoventa.formularios;
 
 import com.intesoft.puntoventa.controller.CreditoController;
+import com.intesoft.puntoventa.controller.DescripcionOperacionController;
 import com.intesoft.puntoventa.controller.OperacionController;
 import com.intesoft.puntoventa.controller.ResumenFinancieroController;
+import com.intesoft.puntoventa.entity.DescripcionOperacion;
 import com.intesoft.puntoventa.entity.Operacion;
 import com.intesoft.puntoventa.entity.ResumenFinanciero;
 import com.intesoft.puntoventa.entity.Usuarios;
@@ -40,6 +42,8 @@ public class Egresos extends javax.swing.JInternalFrame {
     private NumericValidator numericValidator;
     private ResumenFinancieroController resumenFinancieroController;
     private ResumenFinanciero resumenFinanciero;
+    private List<DescripcionOperacion> listDescripcionOperacion;
+    private DescripcionOperacionController descripcionOperacionController;
     private Principal principal;
     private boolean flag1 = false;
     private boolean flag2 = false;
@@ -71,6 +75,7 @@ public class Egresos extends javax.swing.JInternalFrame {
         jDateChooser2.setDate(new Date());
         numericValidator = new NumericValidator();
         this.principal = principal;
+        this.descripcionOperacionController = new DescripcionOperacionController();
        
 
         updateTable();
@@ -101,6 +106,8 @@ public class Egresos extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         valorCajaTextField = new javax.swing.JTextField();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jLabel7 = new javax.swing.JLabel();
+        jTextFieldDescripcion = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -112,11 +119,11 @@ public class Egresos extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "Id", "Descripcion", "Fecha", "Reporta", "Valor"
+                "idDescripcion", "Id", "Tipo de Gasto", "Descripcion", "Fecha", "Reporta", "Valor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, true, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -124,9 +131,19 @@ public class Egresos extends javax.swing.JInternalFrame {
             }
         });
         jScrollPane1.setViewportView(jTable1);
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setMinWidth(0);
+            jTable1.getColumnModel().getColumn(0).setPreferredWidth(0);
+            jTable1.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         jLabel1.setText("Costos:");
 
+        Jt_Gastos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Jt_GastosActionPerformed(evt);
+            }
+        });
         Jt_Gastos.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 Jt_GastosKeyTyped(evt);
@@ -160,6 +177,8 @@ public class Egresos extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel7.setText("Descripcion");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -171,26 +190,35 @@ public class Egresos extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(Jt_Gastos, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(42, 42, 42))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(Jt_Gastos, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(84, 84, 84)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel7)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(jTextFieldDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
                                 .addComponent(jButton1)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel4)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
                                 .addGap(18, 18, 18)
-                                .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-                                .addComponent(jToggleButton1))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, 140, Short.MAX_VALUE)
+                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(33, 33, 33)
+                                .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(124, 124, 124))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(jLabel6)
@@ -205,20 +233,31 @@ public class Egresos extends javax.swing.JInternalFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel1)
-                        .addComponent(Jt_Gastos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jButton1)
-                        .addComponent(jLabel2)
-                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel5)
-                        .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jToggleButton1))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel7))
+                                .addComponent(jDateChooser1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1)
+                                .addComponent(Jt_Gastos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jDateChooser2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jTextFieldDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -241,15 +280,17 @@ public class Egresos extends javax.swing.JInternalFrame {
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String gasto = Jt_Gastos.getText();
+        String descripcion = jTextFieldDescripcion.getText();
         int tipoGasto = jComboBox1.getSelectedIndex();
         
-        if (!gasto.isEmpty() && tipoGasto != 0) {
+        if (!gasto.isEmpty() && tipoGasto != 0 && !descripcion.isEmpty()) {
             int respuesta = JOptionPane.showConfirmDialog(null, "¿Quieres guardar este gasto? \n"
                     + jComboBox1.getSelectedItem().toString() + " por valor de " + gasto, "Confirmación", JOptionPane.YES_NO_OPTION);
             if (respuesta == JOptionPane.YES_OPTION) {
                 double gastoNum = monedaTransform.transfrormMoneda(gasto);
             gastoNum = gastoNum * -1;
             Operacion operacion = new Operacion();
+            DescripcionOperacion descripcionOperacion = new DescripcionOperacion();
             operacion.setFecha(new Date());
             operacion.setOperacion(jComboBox1.getSelectedItem().toString());
             operacion.setUsuario(this.usuarios.getNombres() + " " + this.usuarios.getApellidos());
@@ -260,6 +301,9 @@ public class Egresos extends javax.swing.JInternalFrame {
                 } catch (InterruptedException ex) {
                     Logger.getLogger(Egresos.class.getName()).log(Level.SEVERE, null, ex);
                 }
+            descripcionOperacion.setOperacion(operacion);
+            descripcionOperacion.setDescripcion(descripcion);
+            descripcionOperacionController.saveDescripcionOperacion(descripcionOperacion);
             jDateChooser2.setDate(new Date());
             updateTable();
             JOptionPane.showMessageDialog(null, "El egreso " + id + " ha sido registrado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
@@ -289,22 +333,28 @@ public class Egresos extends javax.swing.JInternalFrame {
         updateTable();
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
+    private void Jt_GastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Jt_GastosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_Jt_GastosActionPerformed
+
     private void updateTable() {
-        OperacionController operacionController = new OperacionController();
+        DescripcionOperacionController descripcionOperacionController = new DescripcionOperacionController();
         Date starDate = jDateChooser1.getDate();
         Date endDate = jDateChooser2.getDate();
-        listOperacion = operacionController.getAllEgresos(starDate, endDate);
+        listDescripcionOperacion = descripcionOperacionController.getAllEgresos(starDate, endDate);
         this.model.setNumRows(0);
         double totalGastos = 0;
-        for (Operacion operacion : listOperacion) {
+        for (DescripcionOperacion descripcionOperacion : listDescripcionOperacion) {
             Object[] rowData = {
-                operacion.getIdOperacion(),
-                operacion.getOperacion(),
-                operacion.getFecha(),
-                operacion.getUsuario(),
-                monedaTransform.formatMoneda(operacion.getValor())
+                descripcionOperacion.getId(),
+                descripcionOperacion.getOperacion().getIdOperacion(),
+                descripcionOperacion.getOperacion().getOperacion(),
+                descripcionOperacion.getDescripcion(),
+                descripcionOperacion.getOperacion().getFecha(),
+                descripcionOperacion.getOperacion().getUsuario(),
+                monedaTransform.formatMoneda(descripcionOperacion.getOperacion().getValor())
             };
-            totalGastos -= operacion.getValor();
+            totalGastos -= descripcionOperacion.getOperacion().getValor();
             this.model.addRow(rowData);
 
         }
@@ -330,8 +380,10 @@ public class Egresos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldDescripcion;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTextField valorCajaTextField;
     // End of variables declaration//GEN-END:variables
