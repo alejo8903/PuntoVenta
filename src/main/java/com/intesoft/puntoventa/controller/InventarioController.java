@@ -41,6 +41,16 @@ public class InventarioController {
         inventarioServices.insertInventario(inventario);
     }
 
+    public void modifyInventario(Inventario inventario) {
+        InventarioServices inventarioServices = new InventarioServicesImplement();
+        inventarioServices.modifyInventario(inventario);
+    }
+
+    public void deleteInventario(int id) {
+        InventarioServices inventarioServices = new InventarioServicesImplement();
+        inventarioServices.deleteInventario(id);
+    }
+
     
     
 }

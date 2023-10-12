@@ -51,7 +51,6 @@ public class Principal extends javax.swing.JFrame {
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         if(!usuarios.ispAdminUser()){
             this.menuProductos.setVisible(false);
-            this.menuInventario.setVisible(false);
         }
     }
 

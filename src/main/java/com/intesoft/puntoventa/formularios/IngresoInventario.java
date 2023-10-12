@@ -36,6 +36,10 @@ public class IngresoInventario extends javax.swing.JDialog {
     private NumericValidator numericValidator;
     private double ganancia;
     private DecimalFormat formato;
+    private Inventario inventario;
+    private Operacion operacion;
+    private DescripcionOperacion descripcionOperacion;
+
     public IngresoInventario() {
         initComponents();
     }
@@ -46,8 +50,24 @@ public class IngresoInventario extends javax.swing.JDialog {
         this.monedaTransform = new MonedaTransform();
         this.usuario = usuario;
         this.numericValidator = new NumericValidator();
-        this.formato =formato = new DecimalFormat("#.##");
+        this.formato = formato = new DecimalFormat("#.##");
         initComponents();
+
+    }
+
+    public IngresoInventario(ControlInventario controlInventario, Usuarios usuario, Inventario inventario) {
+        this.controlInventario = controlInventario;
+        this.maestro = new Maestro();
+        this.monedaTransform = new MonedaTransform();
+        this.usuario = usuario;
+        this.numericValidator = new NumericValidator();
+        this.formato = formato = new DecimalFormat("#.##");
+        this.inventario = inventario;
+        this.operacion = inventario.getOperacion();
+        this.maestro = inventario.getCodigo();
+        initComponents();
+        setModificarInventario();
+
     }
 
     /**
@@ -214,7 +234,7 @@ public class IngresoInventario extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jTextIva, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextIva, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jCheckBox1))
                             .addComponent(jTextVCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -284,8 +304,63 @@ public class IngresoInventario extends javax.swing.JDialog {
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
+    private void setModificarInventario() {
+        String codigo = this.inventario.getCodigo().getCodigo();
+        this.jTextCodigo.setText(codigo.substring(0, codigo.length() - 2));
+        this.jTextTipo.setText(codigo.substring(codigo.length() - 2, codigo.length()));
+        this.jTextDescripcion.setText(this.inventario.getCodigo().getDescripcion());
+        this.jTextTalla.setText(this.inventario.getCodigo().getTalla());
+        this.jTextColor.setText(this.inventario.getCodigo().getColor());
+        this.jTextCantidad.setText(String.valueOf(this.inventario.getCantidad()));
+        this.jTextVCompra.setText(monedaTransform.formatMoneda(this.inventario.getValorCompra()));
+        this.jTextIva.setText(String.valueOf(this.inventario.getIva() * 100));
+        this.jTextTCompra.setText(monedaTransform.formatMoneda(this.inventario.getTotalCompra()));
+        this.jTextGanancia.setText(String.valueOf(this.inventario.getPorcentajeGanancia() * 100));
+        this.jTextVVenta.setText(monedaTransform.formatMoneda(this.inventario.getValorVenta()));
+        this.jButton2.setText("Modificar");
 
+    }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        if (this.jButton2.getText() == "Modificar") {
+            modificarInventario();
+        } else {
+            crearInventario();
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+    private void modificarInventario() {
+        String codigo = this.jTextCodigo.getText() + jTextTipo.getText();
+        String descripcion = jTextDescripcion.getText();
+        String tipo = this.jTextTipo.getText();
+        String talla = this.jTextTalla.getText();
+        String color = this.jTextColor.getText();
+        this.ganancia = Double.parseDouble(this.jTextGanancia.getText());
+        if (descripcion.isBlank() || tipo.isBlank() || talla.isBlank() || color.isBlank() || codigo.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos deben estar diligenciados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        MaestroController maestroController = new MaestroController();
+        InventarioController inventarioController = new InventarioController();
+        DescripcionOperacionController descripcionOperacionController = new DescripcionOperacionController();
+        OperacionController operacionController = new OperacionController();
+        String codigo2 = this.maestro.getCodigo();
+        if (codigo2.equals(codigo)) {
+            this.maestro.setDescripcion(descripcion);
+            this.maestro.setTalla(talla);
+            this.maestro.setColor(color);
+            this.descripcionOperacion = descripcionOperacionController.getDescripcionOperacionByOperacion(this.operacion);
+
+        } else {
+            descripcionOperacionController.deleteDescripcionOperacion(this.operacion);
+            inventarioController.deleteInventario(this.inventario.getId());
+            operacionController.removeOperacion(this.operacion);
+            maestroController.deleteProducto(this.maestro.getCodigo());
+
+            this.maestro = null;
+            this.operacion = new Operacion();
+            this.descripcionOperacion = new DescripcionOperacion();
+            this.inventario = new Inventario();
+
+        }
         String vVenta = this.jTextVVenta.getText();
         String iva = this.jTextIva.getText();
         String totalCompra = this.jTextTCompra.getText();
@@ -294,11 +369,145 @@ public class IngresoInventario extends javax.swing.JDialog {
         String cantidad = this.jTextCantidad.getText();
 
         if (vVenta.isBlank() || iva.isBlank() || totalCompra.isBlank() || ganancia.isBlank()
-                || vCompra.isBlank() || cantidad.isBlank() || cantidad == "0" || this.maestro == null) {
+                || vCompra.isBlank() || cantidad.isBlank() || cantidad == "0") {
+
+            JOptionPane.showMessageDialog(null, "Todos los campos deben estar diligenciados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        } else {
+            if (this.maestro == null) {
+                int option = JOptionPane.showConfirmDialog(null,
+                        "Esta seguro de modificar el codigo del producto", "Advertencia", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    if (this.jTextTipo.getText().length() != 2) {
+                        JOptionPane.showMessageDialog(null, "El tipo debe tener dos digitos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    this.maestro = new Maestro();
+                    this.maestro.setCodigo(this.jTextCodigo.getText() + this.jTextTipo.getText());
+                    this.maestro.setDescripcion(this.jTextDescripcion.getText());
+                    this.maestro.setTalla(this.jTextTalla.getText());
+                    this.maestro.setColor(this.jTextColor.getText());
+                    maestroController.crearProducto(this.maestro);
+                } else if (option == JOptionPane.NO_OPTION) {
+                    this.jTextCodigo.setText("");
+                    this.jTextTipo.setText("");
+                    this.jTextDescripcion.setText("");
+                    this.jTextTalla.setText("");
+                    this.jTextColor.setText("");
+
+                } else if (option == JOptionPane.CANCEL_OPTION) {
+                    return;
+
+                }
+            } else {
+                maestroController.ModificarProducto(this.maestro);
+            }
+            try {
+                descripcionOperacionController = new DescripcionOperacionController();
+                inventarioController = new InventarioController();
+                operacionController = new OperacionController();
+                inventario.setCodigo(this.maestro);
+                inventario.setCantidad(Integer.parseInt(this.jTextCantidad.getText()));
+                inventario.setValorCompra(monedaTransform.transfrormMoneda(this.jTextVCompra.getText()));
+                inventario.setIva(Float.parseFloat(this.jTextIva.getText()) / 100);
+                inventario.setTotalCompra(monedaTransform.transfrormMoneda(this.jTextTCompra.getText()));
+                inventario.setPorcentajeGanancia(Float.parseFloat(String.valueOf(this.ganancia / 100)));
+                inventario.setValorVenta(monedaTransform.transfrormMoneda(this.jTextVVenta.getText()));
+                this.operacion.setFecha(new Date());
+                this.operacion.setOperacion(Operaciones.COMPRAPRODUCTOS.toString());
+                this.operacion.setUsuario(this.usuario.getNombres() + " " + this.usuario.getApellidos());
+                this.operacion.setValor(inventario.getTotalCompra() * inventario.getCantidad() * -1);
+               
+                if(this.operacion.getIdOperacion() != 0){
+                     operacionController.updateOperacion(this.operacion);
+                }else{
+                     operacionController.saveOperacion(this.operacion);
+                }
+                inventario.setOperacion(this.operacion);
+                if (inventario.getId() != 0){
+                    inventarioController.modifyInventario(inventario);
+                }else{
+                    inventarioController.insertInventario(inventario);
+                }
+                
+
+                
+                
+                descripcionOperacion.setOperacion(operacion);
+                descripcionOperacion.setDescripcion("Ingreso compra de productos al inventario");
+                if(this.descripcionOperacion.getId() != 0){
+                    descripcionOperacionController.updateDescripcionOperacion(descripcionOperacion);
+                }else{
+                    descripcionOperacionController.saveDescripcionOperacion(descripcionOperacion);
+                }
+                
+
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Hubo un error en la actualizacion del (los) productos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                e.printStackTrace();
+                return;
+
+            }
+            controlInventario.updateTable();
+            JOptionPane.showMessageDialog(null, "Modificado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            this.dispose();
+        }
+    }
+
+    private void crearInventario() {
+        String codigo = this.jTextCodigo.getText() + jTextTipo.getText();
+        String descripcion = jTextDescripcion.getText();
+        String tipo = this.jTextTipo.getText();
+        String talla = this.jTextTalla.getText();
+        String color = this.jTextColor.getText();
+        this.ganancia = Double.parseDouble(this.jTextGanancia.getText());
+        if (descripcion.isBlank() || tipo.isBlank() || talla.isBlank() || color.isBlank() || codigo.isBlank()) {
+            JOptionPane.showMessageDialog(null, "Todos los campos deben estar diligenciados", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        MaestroController maestroController = new MaestroController();
+        this.maestro = maestroController.getProducto(codigo);
+
+        String vVenta = this.jTextVVenta.getText();
+        String iva = this.jTextIva.getText();
+        String totalCompra = this.jTextTCompra.getText();
+        String ganancia = String.valueOf(this.ganancia);
+        String vCompra = this.jTextVCompra.getText();
+        String cantidad = this.jTextCantidad.getText();
+        
+
+        if (vVenta.isBlank() || iva.isBlank() || totalCompra.isBlank() || ganancia.isBlank()
+                || vCompra.isBlank() || cantidad.isBlank() || cantidad == "0") {
 
             JOptionPane.showMessageDialog(null, "Todos los campos deben estar diligenciados", "Advertencia", JOptionPane.WARNING_MESSAGE);
 
         } else {
+            if (this.maestro == null) {
+                int option = JOptionPane.showConfirmDialog(null,
+                        "Este seria un producto nuevo esta seguro de crearlo", "Advertencia", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    if (this.jTextTipo.getText().length() != 2) {
+                        JOptionPane.showMessageDialog(null, "El tipo debe tener dos digitos", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    this.maestro = new Maestro();
+                    this.maestro.setCodigo(this.jTextCodigo.getText() + this.jTextTipo.getText());
+                    this.maestro.setDescripcion(this.jTextDescripcion.getText());
+                    this.maestro.setTalla(this.jTextTalla.getText());
+                    this.maestro.setColor(this.jTextColor.getText());
+                    maestroController.crearProducto(maestro);
+                } else if (option == JOptionPane.NO_OPTION) {
+                    this.jTextCodigo.setText("");
+                    this.jTextTipo.setText("");
+                    this.jTextDescripcion.setText("");
+                    this.jTextTalla.setText("");
+                    this.jTextColor.setText("");
+
+                } else if (option == JOptionPane.CANCEL_OPTION) {
+                    return;
+
+                }
+            }
             try {
                 DescripcionOperacionController descripcionOperacionController = new DescripcionOperacionController();
                 DescripcionOperacion descripcionOperacion = new DescripcionOperacion();
@@ -313,17 +522,18 @@ public class IngresoInventario extends javax.swing.JDialog {
                 inventario.setTotalCompra(monedaTransform.transfrormMoneda(this.jTextTCompra.getText()));
                 inventario.setPorcentajeGanancia(Float.parseFloat(String.valueOf(this.ganancia / 100)));
                 inventario.setValorVenta(monedaTransform.transfrormMoneda(this.jTextVVenta.getText()));
-                inventarioController.insertInventario(inventario);
                 operacion.setIdOperacion(0);
                 operacion.setFecha(new Date());
                 operacion.setOperacion(Operaciones.COMPRAPRODUCTOS.toString());
                 operacion.setUsuario(this.usuario.getNombres() + " " + this.usuario.getApellidos());
                 operacion.setValor(inventario.getTotalCompra() * inventario.getCantidad() * -1);
                 operacionController.saveOperacion(operacion);
+                inventario.setOperacion(operacion);
+                inventarioController.insertInventario(inventario);
                 descripcionOperacion.setOperacion(operacion);
                 descripcionOperacion.setDescripcion("Ingreso compra de productos al inventario");
                 descripcionOperacionController.saveDescripcionOperacion(descripcionOperacion);
-                
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, "Hubo un error en el ingreso del (los) productos", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -333,8 +543,7 @@ public class IngresoInventario extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Ingresado con exito", "Advertencia", JOptionPane.WARNING_MESSAGE);
             this.dispose();
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String codigo = jTextCodigo.getText() + jTextTipo.getText();
         MaestroController maestroController = new MaestroController();
@@ -453,12 +662,12 @@ public class IngresoInventario extends javax.swing.JDialog {
         String monedalimpia = String.valueOf(monedaTransform.transfrormMoneda(precioVenta + evt.getKeyChar()));
         double monedaDouble = Double.parseDouble(monedalimpia);
         this.jTextVVenta.setText(monedaTransform.formatMoneda(monedaDouble));
-               if ((monedaDouble - monedaTransform.transfrormMoneda(this.jTextVCompra.getText())) > 0) {
-            this.ganancia = ((monedaDouble/monedaTransform.transfrormMoneda(this.jTextTCompra.getText())-1)*100); 
+        if ((monedaDouble - monedaTransform.transfrormMoneda(this.jTextVCompra.getText())) > 0) {
+            this.ganancia = ((monedaDouble / monedaTransform.transfrormMoneda(this.jTextTCompra.getText()) - 1) * 100);
             this.jTextGanancia.setText(formato.format(this.ganancia).replace(",", "."));
         }
         evt.consume();
-                                
+
     }//GEN-LAST:event_jTextVVentaKeyTyped
 
     public double calculoValor(double valor, double porcentaje) {

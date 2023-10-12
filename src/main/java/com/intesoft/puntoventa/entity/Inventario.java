@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "inventario")
 public class Inventario implements Serializable {
-    
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,11 +42,15 @@ public class Inventario implements Serializable {
     private float porcentajeGanancia;
     @Column(name = "valorventa")
     private double valorVenta;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "idoperacion")
+    private Operacion operacion;
 
     public Inventario() {
     }
 
-    public Inventario(Maestro codigo, int cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGanancia, double valorVenta) {
+    public Inventario(int id, Maestro codigo, int cantidad, double valorCompra, float iva, double totalCompra, float porcentajeGanancia, double valorVenta, Operacion operacion) {
+        this.id = id;
         this.codigo = codigo;
         this.cantidad = cantidad;
         this.valorCompra = valorCompra;
@@ -54,6 +58,7 @@ public class Inventario implements Serializable {
         this.totalCompra = totalCompra;
         this.porcentajeGanancia = porcentajeGanancia;
         this.valorVenta = valorVenta;
+        this.operacion = operacion;
     }
 
     public int getId() {
@@ -119,6 +124,13 @@ public class Inventario implements Serializable {
     public void setValorVenta(double valorVenta) {
         this.valorVenta = valorVenta;
     }
-    
-    
+
+    public Operacion getOperacion() {
+        return operacion;
+    }
+
+    public void setOperacion(Operacion operacion) {
+        this.operacion = operacion;
+    }
+
 }

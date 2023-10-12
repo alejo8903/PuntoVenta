@@ -7,9 +7,12 @@ package com.intesoft.puntoventa.formularios;
 import com.intesoft.puntoventa.controller.InventarioController;
 import com.intesoft.puntoventa.entity.Inventario;
 import com.intesoft.puntoventa.entity.Usuarios;
+import com.intesoft.puntoventa.util.ModelarTabla;
 import com.intesoft.puntoventa.util.MonedaTransform;
 import java.util.List;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -24,15 +27,22 @@ public class ControlInventario extends javax.swing.JInternalFrame {
     private InventarioController inventarioController;
     private MonedaTransform monedaTransform;
     private Usuarios usuarios;
+    private ModelarTabla modelarTabla;
     public ControlInventario() {
         initComponents();
     }
     public ControlInventario(Usuarios usuarios, Principal principal) {
         this.usuarios = usuarios;
         this.monedaTransform = new MonedaTransform();
+        
         initComponents();
         updateTable();
+        this.modelarTabla = new ModelarTabla(jTable1);
         this.principal = principal;
+        if(!this.usuarios.ispAdminUser()){
+            this.jButton1.setVisible(false);
+            this.jButton2.setVisible(false);
+        }
         
     }
 
@@ -48,6 +58,10 @@ public class ControlInventario extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jTextFieldSearch = new javax.swing.JTextField();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -108,26 +122,63 @@ public class ControlInventario extends javax.swing.JInternalFrame {
             }
         });
 
+        jLabel1.setText("Busqueda:");
+
+        jTextFieldSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextFieldSearchKeyReleased(evt);
+            }
+        });
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Codigo", "Descripcion", "Talla", "Color" }));
+
+        jButton2.setText("Editar ");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1403, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1329, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(98, 98, 98)
+                                .addComponent(jButton1)
+                                .addGap(54, 54, 54)
+                                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(95, 95, 95)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(98, 98, 98)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 543, Short.MAX_VALUE)
+                .addContainerGap(9, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jTextFieldSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(jButton2))
                 .addGap(30, 30, 30))
         );
 
@@ -144,7 +195,24 @@ public class ControlInventario extends javax.swing.JInternalFrame {
         ingresoinventario.setModal(true);
         ingresoinventario.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
-    
+
+    private void jTextFieldSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSearchKeyReleased
+        Integer column = this.jComboBox1.getSelectedIndex()+1;
+        modelarTabla.filter(this.jTextFieldSearch.getText(), column);
+        
+    }//GEN-LAST:event_jTextFieldSearchKeyReleased
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        int rowIndex = jTable1.getSelectedRow();
+        if(rowIndex >=0){
+            int id = Integer.parseInt(jTable1.getValueAt(rowIndex, 0).toString());
+            Inventario inventario = this.inventarioController.getProductoById(id);
+            IngresoInventario ingresoInventario = new IngresoInventario(this, usuarios, inventario);
+            ingresoInventario.setModal(true);
+            ingresoInventario.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+  
     public void updateTable(){
         inventarioController = new InventarioController();
         List<Inventario> listInventario = inventarioController.getInventarioTotal();
@@ -170,7 +238,11 @@ public class ControlInventario extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextFieldSearch;
     // End of variables declaration//GEN-END:variables
 }

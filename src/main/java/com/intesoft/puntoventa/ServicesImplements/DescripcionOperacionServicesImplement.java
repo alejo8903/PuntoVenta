@@ -7,6 +7,7 @@ package com.intesoft.puntoventa.ServicesImplements;
 import com.intesoft.puntoventa.Services.DescripcionOperacionServices;
 import com.intesoft.puntoventa.dao.DescripcionOperacionDao;
 import com.intesoft.puntoventa.entity.DescripcionOperacion;
+import com.intesoft.puntoventa.entity.Operacion;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,21 @@ public class DescripcionOperacionServicesImplement implements DescripcionOperaci
     @Override
     public List<DescripcionOperacion> getAllEgresos(Date fechaInicio, Date fechaFin) {
         return descripcionOperacionDao.getAllEgresos(fechaInicio, fechaFin);
+    }
+
+    @Override
+    public void deleteDescripcionOperacion(Operacion operacion) {
+        descripcionOperacionDao.delete(operacion);
+    }
+
+    @Override
+    public void updateDescripcionOperacion(DescripcionOperacion descripcionOperacion) {
+        descripcionOperacionDao.update(descripcionOperacion);
+    }
+
+    @Override
+    public DescripcionOperacion getDescripcionOperacionByOperacion(Operacion operacion) {
+        return descripcionOperacionDao.getDescripcionOperacionByOperacion(operacion);
     }
     
 }

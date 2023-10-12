@@ -53,4 +53,14 @@ public class InventarioServicesImplement implements InventarioServices {
         inventarioDao.create(inventario);
     }
 
+    @Override
+    public void modifyInventario(Inventario inventario) {
+        inventarioDao.modify(inventario);
+    }
+
+    @Override
+    public void deleteInventario(int id) {
+        inventarioDao.delete(id);
+    }
+
 }

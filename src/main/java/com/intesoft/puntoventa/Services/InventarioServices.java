@@ -23,5 +23,9 @@ public interface InventarioServices {
     public List<Inventario> getInventarioTotal();
 
     public void insertInventario(Inventario inventario);
+
+    public void modifyInventario(Inventario inventario);
+
+    public void deleteInventario(int id);
     
 }

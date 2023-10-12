@@ -65,12 +65,17 @@ public class MaestroDao {
 
     public void create(Maestro maestro) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        entityManager.getTransaction().begin();
+        try {
+            entityManager.getTransaction().begin();
 
         entityManager.persist(maestro);
 
         entityManager.getTransaction().commit();
         entityManager.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
     }
 
     public Maestro getMaxCodigo() {
