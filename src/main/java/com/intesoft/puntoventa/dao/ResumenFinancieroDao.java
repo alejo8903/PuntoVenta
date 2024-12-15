@@ -23,9 +23,9 @@ public class ResumenFinancieroDao {
 
     private final EntityManagerFactory entityManagerFactory;
     private EntityManager entityManager;
-    private final String jdbcUrl = "${config.database.url}";
-    private final String jdbcUsername = "${config.database.username}";
-    private final String jdbcPassword = "${config.database.password}";
+    private final String jdbcUrl = System.getProperty("config.database.url");
+    private final String jdbcUsername = System.getProperty("config.database.username");
+    private final String jdbcPassword = System.getProperty("config.database.password");
 
     public ResumenFinancieroDao(String persistence) {
         this.entityManagerFactory = Persistence.createEntityManagerFactory(persistence);
@@ -84,7 +84,11 @@ public class ResumenFinancieroDao {
 
         entityManager.getTransaction().commit();
         entityManager.close();
+        if (listresumenFinanciero.isEmpty()){
+            return new ResumenFinanciero();
+        } else {
         return listresumenFinanciero.get(0);
+        }
 
     }
 }

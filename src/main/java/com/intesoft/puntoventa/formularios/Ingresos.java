@@ -259,10 +259,15 @@ public class Ingresos extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_jButton2ActionPerformed
     private void totalizarCaja() {
+        try {
         resumenFinancieroController = new ResumenFinancieroController();
         resumenFinanciero = resumenFinancieroController.getTotalCaja();
         valorCajaTextField.setText(monedaTransform.formatMoneda(resumenFinanciero.getTotalAbonosNoPagado()
                 + resumenFinanciero.getTotalCajaVenta() + resumenFinanciero.getTotalCreditosPagados()));
+        } catch(Exception e){
+            System.err.print(e);
+            
+        }
 
     }
 

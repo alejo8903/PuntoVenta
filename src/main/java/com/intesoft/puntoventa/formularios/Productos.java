@@ -241,6 +241,7 @@ public class Productos extends javax.swing.JInternalFrame {
         }
     }
     public void listarProductos(){
+        try{
         MaestroController maestroController = new MaestroController();
         List<Maestro> listaProductos = maestroController.getAllProductos();
         this.model.setNumRows(0);
@@ -258,6 +259,9 @@ public class Productos extends javax.swing.JInternalFrame {
                 producto.getColor()
             };
             this.model.addRow(rowData);
+        }
+        }catch(Exception e){
+            System.err.println(e);
         }
     }
     

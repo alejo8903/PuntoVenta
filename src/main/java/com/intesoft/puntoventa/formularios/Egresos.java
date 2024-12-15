@@ -362,10 +362,14 @@ public class Egresos extends javax.swing.JInternalFrame {
         totalizarCaja();
     }
     private void totalizarCaja(){
+        try {
         resumenFinancieroController  = new ResumenFinancieroController();
         resumenFinanciero = resumenFinancieroController.getTotalCaja();
         valorCajaTextField.setText(monedaTransform.formatMoneda(resumenFinanciero.getTotalAbonosNoPagado() 
                 + resumenFinanciero.getTotalCajaVenta()+ resumenFinanciero.getTotalCreditosPagados()));
+        } catch(Exception e){
+            System.err.println(e);
+        }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JFormattedTextField Jf_TotalGastod;
